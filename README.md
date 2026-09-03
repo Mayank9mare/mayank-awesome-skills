@@ -14,6 +14,22 @@ Some skills need one-time setup before first use — check the top of the `SKILL
 
 ## Skills
 
+### Engineering stack skills
+
+Deep, opinionated reference skills for building/reviewing services and apps in a given stack — each ships with a `references/` directory (framework choice, persistence, caching, messaging, observability, testing, packaging) and a `templates/` starter file.
+
+| Skill | What it does |
+|---|---|
+| [ai-agents](ai-agents/SKILL.md) | Building/reviewing LLM agents and tool-calling loops — architecture choice, tracing, evaluation, safety guardrails, RAG retrieval, prompting. |
+| [flutter-app](flutter-app/SKILL.md) | Building/reviewing a Flutter/Dart mobile app — state management, navigation, networking, platform integration, release engineering. |
+| [go-microservice](go-microservice/SKILL.md) | Building/reviewing a Go backend service — routers, persistence, caching, messaging, observability, container tuning. |
+| [java-microservice](java-microservice/SKILL.md) | Building/reviewing a Java/JVM backend service — framework choice, Spring Boot, persistence, virtual threads, JVM container tuning. |
+| [node-microservice](node-microservice/SKILL.md) | Building/reviewing a Node.js/TypeScript backend service — framework choice, persistence, queues, observability, graceful shutdown. |
+| [python-microservice](python-microservice/SKILL.md) | Building/reviewing a Python backend service or MCP server — framework choice, async patterns, persistence, packaging with uv. |
+| [web-frontend](web-frontend/SKILL.md) | Building/reviewing a React/TypeScript web frontend — rendering strategy, server vs client state, performance, accessibility. |
+
+### General skills
+
 | Skill | What it does |
 |---|---|
 | [atlassian](atlassian/SKILL.md) | Reference for the `mcp__atlassian__` tool family — Jira issues and Confluence pages. |

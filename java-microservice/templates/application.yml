@@ -1,0 +1,270 @@
+### Spring Boot configuration, annotated with the reasoning.
+###
+### Copy to service/src/main/resources/application.yml and adapt. The pattern
+### throughout is ${ENV_VAR:sensible-default} so ONE artifact runs in every
+### environment, with the defaults documenting the intended value.
+###
+### Never put secrets in this file. Inject them at runtime (env from a secret
+### store, mounted file, or workload identity).
+
+spring:
+  application:
+    name: myservice
+
+  # --------------------------------------------------------------------------
+  # Virtual threads (Java 21+). One switch moves request handling and @Async
+  # onto virtual threads.
+  #
+  # BEFORE enabling: audit every fixed thread pool. Code often relies on a
+  # bounded pool to LIMIT CONCURRENCY against a fragile dependency. Swap in
+  # unbounded virtual threads and you remove the limiter and stampede it.
+  # Replace those pools with an explicit Semaphore first.
+  #
+  # Also remember virtual threads MOVE the bottleneck to your connection pools
+  # rather than removing it -- 10k threads through a pool of 10 means 9,990
+  # waiting. Resize deliberately (see below).
+  # --------------------------------------------------------------------------
+  threads:
+    virtual:
+      enabled: ${VIRTUAL_THREADS_ENABLED:true}
+
+  # --------------------------------------------------------------------------
+  # Datasource + HikariCP
+  # --------------------------------------------------------------------------
+  datasource:
+    url: ${DB_URL}                      # required: no default, fail fast
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    hikari:
+      # Size from the DATABASE's limit, not from optimism:
+      #   per-instance max  ~=  (db_max_connections * 0.8) / replica_count
+      # Each connection is a real backend process with real memory cost.
+      # 50 replicas x a pool of 50 is 2,500 connections and a dead database.
+      maximum-pool-size: ${DB_MAX_POOL_SIZE:20}
+      minimum-idle: ${DB_MIN_IDLE:5}
+
+      # MUST be shorter than the shortest idle timeout in front of the database
+      # (pooler, NLB, the DB's own idle_session_timeout). If it is longer, the
+      # pool hands out connections the far end has already closed, and you get
+      # intermittent "connection reset" under low traffic.
+      max-lifetime: ${DB_MAX_LIFETIME:450000}      # 7.5 min
+      idle-timeout: ${DB_IDLE_TIMEOUT:300000}      # 5 min
+
+      # Fail fast rather than queueing forever when the pool is exhausted.
+      connection-timeout: ${DB_CONNECTION_TIMEOUT:3000}
+      validation-timeout: ${DB_VALIDATION_TIMEOUT:2000}
+
+      # Logs a stack trace when a connection is held longer than this. Set it
+      # slightly above your slowest legitimate query -- it is the fastest way to
+      # find the code path leaking connections.
+      leak-detection-threshold: ${DB_LEAK_DETECTION:20000}
+      pool-name: myservice-pool
+
+  jpa:
+    open-in-view: false                 # ALWAYS false. The default (true) holds a
+                                        # session open for the whole request, hides
+                                        # N+1 behind lazy loads in the view layer,
+                                        # and pins a connection for the response.
+    hibernate:
+      ddl-auto: validate                # NEVER update/create in production.
+                                        # validate catches entity/schema drift at boot.
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 50
+          # Batching only works if statements can be grouped -- these two make
+          # Hibernate sort them so it can actually batch.
+          time_zone: UTC
+        order_inserts: true
+        order_updates: true
+        # Fail loudly in non-prod when pagination is applied in memory after a
+        # collection JOIN FETCH (a silent, catastrophic performance bug).
+        query:
+          fail_on_pagination_over_collection_fetch: true
+          in_clause_parameter_padding: true   # better statement-cache hit rate
+
+  # --------------------------------------------------------------------------
+  # Redis. Lettuce is the default and the right choice: netty-based, one
+  # connection is thread-safe to share. Jedis connections are blocking and
+  # exclusive, so they need a much larger pool -- which becomes a hard
+  # bottleneck exactly when you add virtual threads.
+  # --------------------------------------------------------------------------
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      # A Redis command with no timeout against a stalled Redis blocks the
+      # caller -- and then the cache IS the outage.
+      timeout: ${REDIS_TIMEOUT:2s}
+      connect-timeout: ${REDIS_CONNECT_TIMEOUT:1s}
+      lettuce:
+        pool:
+          enabled: true
+          max-active: ${REDIS_POOL_MAX:16}
+          max-idle: ${REDIS_POOL_MAX_IDLE:8}
+          min-idle: ${REDIS_POOL_MIN_IDLE:2}
+          max-wait: ${REDIS_POOL_MAX_WAIT:500ms}   # fail fast, don't queue
+      repositories:
+        enabled: false                  # not using Redis as a repository store
+
+  # --------------------------------------------------------------------------
+  # Graceful shutdown. See the deployment notes: the ORDER matters, and the
+  # pre-stop delay is not optional -- endpoint removal is eventually consistent,
+  # so requests keep arriving for a second or two after SIGTERM. Skipping it is
+  # the usual cause of 5xx on every deploy.
+  # --------------------------------------------------------------------------
+  lifecycle:
+    timeout-per-shutdown-phase: ${SHUTDOWN_PHASE_TIMEOUT:20s}
+
+server:
+  port: ${SERVER_PORT:8080}
+  shutdown: graceful                    # finish in-flight requests before exiting
+  tomcat:
+    # With virtual threads the thread cap is far less relevant, but keep a
+    # ceiling so a traffic spike can't allocate without bound.
+    threads:
+      max: ${TOMCAT_MAX_THREADS:200}
+    connection-timeout: ${TOMCAT_CONNECTION_TIMEOUT:5s}
+    max-http-form-post-size: 2MB
+  error:
+    include-message: never              # never leak internal messages to clients
+    include-stacktrace: never
+    include-binding-errors: never
+
+# ----------------------------------------------------------------------------
+# Actuator on a SEPARATE management port so /actuator is not publicly reachable.
+#
+# The liveness/readiness split is the important part:
+#   liveness  -> "is this process functioning?"  MUST NOT check dependencies.
+#                If it pings the DB, one blip restarts every pod at once and a
+#                transient blip becomes a full outage.
+#   readiness -> "should I get traffic?"          Checks essential dependencies.
+# ----------------------------------------------------------------------------
+management:
+  server:
+    port: ${MANAGEMENT_PORT:9090}
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics,loggers
+  endpoint:
+    health:
+      probes:
+        enabled: true                   # exposes health/liveness + health/readiness
+      show-details: when-authorized
+      group:
+        liveness:
+          include: livenessState        # deliberately NOT db/redis
+        readiness:
+          include: readinessState,db    # add only what you truly cannot serve without
+  health:
+    # A cache we can bypass must not fail readiness -- but do keep a real
+    # dashboard/alert on Redis, because disabling the check entirely just hides
+    # outages.
+    redis:
+      enabled: false
+  metrics:
+    tags:
+      application: ${spring.application.name}
+    distribution:
+      # Percentile histograms let Prometheus compute p95/p99 server-side.
+      percentiles-histogram:
+        http.server.requests: true
+      slo:
+        http.server.requests: 50ms,100ms,200ms,500ms,1s,2s
+  tracing:
+    sampling:
+      # 100% tracing at scale is expensive and rarely necessary. ParentBased
+      # sampling (the default) keeps a trace whole rather than half-sampled.
+      probability: ${TRACING_SAMPLE_RATE:0.1}
+
+# ----------------------------------------------------------------------------
+# Outbound HTTP timeouts. Separate budgets for internal vs external callees --
+# services you own should be held to a tighter budget than third parties.
+# An unconfigured client waits FOREVER, exhausts the pool, and takes the service
+# down while every health check still passes.
+# ----------------------------------------------------------------------------
+app:
+  rest:
+    internal:
+      connect-timeout: ${INTERNAL_CONNECT_TIMEOUT:1s}
+      read-timeout: ${INTERNAL_READ_TIMEOUT:3s}
+      max-conn-per-route: ${INTERNAL_MAX_CONN_PER_ROUTE:100}   # HC5 default is 5
+      max-conn-total: ${INTERNAL_MAX_CONN_TOTAL:200}
+    external:
+      connect-timeout: ${EXTERNAL_CONNECT_TIMEOUT:2s}
+      read-timeout: ${EXTERNAL_READ_TIMEOUT:10s}
+      max-conn-per-route: ${EXTERNAL_MAX_CONN_PER_ROUTE:50}
+      max-conn-total: ${EXTERNAL_MAX_CONN_TOTAL:100}
+
+  cache:
+    default-ttl: ${CACHE_DEFAULT_TTL:10m}      # a TTL is mandatory
+    key-prefix: "myservice:v1:"                # versioned: bump to invalidate a
+                                               # whole generation on a shape change
+
+queues:
+  orders: ${ORDERS_QUEUE:myservice-orders}     # from config, never hardcoded
+  orders-dlq: ${ORDERS_DLQ:myservice-orders-dlq}
+
+# ----------------------------------------------------------------------------
+# Resilience4j.
+#
+# Ordering trap: the default aspect order outermost -> innermost is
+#   Retry -> CircuitBreaker -> RateLimiter -> TimeLimiter -> Bulkhead
+# so a retried call re-enters the breaker on every attempt. That is usually
+# what you want; verify it rather than assuming, and assert it in a test.
+# ----------------------------------------------------------------------------
+resilience4j:
+  circuitbreaker:
+    instances:
+      upstream-service:
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 50
+        minimumNumberOfCalls: 20        # without this a 1-of-1 failure trips it
+        failureRateThreshold: 50
+        waitDurationInOpenState: 30s
+        permittedNumberOfCallsInHalfOpenState: 3
+        # 4xx means OUR request was wrong -- not an unhealthy dependency.
+        # Counting them opens the breaker on our own bugs.
+        ignoreExceptions:
+          - com.example.myservice.error.UpstreamBadRequestException
+  retry:
+    instances:
+      upstream-service:
+        maxAttempts: 3
+        waitDuration: 100ms
+        enableExponentialBackoff: true
+        exponentialBackoffMultiplier: 2
+        enableRandomizedWait: true      # JITTER: without it every client that
+                                        # failed together retries together and
+                                        # finishes off a recovering dependency
+        retryExceptions:
+          - java.io.IOException
+          - java.util.concurrent.TimeoutException
+
+logging:
+  level:
+    root: ${LOG_LEVEL_ROOT:INFO}
+    com.example.myservice: ${LOG_LEVEL_APP:INFO}
+    # Uncomment ONLY while debugging -- these are extremely verbose and will
+    # log query parameters, which may include personal data.
+    # org.hibernate.SQL: DEBUG
+    # org.hibernate.orm.jdbc.bind: TRACE
+
+---
+# Local development overrides.
+spring:
+  config:
+    activate:
+      on-profile: local
+  jpa:
+    hibernate:
+      ddl-auto: validate                # still validate: catch drift early
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+logging:
+  level:
+    com.example.myservice: DEBUG
