@@ -1,5 +1,9 @@
 # mayank-awesome-skills
 
+<p align="center">
+  <img src="assets/banner.png" alt="banner" width="280">
+</p>
+
 A handpicked collection of generic [Claude Code skills](https://docs.claude.com/en/docs/claude-code/skills) — practical, reusable, and not tied to any one company or codebase.
 
 ## Using a skill
