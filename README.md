@@ -41,7 +41,7 @@ Deep, opinionated reference skills for building/reviewing services and apps in a
 | [jenkins](jenkins/SKILL.md) | Interact with Jenkins CI/CD via REST API — jobs, builds, logs, queue. |
 | [kb](kb/SKILL.md) | Personal work knowledgebase for team context, people, projects, and reply drafting. |
 | [memory-expert](memory-expert/SKILL.md) | Search and store durable memory (preferences, solutions, context) across conversations. |
-| [qa](qa/SKILL.md) | Generic E2E QA automation framework for Step-Function-based workflows, driven by per-feature task files. |
+| [qa](qa/SKILL.md) | Stack-agnostic E2E QA automation — derives and runs the full scenario set for a feature (happy path, negatives, authz, idempotency, races, timeouts, failure injection, lifecycle, data edges) against a real environment. Workflow engine, event bus, datastore and log platform are per-feature task-file adapters. |
 | [remotion](remotion/SKILL.md) | Domain knowledge for building programmatic videos with React + Remotion. |
 | [sandbox-context](sandbox-context/SKILL.md) | Daytona sandbox lifecycle management across agent sessions. |
 | [slack-auto-responder](slack-auto-responder/SKILL.md) | Set up a recurring auto-responder for Slack DMs using knowledgebase context. |

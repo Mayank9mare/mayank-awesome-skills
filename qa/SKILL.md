@@ -1,496 +1,341 @@
 ---
 name: qa
-description: E2E QA automation for SFN-based workflows. Runs preflight checks, executes test scenarios step-by-step, validates via Loki logs + AWS SFN + service APIs, and reports pass/fail.
+description: Stack-agnostic E2E QA automation. Derives a full scenario set for a feature — happy path, negatives, idempotency, concurrency and race conditions, timeouts and retries, failure injection, lifecycle edges — then executes each scenario step-by-step against a real environment and reports pass/fail with evidence. All environment specifics (workflow engine, event bus, datastore, object store, logs, CI) come from a per-feature task file, never from this skill.
 user-invocable: true
 ---
 
-# SFN QA Automation
+# E2E QA Automation
 
-Automated E2E testing for Step Function workflows on stage/prod. Generic framework — feature-specific scenarios live in task files under `tasks/`.
+A feature is not "tested" because the happy path returned 200. It is tested when you
+know what it does under a duplicate callback, two concurrent writers, a downstream
+timeout, an out-of-order event, and a cancel that lands mid-flight.
+
+This skill is the **harness and the method**. It knows nothing about your stack.
+Everything specific — hosts, workflow engine, queues, database, object storage, log
+platform, CI, credentials — is declared in a task file at `tasks/{feature}.md`, and the
+concrete commands for each declared adapter type live in `references/adapters.md`.
 
 ## When to Use
 
-- User says `/qa {feature}`, `/qa {feature} {scenario}`, `/qa {feature} preflight`
-- User wants to run E2E tests on stage for an SFN-based flow
-- User wants to validate a deployment by running through test scenarios
+- `/qa {feature}` — list the feature's scenarios and coverage gaps
+- `/qa {feature} {scenario}` — run one scenario
+- `/qa {feature} all` — run every scenario, in dependency order
+- `/qa {feature} races` — run only the concurrency/race class
+- `/qa {feature} preflight` — environment checks only
+- `/qa {feature} plan` — derive scenarios for a feature that has no task file yet
+- Validating a deployment before promoting it
+- Reproducing a suspected race or ordering bug under controlled conditions
+
+**Not for:** unit/integration tests inside a repo (use `tdd`), or diagnosing a live
+incident (use `troubleshooter`). This drives a deployed environment from outside.
 
 ## Usage
 
 ```
-/qa {feature}                    — list available scenarios
-/qa {feature} preflight          — run pre-flight checks only
-/qa {feature} {scenario}         — run a specific scenario
-/qa {feature} all                — run all scenarios sequentially
+/qa {feature}                  — list scenarios + coverage matrix
+/qa {feature} preflight        — preflight only
+/qa {feature} {scenario}       — one scenario
+/qa {feature} {class}          — one class (happy|negative|authz|idempotency|races|timeouts|failure|lifecycle)
+/qa {feature} all              — everything
+/qa {feature} plan             — derive scenarios, write/extend the task file
 ```
+
+Flags: `--repeat N` (rerun each scenario N times; required for race classes),
+`--auto` (no prompts, abort on first failure), `--keep` (skip teardown, leave data for
+inspection), `--env {name}` (select an environment block from the task file).
 
 ## Architecture
 
 ```
-SKILL.md              ← you are here (generic framework)
+SKILL.md                       ← generic framework (this file). No vendor names in the flow.
+references/
+  adapters.md                  ← concrete commands per adapter type (workflow, queue, store, object, logs, ci)
+  scenario-catalog.md          ← the nine scenario classes and how to derive them for any feature
+  race-conditions.md           ← concurrency playbook: interleavings, injection, exactly-once assertions
+templates/
+  task-template.md             ← blank task file to copy
 tasks/
-  {feature}.md        ← feature-specific: env, scenarios, curls, expected states, DB queries, troubleshooting
+  {feature}.md                 ← ALL specifics for one feature
+  example-order-checkout.md    ← worked example (Temporal + Pub/Sub + Postgres + GCS)
 ```
 
-To add a new feature, create a task file under `tasks/` following the Task File Format below.
+The rule: **if a string names a vendor, a host, an ARN, a queue, a table, a job or a
+region, it belongs in the task file.** This file and the scenario/race references stay
+portable.
 
-## Step 1: Load Task File
+## The Adapter Model
 
-Read `~/.claude/skills/qa/tasks/{feature}.md`. If not found, list available task files.
+The harness only ever talks to a feature through **probes**. A probe is an abstract
+capability; the task file binds each probe to an adapter *type*, and
+`references/adapters.md` supplies the command for that type.
 
-The task file defines:
-- **Environment** — hosts, SFN ARN, region, headers
-- **Preflight** — service-specific health + config checks
-- **Scenarios** — step-by-step test flows with curls and validation
-- **Curl Templates** — named curl blocks with `{{PLACEHOLDER}}` substitution
-- **Expected States** — DB status, SFN state, log patterns per step
-- **Troubleshooting** — feature-specific failure patterns
+| Probe | Question it answers | Example adapter types |
+|---|---|---|
+| `health` | Is the service under test up? | http-endpoint, k8s-readiness, tcp |
+| `api` | What does the service say the state is? | http/rest, graphql, grpc |
+| `workflow` | Where is the orchestration, and did it fail? | sfn, temporal, cadence, airflow, camunda, argo, none |
+| `queue` | Are events flowing, and is anything in the DLQ? | sqs, pubsub, kafka, rabbitmq, eventbridge, nats, none |
+| `store` | What does the durable state actually look like? | mysql, postgres, dynamodb, spanner, bigquery, firestore, mongodb |
+| `object` | Was the artifact written? | s3, gcs, azure-blob, none |
+| `logs` | What did the code say while doing it? | loki, cloudwatch, gcp-logging, elasticsearch, datadog, splunk |
+| `metric` | Did counters/latency move as expected? | prometheus, cloudwatch-metrics, gcp-monitoring, none |
+| `ci` | Is the code under test actually deployed? | jenkins, github-actions, gitlab-ci, argocd, none |
 
-## Step 2: Preflight Protocol
+Any probe the task file does not declare is **skipped, not failed** — a feature with no
+workflow engine simply has no `workflow` probe, and nothing in this skill breaks.
 
-Run these checks before any scenario. Report pass/fail for each.
+Every adapter declaration carries its own config keys. Look the type up in
+`references/adapters.md` for the exact commands and the config keys it expects.
 
-### Generic checks (always run)
+## Step 1: Resolve the Task File
 
-1. **Service health** — `curl {{HOST}}/actuator/health` → expect 200
-2. **Loki connectivity** — `loki_query(env="stage", service_name="{{SERVICE}}", includes=["INFO"], limit=1)` → expect results
-3. **SFN exists** — `aws stepfunctions describe-state-machine --state-machine-arn {{SFN_ARN}} --region {{REGION}}` → expect status=ACTIVE
-4. **No stuck executions** — `aws stepfunctions list-executions --state-machine-arn {{SFN_ARN}} --status-filter RUNNING --region {{REGION}}` → report count (warn if > 5)
+Read `tasks/{feature}.md` (checking both the skill directory and
+`~/.claude/skills/qa/tasks/`). If it does not exist, list what does, and offer
+`/qa {feature} plan` — which reads `references/scenario-catalog.md`, interviews the user
+about the feature, and writes a task file from `templates/task-template.md`.
 
-### Feature-specific checks
+From the task file, load: the selected `## Environment` block, the `## Adapters` table,
+`## Invariants`, `## Scenarios`, `## Action Templates`, `## Expected States`,
+`## Fixtures`, `## Cleanup`, `## Troubleshooting`.
 
-Run whatever the task file's `## Preflight` section defines (config seeded, queues exist, dependencies healthy).
+**Env safety classification.** Every environment block declares `tier: local | dev |
+stage | prod`. On a `prod` tier: no writes, no event injection, no cleanup, no CI
+triggers — read-only probes only, unless the user explicitly authorizes each write in
+this session. Refuse silently-destructive behaviour; say what you are skipping.
 
-### Preflight report
+## Step 2: Preflight
 
-```
-## Preflight: {feature}
-| Check | Status | Details |
-|-------|--------|---------|
-| Service health | PASS | 200 OK |
-| Loki | PASS | Connected |
-| SFN | PASS | ACTIVE, updated 2026-05-27 |
-| Running executions | WARN | 2 running |
-| Feature config | PASS | configs found |
-```
-
-## Step 2b: Cleanup (before each scenario)
-
-If the task file has a `cleanup` section, **always ask user permission before running DELETEs.** Never run destructive DB operations without explicit confirmation.
-
-1. Show the user what will be deleted (table names, filter criteria)
-2. Ask for permission via AskUserQuestion
-3. If approved: run cleanup queries + stop running SFN executions
-4. If denied: skip cleanup, warn that test may fail on duplicate records
-
-## Step 3: Execute Scenario
-
-For each step in the scenario:
-
-### 3a. Fire Action
-
-Execute the curl from the task file. Substitute `{{PLACEHOLDERS}}` with values from:
-- Previous step responses (chain forward)
-- User-provided values
-- Generated values (unique app_form_id, timestamp)
-
-### 3b. Wait
-
-Wait the specified duration (default 10s) for async processing (SQS → consumer → DB update).
-
-### 3c. Validate (run ALL of these after EVERY step)
-
-**1. Service API check** — call the task file's `get-details` curl to get current state:
-- Check `last_event_status` matches expected
-- Check `higher_order_status` matches expected
-- Check `is_active` matches expected
-- Check events timeline has the expected new event
-
-**2. Log error check** — query for errors in the primary service:
-- Build query: `{{LOG_STREAM_SELECTOR}} |~ "ERROR" |~ "{{CORRELATION_ID}}"`
-- PASS if no results
-- FAIL if errors found (include log messages in report)
-
-**3. Log step completion** — query for step-specific keyword:
-- Build query: `{{LOG_STREAM_SELECTOR}} |~ "{{STEP_KEYWORD}}"`
-- PASS if expected log patterns found
-- FAIL if missing after wait
-
-**4. SFN execution check** — query execution status + current state:
-```bash
-# Get execution status
-aws stepfunctions describe-execution --execution-arn {{EXEC_ARN}} --region {{REGION}} \
-  --query '{status:status, startDate:startDate, stopDate:stopDate}'
-
-# Get last 5 state transitions
-aws stepfunctions get-execution-history --execution-arn {{EXEC_ARN}} --reverse-order --max-results 10 --region {{REGION}} \
-  --query 'events[?type==`TaskStateEntered` || type==`TaskStateExited`].{type:type, state:stateEnteredEventDetails.name || stateExitedEventDetails.name, ts:timestamp}'
-```
-- PASS if current state matches expected from Expected States table
-- FAIL if unexpected state, FAILED/TIMED_OUT status, or stuck
-
-**5. DB check (optional, for deeper validation)** — run the task file's DB validation queries:
-- Check the feature's core tables (as defined in the task file)
-- Only when API response is insufficient (e.g., checking a JSON metadata field)
-
-**6. Cross-service log check (if applicable)** — query downstream service logs:
-- Check each downstream service's logs after the steps that call it (as defined in the task file)
-
-### 3d. Record Result
-
-Store step result: PASS/FAIL, duration, notes (error messages, unexpected values).
-
-If a step FAILs:
-1. Log the failure details
-2. Ask user: continue to next step, retry this step, or abort scenario?
-3. In auto mode: abort scenario and report
-
-## Step 4: Report
-
-After scenario completes (or aborts), output:
+Preflight is derived from the declared adapters, not hardcoded. For each adapter in the
+task file's `## Adapters` table, run its reachability check from
+`references/adapters.md`. Then run whatever the task file's `## Preflight` section adds.
 
 ```
-## QA Report: {feature} / {scenario}
-**Result: PASS** (or FAIL at step N)
-**Duration: 45s**
-
-| # | Step | Status | Duration | Notes |
-|---|------|--------|----------|-------|
-| 1 | Step A | PASS | 1.2s | id=456 |
-| 2 | Step B | PASS | 8.1s | workflowId=789 |
-| 3 | Step C | PASS | 0.8s | |
-| 4 | Step D | FAIL | 12.3s | HTTP 500 — see errors |
-| ... | | | | |
-
-### Errors
-- Step D: HTTP 500 — `{"error": "process_failed", ...}`
-
-### Warnings
-- (any non-blocking observations)
-
-### Loki Errors (last 30min)
-- (errors found for this request, or "none")
+## Preflight: {feature} @ {env} (tier: stage)
+| Check | Adapter | Status | Details |
+|---|---|---|---|
+| Service health | http-endpoint | PASS | 200, build 2f9c1a |
+| Deployed revision | github-actions | WARN | HEAD is 3 commits ahead of deployed |
+| Workflow engine | temporal | PASS | namespace reachable, 1 open execution |
+| Event bus | pubsub | PASS | subscription exists, DLQ empty |
+| Datastore | postgres | PASS | connected, read-only user |
+| Logs | loki | PASS | 12 lines in last 5m |
+| Fixtures | — | FAIL | test tenant `qa-tenant-1` not found |
 ```
 
-## Tools Reference
+Any FAIL blocks scenario execution unless the user overrides. WARN is reported and
+continues.
 
-### Log Platform
+## Step 3: Derive the Scenario Set
 
-Query service logs for validation. The task file's `## Environment` section defines:
-- `Log Platform URL` — base URL for log queries
-- `Log Query API` — API path (e.g., `/loki/api/v1/query_range`)
-- `Log Stream Selector` — how to filter by service (e.g., `{subsystemName=~"{{SERVICE}}"}`)
-- `Log Services` — map of logical name → stream selector value
+Before running anything, check coverage. Read `references/scenario-catalog.md` and map
+the task file's scenarios onto the nine classes. Report the matrix and name the gaps —
+missing coverage is a finding, not silence:
 
-**Generic query pattern:**
-```bash
-START=$(date -u -v-{{MINUTES}}M +"%Y-%m-%dT%H:%M:%SZ")
-END=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-curl -s "{{LOG_PLATFORM_URL}}{{LOG_QUERY_API}}" \
-  --data-urlencode 'query={{LOG_STREAM_SELECTOR}} |~ "keyword1" |~ "keyword2"' \
-  --data-urlencode "start=$START" --data-urlencode "end=$END" --data-urlencode "limit=20"
+```
+## Coverage: {feature}
+| Class | Scenarios | Status |
+|---|---|---|
+| 1 happy | checkout-basic, checkout-with-coupon | covered |
+| 2 negative | bad-payload, missing-idem-key | covered |
+| 3 authz | — | GAP |
+| 4 idempotency | duplicate-submit | covered |
+| 5 races | concurrent-submit, late-callback | covered |
+| 6 timeouts | — | GAP |
+| 7 failure-injection | payment-5xx | covered |
+| 8 lifecycle | cancel-mid-flight | covered |
+| 9 data-edges | — | GAP |
 ```
 
-**Filter syntax (LogQL-compatible):**
-- `|~ "keyword"` — regex include filter (AND with multiple)
-- `!~ "keyword"` — regex exclude filter
-- Multiple `|~` are ANDed: `|~ "ERROR" |~ "requestId=123"` matches lines with both
+On `/qa {feature} all`, run every covered scenario and list the gaps in the final
+report. Offer to draft scenarios for the gaps.
 
-**Error check pattern:**
-```bash
-# Query for errors in a service within last N minutes
-{{LOG_STREAM_SELECTOR}} |~ "ERROR" |~ "{{CORRELATION_ID}}"
-```
+## Step 4: Execute a Scenario
 
-**Step completion pattern:**
-```bash
-# Query for step-specific log keyword
-{{LOG_STREAM_SELECTOR}} |~ "{{STEP_KEYWORD}}" |~ "{{CORRELATION_ID}}"
-```
+Each scenario is a list of steps. A step is: **arrange → act → settle → assert →
+record**.
 
-**Parse response (Loki format):**
-```bash
-| python3 -c "
-import json,sys
-d=json.load(sys.stdin)
-for stream in d.get('data',{}).get('result',[]):
-    for ts, line in stream.get('values',[]):
-        try:
-            log = json.loads(json.loads(line).get('log','{}') if 'log' in line else line)
-            print(f'{log.get(\"level\",\"?\")} {log.get(\"message\",line[:200])}')
-        except: print(line[:200])
-"
-```
+### 4a. Arrange
 
-**Note:** If migrating to a different log platform (e.g., Elasticsearch, CloudWatch), update the task file's environment section — the query patterns above stay the same as long as the new platform supports similar filter syntax.
-
-### AWS Credentials
-
-AWS credentials typically expire hourly (`ExpiredTokenException` on any aws CLI / MCP call). If your org uses
-an SSO credential helper (e.g. `aws-okta`, `aws-okta-py`, `saml2aws`) that supports non-interactive refresh,
-refresh them **yourself** rather than asking the user — document the exact commands for your org's tool below
-the first time you use this skill.
+Generate a fresh correlation identity for the run — every scenario run gets a unique
+`RUN_ID` that appears in generated IDs, request headers, and log queries, so runs never
+collide and evidence is always attributable:
 
 ```bash
-# Example pattern (adapt to your org's SSO/credential tool):
-# Step 1: refresh credentials via your SSO credential helper
-{{your-credential-refresh-command}}
-
-# Step 2: verify
-aws sts get-caller-identity --query 'Account' --output text   # expect {{your-account-id}}
+RUN_ID="qa-$(date +%s)-$RANDOM"
 ```
 
-Notes:
-- Use a generous Bash `timeout` (e.g. 90000 ms) — a SAML/SSO round-trip can take 10-30s.
-- If your credential tool ever blocks on a prompt it can't satisfy non-interactively (e.g. an MFA challenge),
-  fall back to asking the user to run the refresh command themselves via `!`.
-- Refresh commands should be safe/idempotent and only rewrite `~/.aws/credentials`.
+Apply the task file's `## Fixtures` (seed data, test tenant, feature flags) and, if the
+task file declares `## Cleanup`, run Step 4f's gate *before* the first step.
 
-### AWS CLI — Step Functions
+### 4b. Act
+
+Execute the step's action — a named block from the task file's `## Action Templates`
+with `{{PLACEHOLDER}}` substitution from: prior step outputs (chain forward), fixtures,
+`RUN_ID`-derived values, user-supplied values.
+
+Actions are not only HTTP calls. A step's action may be an event injection (publish to
+the bus to simulate a partner webhook, a callback, a timer fire), a workflow signal, a
+clock advance, a fault injection, or a concurrent burst — see `references/adapters.md`
+for the per-type command and `references/race-conditions.md` for the burst patterns.
+
+Always capture the status code and body, and extract chained values explicitly:
 
 ```bash
-# List executions
-aws stepfunctions list-executions --state-machine-arn {{ARN}} --status-filter RUNNING --max-results 5 --region {{REGION}}
-
-# Describe execution
-aws stepfunctions describe-execution --execution-arn {{EXEC_ARN}} --region {{REGION}}
-
-# Get history (most recent events first)
-aws stepfunctions get-execution-history --execution-arn {{EXEC_ARN}} --reverse-order --max-results 20 --region {{REGION}}
+RESP=$(curl -sS -w '\n%{http_code}' --connect-timeout 10 --max-time 30 {{ARGS}})
+CODE=$(printf '%s' "$RESP" | tail -1); BODY=$(printf '%s' "$RESP" | sed '$d')
 ```
 
-### AWS CLI — SQS
+### 4c. Settle
 
-```bash
-# Queue depth
-aws sqs get-queue-attributes --queue-url {{QUEUE_URL}} --attribute-names ApproximateNumberOfMessages --region {{REGION}}
+Async systems need a settle window before assertions are meaningful. **Poll, do not
+sleep blindly**: re-run the cheapest discriminating probe until it matches or the budget
+expires. The task file gives each step a `settle` budget (default 30s, poll every 2s).
+Record the actual settle time — a step that used to settle in 2s and now takes 25s is a
+finding even when it passes.
 
-# Send test message (for simulating events)
-aws sqs send-message --queue-url {{QUEUE_URL}} --message-body '{{BODY}}' --region {{REGION}}
+### 4d. Assert
+
+Run the step's declared assertions. Assertion kinds:
+
+| Kind | Meaning |
+|---|---|
+| `equals` | A probe field matches an expected value |
+| `contains` | A collection contains an expected element (e.g. a timeline event) |
+| `absent` | Something must NOT exist (no error logs, no DLQ message, no duplicate row) |
+| `count` | An exact cardinality — the backbone of exactly-once assertions |
+| `state` | The workflow/execution is in an expected state, and not FAILED/TIMED_OUT |
+| `within` | The step completed inside a latency budget |
+| `unchanged` | A value that must not have moved (balance, counter, version) |
+
+Always run, on every step, regardless of what the step declares:
+
+1. **Error sweep** — `logs` probe filtered to error level AND `RUN_ID`. Any hit fails
+   the step and the log lines go in the report.
+2. **Workflow liveness** — if a `workflow` adapter is declared: execution is not
+   FAILED / TIMED_OUT / TERMINATED, and has advanced since the previous step.
+3. **DLQ sweep** — if a `queue` adapter is declared: DLQ depth is still zero.
+4. **Invariants** — every invariant in the task file's `## Invariants` section. These
+   are the assertions that catch races: "exactly one order row per idempotency key",
+   "balance never negative", "status never moves backwards", "at most one workflow
+   execution per subject". Invariants are checked after *every* step of *every*
+   scenario, not just the race ones.
+
+### 4e. Record
+
+Store per step: status, wall duration, settle time, extracted IDs, probe evidence, and
+the exact commands run. Evidence is what makes a QA report actionable — a failing step
+must carry the request, the response, and the log/probe output that proved it wrong.
+
+On failure: in interactive mode ask **retry / skip / continue / abort / investigate**
+(investigate = dump all probes at their current state). In `--auto` mode, abort the
+scenario and report. Either way run teardown unless `--keep`.
+
+### 4f. Cleanup and Teardown
+
+Cleanup removes data a prior run left behind; teardown removes what this run created.
+
+**Never run a destructive operation without explicit permission.** Show the user exactly
+what will be deleted — adapter, target (table/bucket/queue), filter predicate, and a
+counted dry run — then ask via AskUserQuestion. If denied, continue and warn that
+uniqueness assertions may fail on leftover data. On `prod` tier, do not offer it at all.
+
+Prefer teardown that is naturally scoped: because everything the run created carries
+`RUN_ID`, the predicate is always `... WHERE ref LIKE 'qa-{RUN_ID}%'`.
+
+## Step 5: Report
+
+```
+## QA Report: {feature} / {scenario} @ {env}
+**Result: FAIL at step 4**  ·  **Duration 1m12s**  ·  **Run qa-1757370000-4821**
+
+| # | Step | Status | Wall | Settle | Notes |
+|---|---|---|---|---|---|
+| 1 | create order | PASS | 0.4s | — | orderId=88213 |
+| 2 | inject payment callback | PASS | 0.2s | 3.1s | |
+| 3 | duplicate callback (replay) | PASS | 0.2s | 2.8s | ignored as expected |
+| 4 | concurrent cancel + capture | FAIL | 4.1s | 30s (budget) | 2 capture rows, expected 1 |
+
+### Failures
+- **Step 4 — invariant `exactly-one-capture` violated.** `SELECT count(*) … = 2`.
+  Both requests read version 7 before either wrote. Suggests a missing optimistic-lock
+  or unique constraint on (order_id, capture_ref).
+  - Evidence: `logs` 12 lines around T+2.1s, both threads entering `capturePayment`.
+
+### Invariant status
+| Invariant | Result |
+|---|---|
+| exactly-one-capture | FAIL (step 4) |
+| status-never-regresses | PASS |
+| dlq-empty | PASS |
+
+### Coverage gaps for this feature
+- class 3 authz — no scenarios
+- class 6 timeouts — no scenarios
+
+### Flake signal (--repeat 5)
+- concurrent-cancel-capture: 3 PASS / 2 FAIL → non-deterministic, treat as a real race.
 ```
 
-### SQS Event Simulation
+Race-class scenarios are only meaningful in aggregate: a single green run proves
+nothing. Always report the pass ratio across repeats, and treat *any* failure across
+repeats as a failure of the scenario.
 
-Many SFN workflows pause at wait states expecting external events (user actions, partner webhooks, timer callbacks). In E2E testing, simulate these by publishing directly to the SQS queue.
+## Extensive by Default
 
-**Pattern:**
-```bash
-aws sqs send-message \
-  --queue-url "https://sqs.{{REGION}}.amazonaws.com/{{ACCOUNT_ID}}/{{QUEUE_NAME}}" \
-  --message-body '{{JSON_PAYLOAD}}' \
-  --region {{REGION}}
-```
+"Run the tests" for a feature means all nine classes, not the happy path. When the user
+asks for a feature to be tested and the task file only has happy-path scenarios, say so
+and offer to derive the rest — a QA pass that only proves the feature works when nothing
+goes wrong has not tested the feature. `references/scenario-catalog.md` has the
+derivation questions per class; `references/race-conditions.md` has the concurrency ones.
 
-**When to use:** The task file's scenario steps will specify `simulate-*` actions — these map to SQS publishes defined in the Curl Templates section.
+## Safety Rules
 
-**Common simulation targets:**
-- User document upload events (simulates a document-processing service callback)
-- Partner decision events (simulates a partner webhook relay)
-- Timer callbacks (simulates a scheduler lapse/reminder fire)
-- External service callbacks (simulates any async response)
-
-**Verify queue received the message:**
-```bash
-# Check queue depth increased
-aws sqs get-queue-attributes \
-  --queue-url "https://sqs.{{REGION}}.amazonaws.com/{{ACCOUNT_ID}}/{{QUEUE_NAME}}" \
-  --attribute-names ApproximateNumberOfMessages \
-  --region {{REGION}} \
-  --query 'Attributes.ApproximateNumberOfMessages' --output text
-```
-
-**Check DLQ for failed processing:**
-```bash
-aws sqs get-queue-attributes \
-  --queue-url "https://sqs.{{REGION}}.amazonaws.com/{{ACCOUNT_ID}}/{{QUEUE_NAME}}-dlq" \
-  --attribute-names ApproximateNumberOfMessages \
-  --region {{REGION}} \
-  --query 'Attributes.ApproximateNumberOfMessages' --output text
-```
-
-**SAFETY:** Only publish to stage queues. Never publish to prod queues without explicit user permission.
-
-### Stage DB Access
-
-Query the stage database directly for validation. Connection details come from the task file's `## Environment` section (DB Host, Port, Name, User, SSM path for password).
-
-**Fetch password (run once per session):**
-```bash
-DB_PASS=$(aws ssm get-parameter --name "{{SSM_PASSWORD_PATH}}" --region {{REGION}} --with-decryption --query 'Parameter.Value' --output text)
-```
-
-**Run queries:**
-```bash
-mysql -h "{{DB_HOST}}" -P {{DB_PORT}} -u "{{DB_USER}}" -p"$DB_PASS" "{{DB_NAME}}" -e "{{QUERY}}"
-```
-
-All DB values (`DB_HOST`, `DB_PORT`, `DB_USER`, `DB_NAME`, `SSM_PASSWORD_PATH`) are defined in the task file — never hardcode them here.
-
-**SAFETY RULES:**
-- **NEVER run UPDATE, DELETE, INSERT, ALTER, DROP** without explicit user permission
-- Only use SELECT queries for validation
-- Always add `LIMIT` to prevent large result sets
-- Do not log or display the password in output
-
-### Curl Execution
-
-When firing curls for test scenarios:
-
-1. **Always capture HTTP status code:**
-   ```bash
-   RESPONSE=$(curl -s -w "\n%{http_code}" {{CURL_ARGS}})
-   HTTP_CODE=$(echo "$RESPONSE" | tail -1)
-   BODY=$(echo "$RESPONSE" | sed '$d')
-   echo "HTTP $HTTP_CODE"
-   echo "$BODY" | python3 -m json.tool 2>/dev/null || echo "$BODY"
-   ```
-
-2. **Extract values from responses for chaining:**
-   ```bash
-   # Extract inspection_id from response
-   INSPECTION_ID=$(echo "$BODY" | python3 -c "import json,sys; print(json.load(sys.stdin).get('data',{}).get('id',''))" 2>/dev/null)
-   ```
-
-3. **Generate unique test data per run:**
-   ```bash
-   TIMESTAMP=$(date +%s)
-   APP_FORM_ID="af-qa-${TIMESTAMP}"
-   SUBJECT_ID="QA-KA01XX${TIMESTAMP: -4}"
-   ```
-
-4. **Timeout protection:** Add `--connect-timeout 10 --max-time 30` to all curls
-
-### Jenkins
-
-**CRITICAL: NEVER trigger a build without explicit user permission.**
-
-Authentication (see the `jenkins` skill for full details):
-```bash
-source ~/.zshrc 2>/dev/null
-: "${JENKINS_URL:?Set JENKINS_URL in ~/.zshrc}"
-JENKINS_AUTH="$JENKINS_USER:$JENKINS_TOKEN"  # from ~/.zshrc
-```
-
-#### Pre-QA: Deploy latest code
-
-Before running QA, ensure the latest code is deployed. Ask user if they want to deploy.
-
-```bash
-# 1. Check last build status
-curl -s -u "$JENKINS_AUTH" "$JENKINS_URL/job/{{SERVICE}}-stage/lastBuild/api/json?tree=number,result,building,timestamp" | \
-  python3 -c "import json,sys,datetime; d=json.load(sys.stdin); print(f'Build #{d[\"number\"]} {\"BUILDING\" if d.get(\"building\") else d.get(\"result\",\"?\")} at {datetime.datetime.fromtimestamp(d[\"timestamp\"]/1000).strftime(\"%Y-%m-%d %H:%M\")}')"
-
-# 2. Trigger stage build (REQUIRES USER PERMISSION)
-CRUMB=$(curl -s -u "$JENKINS_AUTH" "$JENKINS_URL/crumbIssuer/api/json" | python3 -c "import json,sys; print(json.load(sys.stdin)['crumb'])")
-curl -s -X POST -u "$JENKINS_AUTH" -H "Jenkins-Crumb: $CRUMB" "$JENKINS_URL/job/{{SERVICE}}-stage/build"
-
-# 3. Poll build status (check every 30s)
-curl -s -u "$JENKINS_AUTH" "$JENKINS_URL/job/{{SERVICE}}-stage/lastBuild/api/json?tree=number,result,building"
-
-# 4. Check console logs on failure (last 100 lines)
-curl -s -u "$JENKINS_AUTH" "$JENKINS_URL/job/{{SERVICE}}-stage/lastBuild/consoleText" | tail -100
-```
-
-#### Post-deploy health check
-
-After deploy completes, wait 60s for ECS health check grace period, then:
-```bash
-# Health check (retry up to 5 times with 15s interval)
-for i in 1 2 3 4 5; do
-  STATUS=$(curl -s -o /dev/null -w "%{http_code}" "{{HOST}}/actuator/health")
-  echo "Attempt $i: HTTP $STATUS"
-  [ "$STATUS" = "200" ] && break
-  sleep 15
-done
-```
-
-#### Deploy multiple services
-
-Some QA scenarios need dependencies deployed first. Deploy in order (downstream before upstream):
-1. Downstream/dependency services first (as listed in the task file's `## Deploy` section)
-2. The main service under test
-3. Wait 60s for health check grace period
-4. Run preflight
-
-#### Monitor ongoing build
-
-```bash
-# Check if build is still running
-curl -s -u "$JENKINS_AUTH" "$JENKINS_URL/job/{{SERVICE}}-stage/lastBuild/api/json?tree=building,result" | \
-  python3 -c "import json,sys; d=json.load(sys.stdin); print('BUILDING' if d.get('building') else d.get('result','UNKNOWN'))"
-
-# Stream logs (progressive)
-curl -s -u "$JENKINS_AUTH" "$JENKINS_URL/job/{{SERVICE}}-stage/lastBuild/progressiveText?start=0"
-```
-
-#### Update SFN after deploy
-
-SFN definition is not auto-deployed — must be updated manually after code deploy:
-```bash
-aws stepfunctions update-state-machine \
-  --state-machine-arn "{{SFN_ARN}}" \
-  --definition "$(cat {{SFN_JSON_PATH}})" \
-  --region {{REGION}}
-```
-
-## Common Failure Patterns
-
-These are generic patterns — task files define feature-specific troubleshooting.
-
-| HTTP Code | Meaning | Diagnosis |
-|-----------|---------|-----------|
-| `417` | Scheduler EXPECTATION_FAILED | Job type not registered |
-| `5xx` | Internal server error | Check Loki for stack trace |
-| `412` | Precondition failed | Upstream dependency state mismatch |
-| `400` | Bad request to downstream | Missing headers or mandatory fields |
-| `States.Timeout` | SFN state timed out | Consumer not processing — check queue depth + DLQ |
-| `States.TaskFailed` | SFN task failed | Consumer threw unhandled exception |
+- **Tier gates everything.** `prod` is read-only by default; every write needs explicit
+  per-action authorization in the session.
+- **SELECT only** on stores unless the user approves a write, and always with a `LIMIT`.
+- **Never publish to a production event bus** or trigger a production deploy.
+- **Never echo secrets.** Credentials come from a secret manager or env at use time and
+  are never printed, logged, or written into the report.
+- **Credential expiry is yours to handle.** If the task file declares a refresh command,
+  run it yourself on an auth error rather than asking; fall back to asking the user to
+  run it via `!` only if it needs interactive input (MFA).
+- **Fault injection stays inside the blast radius the task file declares.** Never
+  degrade a shared dependency to test one feature.
 
 ## Task File Format
 
-Each task file under `tasks/` must follow this structure:
+Copy `templates/task-template.md`. Required sections:
 
 ```markdown
-## Environment
-(hosts, SFN ARN, AWS region, default headers, Loki service name,
- Jenkins job names, SFN JSON path, DB host/port/name/user/SSM password path)
-
-## Deploy
-(deploy order, Jenkins job curls, health check, SFN update command)
-
-## Preflight
-(numbered list of feature-specific checks with curl/CLI commands)
-
-## Scenarios
-### {scenario-name}
-#### Steps
-| # | Name | Action | Wait | Validate |
-(step table — action is curl template name, validate is what to check)
-
-## Curl Templates
-(named curl blocks with {{PLACEHOLDER}} substitution)
-
-## Expected States
-(map: step → expected DB status, SFN state, log patterns)
-
-## DB Validation Queries
-(ready-to-use SELECT queries for each validation point)
-
-## Loki Validation Patterns
-(loki_query calls for error checks and step completion)
-
-## Troubleshooting
-(feature-specific failure patterns and fixes)
-
-## Status Reference
-(state transition diagram for the feature)
-
-## SFN State Machine Reference
-(state flow summary)
+## Environment          — one block per env; each declares tier + hosts + IDs
+## Adapters             — probe → adapter type → config keys
+## Credentials          — how to obtain/refresh (commands, not values)
+## Deploy               — optional: how to get code under test deployed
+## Preflight            — feature-specific checks beyond adapter reachability
+## Fixtures             — seed data, test tenants, flags to set
+## Invariants           — assertions checked after EVERY step
+## Scenarios            — grouped by class; each a step table
+## Action Templates     — named, parameterised commands (HTTP, events, signals, faults)
+## Expected States      — per step: API state, workflow state, store state, log patterns
+## Cleanup              — scoped, reversible, permission-gated
+## Troubleshooting      — feature-specific failure patterns
 ```
 
-## Generating Unique Test Data
+See `tasks/example-order-checkout.md` for a fully worked example on a
+Temporal + Pub/Sub + Postgres + GCS stack, deliberately not the stack this skill was
+first written against.
 
-For each test run, generate unique identifiers to avoid collisions:
-- `APP_FORM_ID`: `af-qa-{timestamp}` (e.g., `af-qa-1716728400`)
-- `USER_ID`: use a dedicated test user (from task file)
-- `SUBJECT_ID`: `QA-{random}` (e.g., `QA-KA01XX9999`)
+## Generic Failure Patterns
+
+Vendor-specific decoding lives in `references/adapters.md`. These hold anywhere:
+
+| Symptom | Likely cause |
+|---|---|
+| Action 2xx, state never changes | Consumer not running, or event went to a different subscription |
+| Action 2xx, DLQ grows | Consumer throwing on the payload — check the error sweep |
+| Workflow stuck in a wait state | Nothing delivered the awaited signal/callback; injection targeted the wrong queue |
+| Passes alone, fails in `all` | Shared fixture or leftover data — teardown is not scoped by `RUN_ID` |
+| Passes on retry, fails first time | Settle budget too short, or a genuine race — rerun with `--repeat` |
+| Duplicate rows / double side effect | Missing idempotency key or unique constraint (class 4/5) |
+| Status regresses | Concurrent writers with last-write-wins, no version check |
+| Works on stage, not on prod-like data | Data-shape edge (class 9) — volume, unicode, timezone, null |
