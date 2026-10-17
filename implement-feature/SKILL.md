@@ -1,6 +1,6 @@
 ---
 name: implement-feature
-description: Use when executing a large feature implementation from a spec or design doc. Covers phased step-by-step coding with test gates, design change handling, doc sync, and progress tracking. Use when user says "implement this", "start coding", "build this feature", or references an implementation plan with steps.
+description: Use when executing a large feature implementation from a spec or design doc. Covers phased step-by-step coding with test gates, design change handling, doc sync, and progress tracking, and maintains four living docs alongside the code — decision.md (every decision with options, pros/cons, trade-offs), flow.md (entrypoints, call chain, exits, LLD, Mermaid/Excalidraw diagrams), review.md (plain-English review guide with ordered, linked files) and bugs.md (found / fixed / open bugs). Use when user says "implement this", "start coding", "build this feature", or references an implementation plan with steps.
 ---
 
 # Implementation Execution Workflow
@@ -8,6 +8,17 @@ description: Use when executing a large feature implementation from a spec or de
 ## Overview
 
 End-to-end workflow for implementing large features with Claude Code: break a spec into phased steps, code each step with test gates, handle design changes mid-flight, keep docs/Confluence in sync, and track progress across conversations.
+
+Throughout, keep **four living docs** in `docs/{feature}/` up to date *as you go*, not at the end:
+
+| Doc | Answers | Template |
+|---|---|---|
+| `decision.md` | What did we choose, what did we reject, what are we trading away? | [templates/decision.md](templates/decision.md) |
+| `flow.md` | Where does it start, what calls what, how can it end, what's the LLD? | [templates/flow.md](templates/flow.md) |
+| `review.md` | What changed, in plain words, and in what order should I read it? | [templates/review.md](templates/review.md) |
+| `bugs.md` | What broke, what's fixed, and what's still open? | [templates/bugs.md](templates/bugs.md) |
+
+See **Living Feature Docs** below for exactly when each one gets updated.
 
 ## When to Use
 
@@ -92,6 +103,8 @@ Each step must have:
 [YOU] tag if human action needed (AWS, staging, DB, team coordination)
 ```
 
+**Once the steps are planned:** create `docs/{feature}/decision.md`, `flow.md`, `review.md` and `bugs.md` from `templates/` and seed them (see **Living Feature Docs**).
+
 ---
 
 ## Phase 3: Execute Step-by-Step
@@ -106,7 +119,12 @@ Each step must have:
 5. Write tests per the plan
 6. Run new tests: ./gradlew :module:test --tests "path.to.NewTest"
 7. Run ALL tests: ./gradlew :module:test (verify no regression)
-8. Mark step done
+8. Update living docs:
+   - decision.md: any choice made in this step (options, pros/cons, trade-offs)
+   - flow.md: new or changed entrypoints, calls, exits, LLD, diagrams
+   - review.md: this step's files, in reading order, with "what to check"
+   - bugs.md: anything that broke along the way (open or fixed)
+9. Mark step done
 ```
 
 ### Test Planning (GWT Method)
@@ -227,9 +245,11 @@ When a requirement changes:
    - Agent 2: Implementation Plan (IMPLEMENTATION_PLAN.md)
    - Agent 3: Steps (STEPS.md)
 6. Wait for all agents to complete
-7. Update Confluence (if accessible)
-8. Verify consistency: grep for stale references across all docs
-9. Resume coding
+7. Living docs: new decision.md entry (old one → "Superseded by Dn"),
+   re-sync flow.md (+ regenerate Excalidraw), update review.md, re-scope affected bugs.md entries
+8. Update Confluence (if accessible)
+9. Verify consistency: grep for stale references across all docs
+10. Resume coding
 ```
 
 ### Common Design Changes and Their Blast Radius
@@ -264,8 +284,10 @@ type: project
 ### Files Created/Modified
 - path/to/File.java — NEW/MODIFIED (description)
 
-### Design Decisions
-1. Decision — Why — Impact
+### Living Docs
+- docs/{feature}/decision.md — D1..Dn (Proposed: list any awaiting the user)
+- docs/{feature}/bugs.md — open: B…, fixed: B…
+- flow.md / review.md last synced at step N
 
 ### Build Status
 - Java version needed
@@ -332,11 +354,12 @@ Organize findings by severity (P0-P3). For each finding:
 ### Post-Review Action
 
 ```
-1. Fix all P0 immediately — these are production blockers
-2. Fix P1 before moving to next phase — these cause subtle bugs
-3. Log P2/P3 as tasks — fix during cleanup or next session
-4. Re-run ALL tests after fixes
-5. Save updated progress to memory
+1. Log EVERY finding in bugs.md first (P0/P1 → HIGH, P2 → MEDIUM, P3 → LOW)
+2. Fix all P0 immediately — these are production blockers
+3. Fix P1 before moving to next phase — these cause subtle bugs
+4. P2/P3 stay OPEN in bugs.md — fix during cleanup or next session
+5. Re-run ALL tests after fixes; mark fixed bugs FIXED with fix + regression-test links
+6. Save updated progress to memory
 ```
 
 ---
@@ -512,6 +535,105 @@ Step 20: Config Seeding — **[YOU] Run seed SQL against dev DB.**
 ```
 
 Collect all [YOU] items in a summary table at the top of the steps doc.
+
+---
+
+## Living Feature Docs
+
+**The user reviews the work through these four docs, so they must never fall behind the code.**
+Create all four in `docs/{feature-slug}/` right after Phase 2 (steps are planned), from the
+templates in `templates/`. Fill them in progressively; a half-filled doc that's accurate beats a
+complete one that's stale.
+
+All code references use **clickable relative links with line numbers**:
+`[OrderManager.create](../../src/main/java/.../OrderManager.java#L60)`. Since the docs live
+two levels deep, paths start with `../../`. Re-check line numbers whenever the file changes.
+
+### When to update which doc
+
+| Event | decision.md | flow.md | review.md | bugs.md |
+|---|---|---|---|---|
+| Phase 2 done (steps planned) | Log the up-front decisions (layering, data model, sync vs async…) | Skeleton: paragraph + entrypoints + planned diagram | TL;DR + planned file order | Create empty |
+| You pick between ≥ 2 reasonable options (library, pattern, schema, retry policy, where code lives, following vs breaking a convention) | **New entry** | — | — | — |
+| A step adds/changes an entrypoint, call, branch, exit, table, event | — | **Update** call chain / exits / LLD | Add/adjust file rows | — |
+| A step is completed | — | Bump "Last synced" | Add the step's files in reading order + "what to check" | — |
+| A test fails for a real (non-typo) reason, a review finds an issue, the user reports one | — | Note the affected exit | — | **New entry** (OPEN) |
+| A bug is fixed | — | Fix the exit/flow if it changed | Update Known issues | Move to FIXED + fix link + regression test |
+| Design change (Phase 4) | **New entry**, mark the old one *Superseded by Dn* | **Update** | **Update** | Close/re-scope bugs it affects |
+| Feature complete | All *Proposed* entries resolved or listed for the user | Final sync, diagrams verified | Final pass: diff stats, test count, verify-locally commands | Every entry has a status |
+
+**What counts as a decision:** anything a reviewer might ask "why did you do it this way?" about.
+Trivial choices that just follow an existing codebase convention don't need an entry, but
+*breaking* a convention always does. When the decision is genuinely the user's (product
+behaviour, public API shape, cost), log it as **Proposed**, ask, and update the entry with
+the answer.
+
+### decision.md rules
+
+- One entry per decision: **Context → Options (table with pros & cons) → Decision → Trade-offs
+  accepted → Consequences → Revisit if**. Always at least two options, because a decision with one
+  option isn't a decision.
+- Trade-offs are stated concretely ("+1 DB read per request" rather than "slightly slower").
+- Never delete or rewrite history. Reversals get a new entry, and the old one is marked superseded.
+- Link the decision from the code it shapes in review.md, so reviewers see the *why* next to the *what*.
+
+### flow.md rules
+
+- Write the **one-paragraph story** first, in plain English. If you can't write it, the design isn't clear yet.
+- **Entrypoints:** every trigger (HTTP route, queue/topic consumer, cron, CLI, event handler,
+  UI action) with its guard (auth, flag).
+- **Call chain:** a numbered, indented walk per entrypoint; each line is a link plus what it
+  reads, writes, calls or publishes. Real function names, real line numbers.
+- **Exits:** every way the flow ends: success, idempotent replay, each validation/error
+  return, each exception that escapes, retries exhausted, DLQ. Give each one the caller's result
+  and the state left behind.
+- **LLD:** components and responsibilities, key signatures, a sequence diagram, a state machine
+  if there are statuses, the data model, errors/retries/idempotency, transaction boundaries, config/flags.
+
+#### Diagrams: Mermaid always, Excalidraw when it earns it
+
+- **Mermaid inline** for every diagram (renders on GitHub and in IDEs, diff-able).
+- **Excalidraw** in addition when the diagram has more than ~6 nodes, crosses services or async
+  boundaries, or the user asks. Use the locally installed `excalidraw-cli`:
+
+  ```bash
+  excalidraw ref --raw                     # element format, palette, sizing rules (read once per session)
+  # write the elements array to docs/{feature}/diagrams/flow.json, then:
+  excalidraw create docs/{feature}/diagrams/flow.json \
+    -o docs/{feature}/diagrams/flow.excalidraw --no-checkpoint
+  ```
+
+  - Use labeled shapes (`"label": {"text": …}`) and arrows bound with `startBinding`/`endBinding`.
+  - Colour by role (blue = entrypoints, purple = logic, teal = storage, orange = external,
+    red = error exits) and keep it consistent across the feature's diagrams.
+  - Commit both the `.json` source and the `.excalidraw` output; link both from flow.md.
+  - Regenerate after any flow change; the JSON source is what you edit.
+  - **`excalidraw export` uploads to excalidraw.com and creates a public link. Only run it if the
+    user explicitly asks.**
+
+### review.md rules
+
+- **TL;DR first**, in 3–5 sentences of simple English: what the feature does, the shape of the
+  change, and the riskiest spot.
+- **Reading order follows the data flow**, not the file tree: schema → domain types → core logic →
+  entrypoints → async workers → tests. Each row has a link, what the file does in simple words,
+  what to check, and its size. Mark the 1–3 files that deserve most attention with ⭐.
+- List the files that can be skipped (generated, renames, trivial DTOs).
+- For each important file: *in simple words*, *why it's built this way* (links to decision.md),
+  *look closely at* (linked line ranges), and **VERIFY** / **QUESTION** checkboxes.
+- End with Proposed decisions needing the user's call, open bugs from bugs.md, and exact
+  verify-locally commands.
+
+### bugs.md rules
+
+- IDs `B1, B2, …` in order of discovery, never reused. Severity HIGH / MEDIUM / LOW.
+- Every entry: where (link), symptom, repro, root cause (or hypotheses), proposed fix, and the
+  affected exit in flow.md.
+- On fix: strike through the entry, link the fix's lines, and **link a regression test**. A fix
+  without a test isn't done.
+- Status is one of OPEN, FIXED, DEFERRED (link a ticket), or WON'T FIX (link a decision).
+- Log bugs you found and fixed within the same step too. They show the user where the
+  tricky parts were.
 
 ---
 
@@ -747,55 +869,17 @@ When closing/deactivating an entity:
 
 ## Phase 8: Review Artifacts
 
-**After implementation is complete and tests pass, generate three review documents in `docs/`.** These make the work reviewable by humans and catch issues before production.
+**The living docs (`decision.md`, `flow.md`, `review.md`, `bugs.md`) already exist by now. Phase 8 is a final hardening pass over them, plus the stage test plan.** Everything lives in `docs/{feature}/`.
 
-### 8.1 — `docs/fixes.md` (Bug Tracker)
+### 8.1 — Final pass on `bugs.md`
 
-**Purpose:** Living document tracking all bugs found during development and review. Updated continuously as bugs are found and fixed.
+Run one last full review over all changed code (Phase 6 checklist) and log every finding. Then:
+- Every entry has a status: OPEN / FIXED / DEFERRED / WON'T FIX.
+- Every FIXED entry links its fix lines and a regression test.
+- Note which review pass found each bug ("review pass 3 — full codebase audit").
+- The Summary table at the top matches the body.
 
-**When to create:** After the first review cycle (Phase 6) finds bugs. Update after every subsequent fix.
-
-**Structure:**
-
-```markdown
-# {Feature} — Bug Fixes
-
-All bugs found during end-to-end flow review.
-
-## VALIDATED AND FIXED
-
-| ID | Original Issue | Status |
-|---|---|---|
-| ~~H1~~ | Description of the bug | **FIXED** — how it was fixed, file:line |
-
-## OPEN BUGS
-
-### HIGH — Blocks testing/production
-
-### H{N}. {Title}
-**File:** `path/to/File.java:line`
-**Fix:** Concrete fix description
-
-### MEDIUM — Could cause issues
-
-### LOW — Minor improvements
-
-## Summary
-
-| Severity | ID | Issue | Status |
-|---|---|---|---|
-| ~~HIGH~~ | ~~H1~~ | ~~description~~ | **FIXED** |
-| LOW | L1 | description | OPEN |
-```
-
-**Key rules:**
-- Bugs get IDs: H1-Hn (HIGH), M1-Mn (MEDIUM), L1-Ln (LOW)
-- Fixed bugs stay in the doc (strikethrough) — they're audit trail
-- Each bug has exact file:line reference
-- Summary table at the bottom for quick scanning
-- Include the review pass number ("Fifth review — Full codebase audit results")
-
-### 8.2 — `docs/testing_strategy.md` (Stage/E2E Test Plan)
+### 8.2 — `docs/{feature}/testing_strategy.md` (Stage/E2E Test Plan)
 
 **Purpose:** Step-by-step guide for manually testing the feature on stage. Someone unfamiliar with the code should be able to follow this and verify the feature works.
 
@@ -807,7 +891,7 @@ All bugs found during end-to-end flow review.
 # {Feature} — Stage Testing Strategy
 
 ## Prerequisites
-- [ ] Blocker bugs fixed (reference fixes.md IDs)
+- [ ] Blocker bugs fixed (reference bugs.md IDs)
 - [ ] Infra verified (queues, SFN, DB migration)
 - [ ] Config seeded (DB rows, SSM params)
 - [ ] Upstream services deployed
@@ -846,100 +930,51 @@ All bugs found during end-to-end flow review.
 ```
 
 **Key rules:**
-- Prerequisites section references fixes.md bug IDs
+- Prerequisites section references bugs.md IDs
 - Each test scenario has: trigger method, step-by-step verification, expected outcome
 - Include actual AWS CLI commands, SQL queries, curl commands
 - Cover happy path, error paths, edge cases, and integration boundaries
 - Include rollback verification (disable feature, verify V1 still works)
 
-### 8.3 — `docs/manual_review.md` (Code Review Guide)
+### 8.3 — Final pass on `review.md` (+ `flow.md`)
 
-**Purpose:** Comprehensive walkthrough of all V2 code for a reviewer who hasn't seen it before. Follows the data flow end-to-end with exact file links, line numbers, code snippets, and verification checklists.
+**Purpose:** someone who has never seen the code can review the whole change in one sitting, in
+the right order, understanding each file in plain words before reading it.
 
-**When to create:** After implementation is complete and all tests pass. Before PR review.
-
-**Structure:**
-
-```markdown
-# {Feature} — Manual Code Review Guide
-
-**Branch:** `feature/TICKET-ID-name`
-**Base:** `master`
-**Total diff:** ~N insertions across M files
-
-## File Index (click to open)
-  Clickable relative links to every file, grouped by layer:
-  - SFN definitions
-  - Domain model (entries, enums)
-  - Core business logic (managers)
-  - SQS consumers
-  - Controllers
-  - External facades
-  - DB migration + entity + DAO
-
-## Architecture Overview
-  ASCII diagram of the full flow
-
-## Phase 1: {Orchestration layer}
-  ### Step 1.1 — {File}
-  **File:** [FileName.java](../relative/path/to/File.java)
-  State-by-state or method-by-method walkthrough
-  Tables with line numbers, field names, what to verify
-  - [ ] Checkbox items for each verification point
-  Items marked **VERIFY** (correctness-critical) or **QUESTION** (design decision)
-
-## Phase 2-N: {Each layer in flow order}
-  Same pattern: file link → code snippets → line-by-line tables → checklists
-
-## Quick Reference
-  File → Flow Position map (clickable links)
-  Status transition diagram (ASCII)
-
-## Known Open Items
-  | ID | Severity | Issue | File:Line | Recommendation |
-
-## Review Questions to Resolve
-  Numbered list of open design questions found during review
-```
-
-**Key rules:**
-- **Every file reference is a clickable relative link** — `[FileName.java](../path/to/File.java)`
-- Follow the data flow order, NOT the file tree order — reviewer should understand what happens first
-- Include actual code snippets for critical sections (not just descriptions)
-- Line-by-line tables for complex methods: `| Lines | Action | What to verify |`
-- **VERIFY** = correctness-critical, must check. **QUESTION** = design decision worth discussing
-- Cross-reference SFN field names ↔ Java field names ↔ `@JsonNaming` serialization
-- Edge case analysis for each method (what if null? what if external service fails? race conditions?)
-- File Index at top with 30+ clickable links grouped by layer
-- Quick Reference table at bottom with file→flow mapping (also clickable)
+Final-pass checklist:
+- [ ] TL;DR is accurate for the *final* code, not the plan
+- [ ] Header has the real branch, base, diff stats (`git diff --stat {base}...HEAD`) and test count
+- [ ] Every changed file appears exactly once in the reading order (cross-check against `git diff --name-only {base}...HEAD`), or is listed under "skip or skim"
+- [ ] Reading order follows the data flow; each file only depends on files above it
+- [ ] Every link resolves and every `#Lnn` points at the line it describes (line numbers drift, so re-check)
+- [ ] ⭐ files have "look closely at" line ranges and VERIFY / QUESTION checkboxes
+- [ ] Field names are cross-checked across boundaries (workflow JSON ↔ Java fields ↔ JSON serialisation names)
+- [ ] Proposed decisions from decision.md and open bugs from bugs.md are listed
+- [ ] flow.md exits and call chain match the final code; Mermaid renders; Excalidraw regenerated from its JSON
+- [ ] "How to verify locally" commands actually run
 
 ### When to Generate These Docs
 
 ```
 Timeline during implementation:
 
-fixes.md        — Start after first review cycle, update continuously
-                   Every bug found → add entry. Every fix → mark FIXED.
+decision.md / flow.md / review.md / bugs.md
+                    — Created after Phase 2, updated at every step (see Living Feature Docs)
+                      Final pass at Phase 8.
 
 testing_strategy.md — Create after all HIGH/MEDIUM bugs are fixed
                       Before requesting stage access or starting manual testing.
-
-manual_review.md    — Create after all code is complete and tests pass
-                      Before PR review or team walkthrough.
-                      Must have clickable file links and line numbers.
 ```
 
 ### Generating with Parallel Agents
 
-When the user asks to "create review docs" or "prepare for review", launch 3 parallel agents:
+When the user asks to "prepare for review", launch 3 parallel agents (each given the file list, flow.md, and decision.md):
 
 ```
-Agent 1: Create/update fixes.md — read all V2 code, find bugs, categorize by severity
-Agent 2: Create testing_strategy.md — build test scenarios from SFN flow + edge cases
-Agent 3: Create manual_review.md — walk through every file in flow order with line numbers
+Agent 1: Final review pass → update bugs.md (read all changed code, find bugs, categorise by severity)
+Agent 2: Create testing_strategy.md (scenarios from flow.md entrypoints + exits + edge cases)
+Agent 3: Final pass on review.md + flow.md (re-verify every link/line number, ordering, TL;DR, diagrams)
 ```
-
-Each agent needs the full file list and flow understanding. Provide the architecture diagram and file index to each.
 
 ---
 
@@ -1050,3 +1085,10 @@ When you discover coverage gaps after implementation:
 | Tests pass but coverage is shallow | Tests written alongside code only cover the developer's mental model. Audit every file for a test, then audit every branch for a test case. Consumer tests are most commonly missing. |
 | Skipping consumer/facade unit tests | "It's just delegation" — but taskToken handling, null token rethrow, exception routing, and header construction all break silently. Write 3 tests per consumer method minimum. |
 | Test backfill in worktrees | Worktrees diverge from the main branch. Always write and run tests in the main working directory. |
+| Writing decision/flow/review/bugs docs at the end | They're reconstructed from memory and miss the real reasons. Update them in the step where the thing happens. |
+| Decision entry with one option, or vague trade-offs | Always ≥ 2 options with pros/cons; state trade-offs concretely ("+1 DB read/request", not "slightly slower"). |
+| Rewriting a decision when it changes | Add a new entry and mark the old one "Superseded by Dn". The history is the point. |
+| review.md in file-tree order | Order by data flow (schema → domain → logic → entrypoints → workers → tests) so each file only uses what's already been read. |
+| Stale `#Lnn` links in docs | Line numbers drift on every edit. Re-verify links in the step that touched the file and in the Phase 8 final pass. |
+| Fixing a bug without logging it | Log it in bugs.md even if fixed in the same step, with a regression-test link. |
+| `excalidraw export` without asking | It uploads to excalidraw.com as a public link. Keep `.excalidraw` files local unless the user asks to share. |
