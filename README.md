@@ -36,7 +36,7 @@ Deep, opinionated reference skills for building/reviewing services and apps in a
 | [design-an-interface](design-an-interface/SKILL.md) | Generate multiple radically different interface designs for a module via parallel sub-agents, then compare. |
 | [firebase-crashlytics-analyzer](firebase-crashlytics-analyzer/SKILL.md) | Analyze Firebase Crashlytics crashes, ANRs, and events for Android/iOS apps. |
 | [grill-me](grill-me/SKILL.md) | Interview the user relentlessly about a plan or design until reaching shared understanding. |
-| [implement-feature](implement-feature/SKILL.md) | Execute a large feature implementation from a spec: phased steps, test gates, design-change handling, progress tracking. |
+| [implement-feature](implement-feature/SKILL.md) | Execute a large feature implementation from a spec: phased steps, test gates, design-change handling, progress tracking — while keeping living `decision.md`, `flow.md` (with Mermaid/Excalidraw diagrams), `review.md` and `bugs.md` docs in sync with the code. |
 | [improve-codebase-architecture](improve-codebase-architecture/SKILL.md) | Find deepening opportunities in a codebase — turn shallow modules into deep, testable ones. |
 | [jenkins](jenkins/SKILL.md) | Interact with Jenkins CI/CD via REST API — jobs, builds, logs, queue. |
 | [kb](kb/SKILL.md) | Personal work knowledgebase for team context, people, projects, and reply drafting. |
