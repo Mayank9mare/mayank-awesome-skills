@@ -33,6 +33,7 @@ Deep, opinionated reference skills for building/reviewing services and apps in a
 | Skill | What it does |
 |---|---|
 | [atlassian](atlassian/SKILL.md) | Reference for the `mcp__atlassian__` tool family — Jira issues and Confluence pages. |
+| [autoresearch](autoresearch/SKILL.md) | Karpathy-style autoresearch on any repo + metric: the agent edits a fixed scope, runs a frozen benchmark, and keeps commits only when they beat measured noise. Includes a scope guard, correctness gate, held-out checks, and a morning report (`ratchet.py`). |
 | [design-an-interface](design-an-interface/SKILL.md) | Generate multiple radically different interface designs for a module via parallel sub-agents, then compare. |
 | [firebase-crashlytics-analyzer](firebase-crashlytics-analyzer/SKILL.md) | Analyze Firebase Crashlytics crashes, ANRs, and events for Android/iOS apps. |
 | [grill-me](grill-me/SKILL.md) | Interview the user relentlessly about a plan or design until reaching shared understanding. |
