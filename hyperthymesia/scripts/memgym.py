@@ -13,6 +13,8 @@ Stdlib only. State lives in ~/.hyperthymesia (override with HYPERTHYMESIA_HOME).
   weekday <date>     check a day-of-week answer (Doomsday practice)
   decode <word...>   digits a word encodes in Brown's number code (catches stray code letters)
   encode <number>    split a number into pairs with their code letters and notebook images
+  notes-check        validate references/notes.md: every number and card word must decode to its
+                     number, no number with two pictures, no picture used twice (exit 1 on conflict)
 
 Number code (Derren Brown, Tricks of the Mind): 0 z/s · 1 l · 2 n · 3 m · 4 r · 5 f/v ·
 6 b/p · 7 t · 8 ch/sh/j · 9 g. Fillers: vowels, h, y (and w).
@@ -85,6 +87,75 @@ NOTEBOOK = {"0": "zoo", "1": "ale", "2": "hen", "3": "ham", "4": "whore", "5": "
             "32": "man", "33": "mum", "36": "map", "37": "mat", "39": "mug", "40": "rose",
             "41": "role", "42": "rain", "43": "ram", "44": "roar", "47": "root", "48": "rash",
             "50": "fuse", "52": "fan", "30": "maze", "34": "more", "45": "rave", "46": "rap", "51": "fall", "35": "mf", "49": "rag", "28": "Nash", "38": "mesh", "53": "foam", "54": "fire", "55": "fife", "56": "fob", "57": "feet", "58": "fish", "59": "fig", "60": "bus", "61": "ball", "62": "bone", "63": "bomb", "64": "bear", "65": "beef", "66": "baby", "67": "bat", "68": "bush", "69": "bag", "70": "toes", "71": "tail", "72": "tin", "73": "tomb", "74": "tyre", "75": "toffee", "76": "tub", "77": "tattoo", "78": "Taj", "79": "toga", "80": "chess", "81": "shell", "82": "chain", "83": "jam", "87": "jet", "88": "choo-choo", "89": "jug", "90": "goose", "91": "gull", "92": "gun", "93": "gum", "94": "gear", "95": "Goofy", "96": "guppy", "97": "goat", "98": "gash", "99": "Gaga / gag", "84": "chair", "85": "shave", "86": "shop"}
+NOTES_PATH = os.environ.get("HYPERTHYMESIA_NOTES") or os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "..", "references", "notes.md")
+SOUND = {"cough": "coff", "laugh": "laf", "rough": "ruff", "tough": "tuff", "enough": "enuff"}
+RANKS_ALL = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
+
+
+def _clean(cell):
+    """Display text of a notes cell: drop marks, bold, and '(not …)' asides."""
+    c = re.sub(r"[✔✎*]", "", cell)
+    c = re.sub(r"\(not [^)]*\)", "", c)
+    return re.sub(r"\s+", " ", c).strip()
+
+
+def _alternatives(cell):
+    """Words to decode for a cell: each ' / ' alternative, parentheticals removed."""
+    base = re.sub(r"\([^)]*\)", "", _clean(cell))
+    return [a.strip() for a in base.split("/") if a.strip()]
+
+
+def load_notes(path=NOTES_PATH):
+    """Parse notes.md → (numbers {"0".."99": [(image, line)]}, cards {"9H": (image, line)}, exceptions set).
+    Numbers keep every occurrence so duplicates and disagreements can be reported."""
+    nums, cards, exc = {}, {}, set()
+    if not os.path.exists(path):
+        return nums, cards, exc
+    section = ""
+    suits = None
+    for ln, line in enumerate(open(path, encoding="utf-8"), 1):
+        if line.startswith("#"):
+            section = line.strip("# \n").lower()
+            suits = None
+            continue
+        if section == "single digits":
+            for d, w in re.findall(r"(?:^|·)\s*(\d)\s+([^·\n]+)", line):
+                nums.setdefault(d, []).append((_clean(w), ln))
+        if not line.startswith("|") or re.match(r"^\|[\s|:-]+\|$", line.strip()):
+            continue
+        cells = [c.strip() for c in line.strip().strip("|").split("|")]
+        if section.startswith("double digits"):
+            for i in range(0, len(cells) - 1, 2):
+                if re.fullmatch(r"\d{2}", cells[i]) and _clean(cells[i + 1]):
+                    nums.setdefault(cells[i], []).append((_clean(cells[i + 1]), ln))
+        elif section.startswith("53"):
+            m = re.fullmatch(r"\*\*(\d)_\*\*", cells[0])
+            if m:
+                for u, c in enumerate(cells[1:11]):
+                    if _clean(c):
+                        nums.setdefault(m.group(1) + str(u), []).append((_clean(c), ln))
+        elif section.startswith("memorising a deck"):
+            if "♠" in line and suits is None:
+                suits = ["S" if "♠" in c else "H" if "♥" in c else "D" if "♦" in c else "C" if "♣" in c else None
+                         for c in cells[1:]]
+                continue
+            m = re.fullmatch(r"\*\*(A|10|[2-9JQK])\*\*", cells[0])
+            if m and suits:
+                for su, c in zip(suits, cells[1:]):
+                    if su:
+                        cards[m.group(1) + su] = (_clean(c), ln)
+    for m in re.finditer(r"Exceptions \(allowed to break the code\):([^\n]*)", open(path, encoding="utf-8").read()):
+        for r, su in re.findall(r"(A|10|[2-9JQK])\s*([♠♥♦♣])", m.group(1)):
+            exc.add(r + {"♠": "S", "♥": "H", "♦": "D", "♣": "C"}[su])
+    return nums, cards, exc
+
+
+def _notebook_images():
+    nums, _, _ = load_notes()
+    return {k: v[0][0].split(" / ")[0] for k, v in nums.items()} if nums else None
+
+
 PAIR_CODE = ["z/s", "l", "n", "m", "r", "f/v", "b/p", "t", "ch/sh/j", "g"]
 
 SUITS = "SHDC"
@@ -305,8 +376,11 @@ def cmd_due(days):
 
 def decode_word(word):
     """Digits a word encodes under Brown's code, plus warnings. Letter-based (Brown's rule:
-    fillers may only be vowels, h, y), with common silent letters removed."""
+    fillers may only be vowels, h, y), with common silent letters and soft sounds handled."""
     w = re.sub(r"[^a-z]", "", word.lower())
+    w = SOUND.get(w, w)
+    w = w.replace("dge", "j")
+    w = re.sub(r"(?<=[aeiou])ge$", "j", w)
     notes = []
     w = re.sub(r"^kn", "n", w)
     w = re.sub(r"^gn", "n", w)
@@ -359,8 +433,58 @@ def cmd_encode(number):
     pairs = [n[i:i + 2] for i in range(0, len(n), 2)]
     for p in pairs:
         letters = "-".join(PAIR_CODE[int(c)] for c in p)
-        img = NOTEBOOK.get(p)
+        img = (_notebook_images() or NOTEBOOK).get(p)
         print(f"{p:>3}  {letters:<14} {img or '(no notebook image yet; build one with these letters)'}")
+
+
+def cmd_notes_check():
+    nums, cards, exc = load_notes()
+    if not nums:
+        sys.exit(f"no notes found at {NOTES_PATH}")
+    conflicts, info = [], []
+    for k, occ in sorted(nums.items(), key=lambda kv: int(kv[0]) + (100 if len(kv[0]) == 1 else 0)):
+        if len({o[0] for o in occ}) > 1:
+            conflicts.append(f"{k}: two different pictures: " + "; ".join(f"'{o[0]}' (line {o[1]})" for o in occ))
+        img, ln = occ[0]
+        for alt in _alternatives(img):
+            d, warn = decode_word(alt)
+            if d != k:
+                conflicts.append(f"{k}: '{alt}' decodes to {d or 'nothing'}, not {k} (line {ln})")
+    for card, (img, ln) in sorted(cards.items()):
+        rank, su = card[:-1], card[-1]
+        if rank in ("A", "J", "Q", "K") or card in exc:
+            continue
+        want = ("0" if su == "S" else "") + ("0" if rank == "10" else str(int(rank)) if rank != "A" else "1")
+        want = want if rank != "10" else ("00" if su == "S" else "0")
+        alts = _alternatives(img)
+        if not any(decode_word(a)[0] == want for a in alts):
+            conflicts.append(f"{rank}{'♠♥♦♣'['SHDC'.index(su)]}: '{img}' decodes to "
+                             f"{'/'.join(decode_word(a)[0] or '-' for a in alts)}, expected {want} (line {ln})")
+    seen = {}
+    for k, occ in nums.items():
+        for alt in _alternatives(occ[0][0]):
+            seen.setdefault(alt.lower(), set()).add(k)
+    for card, (img, _) in cards.items():
+        for alt in _alternatives(img):
+            seen.setdefault(alt.lower(), set()).add(card)
+    for word, where in sorted(seen.items()):
+        if len(where) > 1:
+            conflicts.append(f"'{word}' is used for more than one thing: {', '.join(sorted(where))}")
+    missing = [f"{i:02d}" for i in range(10, 100) if f"{i:02d}" not in nums]
+    if missing:
+        info.append("no picture yet for: " + ", ".join(missing))
+    missing_cards = [r + s for s in "SHDC" for r in RANKS_ALL if r + s not in cards]
+    if missing_cards:
+        info.append("no picture yet for cards: " + ", ".join(missing_cards))
+    print(f"notes: {len(nums)} numbers, {len(cards)} cards, exceptions: {', '.join(sorted(exc)) or 'none'}")
+    for i in info:
+        print("info: " + i)
+    if conflicts:
+        print(f"\n{len(conflicts)} conflict(s):")
+        for c in conflicts:
+            print("  ⚠ " + c)
+        sys.exit(1)
+    print("no conflicts")
 
 
 def cmd_weekday(s, guess=None):
@@ -392,6 +516,8 @@ def main():
         cmd_due(int(a[a.index("--days") + 1]) if "--days" in a else 0)
     elif c == "decode":
         cmd_decode(a[1:])
+    elif c == "notes-check":
+        cmd_notes_check()
     elif c == "encode":
         cmd_encode(a[1])
     elif c == "weekday":

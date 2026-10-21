@@ -136,7 +136,7 @@ more words.
 | **K** | gardener / Dante (Lucifer) ✔ | bridegroom | the old jeweller | bouncer / cad |
 
 The "(not ham / whore / hive)" notes keep card pictures distinct from the single-digit pictures.
-2♥ *lovers* is a deliberate exception, chosen for meaning rather than code.
+Exceptions (allowed to break the code): 2♥ (lovers, chosen for meaning rather than code).
 
 ## Memorising football scores
 

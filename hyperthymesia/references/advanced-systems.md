@@ -11,54 +11,14 @@ Fillers are **vowels, h and y only**. Any other letter changes the number. Check
 invent with `memgym.py decode <word>`.
 
 **Build gradually**: the 00–99 list first (a week of drilling), then cards, then the rest as
-needed. Each learner keeps their own version in `~/.hyperthymesia/systems/`, seeded from the
-tables below.
+needed. Each learner keeps their own version in `~/.hyperthymesia/systems/`, seeded from
+[notes.md](notes.md).
 
 ## 1. The 00–99 images
 
-Built from the reference notebook (0–52) and completed with the same method (53–99). (An early draft had *notch* for 28
-and *match* for 38: both hide a *t*, so they encode 278 and 378. That's the classic filler mistake.)
-
-**Single digits:** 0 zoo · 1 ale · 2 hen · 3 ham · 4 whore · 5 hive · 6 bee · 7 tea · 8 shoe · 9 goo
-
-| # | Code | Image | # | Code | Image | # | Code | Image |
-|---|---|---|---|---|---|---|---|---|
-| 10 | l-s | lice | 25 | n-f | knife | 40 | r-z | rose |
-| 11 | l-l | lily | 26 | n-b | nob / nab | 41 | r-l | role |
-| 12 | l-n | line | 27 | n-t | knight | 42 | r-n | rain |
-| 13 | l-m | lime | 28 | n-sh | Nash | 43 | r-m | ram |
-| 14 | l-r | lorry / lure | 29 | n-g | nog | 44 | r-r | roar |
-| 15 | l-f | life / leaf | 30 | m-s | maze / mass | 45 | r-v | rave |
-| 16 | l-p | lip | 31 | m-l | mole | 46 | r-p | rap |
-| 17 | l-t | lit | 32 | m-n | man | 47 | r-t | root / rat |
-| 18 | l-sh | lash | 33 | m-m | mum | 48 | r-sh | rash |
-| 19 | l-g | leg | 34 | m-r | more / merry | 49 | r-g | rag |
-| 20 | n-z | nose | 35 | m-f | mf | 50 | f-s | fuse |
-| 21 | n-l | nail | 36 | m-p | map | 51 | f-l | fall |
-| 22 | n-n | noon / nanny | 37 | m-t | mat | 52 | f-n | fan |
-| 23 | n-m | name | 38 | m-sh | mesh | | | |
-| 24 | n-r | Nero | 39 | m-g | **mug** (Brown's own) | | | |
-
-**53–99** (84 chair, 85 shave and 86 shop are from Brown's football example; the rest follow the same rule and were each checked with `decode`):
-
-| # | Code | Image | # | Code | Image | # | Code | Image |
-|---|---|---|---|---|---|---|---|---|
-| 53 | f-m | foam | 69 | b-g | bag | 85 | sh-f | shave |
-| 54 | f-r | fire | 70 | t-s | toes | 86 | sh-b | shop |
-| 55 | f-f | fife | 71 | t-l | tail | 87 | sh-t | jet |
-| 56 | f-b | fob | 72 | t-n | tin | 88 | sh-sh | choo-choo |
-| 57 | f-t | feet | 73 | t-m | tomb | 89 | sh-g | jug |
-| 58 | f-sh | fish | 74 | t-r | tyre | 90 | g-s | goose |
-| 59 | f-g | fig | 75 | t-f | toffee | 91 | g-l | gull |
-| 60 | b-s | bus | 76 | t-b | tub | 92 | g-n | gun |
-| 61 | b-l | ball | 77 | t-t | tattoo | 93 | g-m | gum |
-| 62 | b-n | bone | 78 | t-sh | Taj | 94 | g-r | gear |
-| 63 | b-m | bomb | 79 | t-g | toga | 95 | g-f | Goofy |
-| 64 | b-r | bear | 80 | sh-s | chess | 96 | g-b | guppy |
-| 65 | b-f | beef | 81 | sh-l | shell | 97 | g-t | goat |
-| 66 | b-b | baby | 82 | sh-n | chain | 98 | g-sh | gash |
-| 67 | b-t | bat | 83 | sh-m | jam | 99 | g-g | Gaga / gag |
-| 68 | b-sh | bush | 84 | sh-r | chair |  |  |  |
+The full list (0–9, 10–99) lives in **[notes.md](notes.md)**, the single source of truth. Don't
+copy it here. `python3 scripts/memgym.py encode <number>` shows the picture for any number, and
+`python3 scripts/memgym.py notes-check` confirms every word decodes correctly.
 
 **Rules for choosing images:**
 - **Objects or people you can see and touch** beat abstract words ("knight" beats "night").
@@ -76,26 +36,7 @@ letter. Ace = 1 (l), 10 = 0 (z/s). 9♥ → H-g → **hag**; 6♠ → S-b → **
 **Aces** are a big version of the suit symbol. **Court cards are characters**, because "J" would
 clash with j = 8, and each suit gets a theme.
 
-From the reference notebook:
-
-| | ♠ Spades | ♥ Hearts | ♦ Diamonds | ♣ Clubs |
-|---|---|---|---|---|
-| **A** | Grim Reaper | a big love heart | a big sparkly diamond | a big club |
-| **2** | sun | lovers (two hearts) | Don | can |
-| **3** | Sam (a friend) / sum | home | Dom | cam |
-| **4** | sore | hair | door | car |
-| **5** | safe | hoof | dove | cough |
-| **6** | sob | hoop | DB (Derren Brown) | cab |
-| **7** | soot | hat | dot | cat |
-| **8** | sash | hedge | dish | cash |
-| **9** | ciggy | hag | dog | cog |
-| **10** | sissy | hose | dizzy | kiss |
-| **J** | boy digging / Beelzebub | Cupid | diamond thief | young boy athlete |
-| **Q** | housekeeper | bride | the Queen | brothel madam |
-| **K** | gardener / Dante (Lucifer) | bridegroom | the old jeweller | bouncer / cad |
-
-One deliberate exception: 2♥ *lovers* is chosen for its meaning. A stronger picture is worth
-bending the code for, as long as it never changes.
+The full 52-card set, including the allowed exceptions, lives in **[notes.md](notes.md)**.
 
 **Suit themes for the courts:** Spades = death and digging · Hearts = love and weddings ·
 Diamonds = wealth and jewels · Clubs = sport and nightlife.

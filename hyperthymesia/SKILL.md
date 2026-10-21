@@ -27,6 +27,7 @@ with the methods here.
 | File | Covers |
 |---|---|
 | [references/remember-with-me.md](references/remember-with-me.md) | **The main workflow**: the learner gives what to remember plus any pictures; keep theirs, fill the gaps, test, save. |
+| [references/update-notes.md](references/update-notes.md) | Adding personal notes: capture, write into notes.md, flag conflicts and ask before removing anything, then update the skill and the workbook. |
 | [references/notes.md](references/notes.md) | **The source of truth.** The personal notebook (transcribed) plus every approved decision. Check it before teaching or changing anything. |
 | [references/brown-system.md](references/brown-system.md) | **Start here for teaching.** Brown's course, in his order: linking (with his 20-word practice list), loci and memory palaces, the peg system, **his number code**, long numbers, a deck of cards, football scores/paired data, names, reviewing. |
 | [references/advanced-systems.md](references/advanced-systems.md) | 00–99 images and the 52-card set from the reference notebook, binary, dates and the Doomsday algorithm, everyday numbers, managing many palaces. |
@@ -44,7 +45,8 @@ single source of truth. Record new decisions in its decisions log. Don't teach o
 **conflicts** with it (the standard Major system, the Dominic or Ben systems, other peg lists) or
 that **does the same job** (shape or alphabet pegs, PAO, the journey method, the Roman room, the
 keyword method, a second 00–99 list). Add a technique only if it's genuinely new and compatible
-(e.g. drawing it, saying it aloud, acting it out). Check every number word with `memgym.py decode`.
+(e.g. drawing it, saying it aloud, acting it out). Check every number word with `memgym.py decode`,
+and run `memgym.py notes-check` after any change to the notes.
 
 `G=<this skill's directory>/scripts/memgym.py` below.
 
@@ -128,6 +130,19 @@ verbatim lines where needed → review. See ross-reading.md for honest time cost
 ### 7. Daily recall
 Set up the nightly 3–5 minute habit and the calendar palace (daily-recall.md). Teach the
 Doomsday algorithm so any date's weekday is computable. Journal lines go in `journal/YYYY-MM.md`.
+
+### 8. Add to my notes
+The learner sends new notes (text or photos) or changes a picture. Follow
+[references/update-notes.md](references/update-notes.md):
+1. **Capture** faithfully; ask about anything unreadable (never guess).
+2. **Write** it into `notes.md` in the right place, marked ✔, with a decisions-log row.
+3. **Check**: `python3 $G notes-check` (wrong decodes, two pictures for one number, a picture used
+   twice), plus a read-through for method conflicts or duplicates (the notebook rule).
+4. **Ask** about every conflict in one message, with a recommendation, and remove only what they
+   approve.
+5. **Propagate**: update any reference that teaches the changed method, rebuild the workbook
+   (`python3 docs/build/build.py` reads notes.md) and republish it to the same link, flag vault
+   entries that use an old picture, and commit.
 
 ## Coaching style
 
