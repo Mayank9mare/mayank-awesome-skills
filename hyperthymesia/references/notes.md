@@ -171,6 +171,20 @@ Exceptions (allowed to break the code): 2♥ (lovers, chosen for meaning rather 
 3. Link the two together: Mike's large nose becomes a microphone stuck in the middle of his face.
    Imagine Bill putting on his small rimmed glasses to read the bill after dinner.
 
+
+## Boosters ✔
+
+Not from the book: compatible extras that make every method above stick harder (details and
+evidence in [boosters.md](boosters.md)).
+- **Draw it**: sketch the picture for a few seconds, even badly.
+- **Say it aloud**: speak each item as you place it, and walk the palace aloud when recalling.
+- **Act it out**: mime the interaction (the monkey snatching the sausage).
+- **Ask why**: add the reason a fact is true to its scene.
+- **Mix it up**: shuffle the kinds of drill (cards, then numbers, then names).
+- **Change the room**: review your palaces in different places.
+- **Learn lines like an actor**: one point per locus, then ask "why am I saying this here?"
+- **Sleep, rest, move**: learn in the evening and review in the morning, sit quietly for a few minutes after learning, and exercise.
+
 ---
 
 ## Decisions log
@@ -184,5 +198,6 @@ Exceptions (allowed to break the code): 2♥ (lovers, chosen for meaning rather 
 | 2026-10-21 | 53–99 completed by Claude with the same method; 99 Gaga / gag. |
 | 2026-10-21 | J♣ young boy athlete → **young man in a club**. |
 | 2026-10-21 | K♣ is bouncer / **cock** (notes misread as "cad"). |
+| 2026-10-21 | Boosters added to the notes as a section of their own. |
 | 2026-10-21 | The notebook rule: drop any method that conflicts with these notes or does the same job. |
 | 2026-10-21 | Non-conflicting techniques are kept and welcome: observation drills, first-letter method, Doomsday, and the boosters (references/boosters.md). |

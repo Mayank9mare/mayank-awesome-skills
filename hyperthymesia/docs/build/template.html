@@ -348,11 +348,11 @@ footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--rule
   <p>One picture here bends the rule on purpose: <em>lovers</em> (two hearts) for 2♥ is chosen for its meaning. Exceptions are fine when the picture is stronger, as long as you always use the same one.</p>
   <div class="try">
     <h3><span class="tag">Try it</span> Card flashcards</h3>
-    <p>Say the picture out loud before you reveal it. Aim for under a second per card.</p>
+    <p>The whole deck, shuffled: each of the 52 cards comes up once. Say the picture out loud before you reveal it, and aim for under a second per card.</p>
     <div class="cardbox">
       <div class="playing" id="fc-card" aria-live="polite">9♥</div>
       <div><div class="reveal" id="fc-word" aria-live="polite"></div>
-        <div class="row"><button id="fc-show">Reveal</button><button class="ghost" id="fc-next">Next card</button></div>
+        <div class="row"><button id="fc-show">Reveal</button><button class="ghost" id="fc-next">Next card</button><button class="ghost" id="fc-reshuffle">Shuffle again</button></div>
         <p class="out" id="fc-stat"></p></div>
     </div>
   </div>
@@ -571,18 +571,28 @@ footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--rule
   /* ---------- 4. Card flashcards ---------- */
   var CARDS = {{json:cards}};
   var SYM = { S: "♠", H: "♥", D: "♦", C: "♣" };
-  var keys = Object.keys(CARDS), cur = null, seen = 0;
+  var keys = Object.keys(CARDS), deck = [], pos = 0, cur = null, rounds = 0;
+  function shuffle() {
+    deck = keys.slice();
+    for (var i = deck.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = deck[i]; deck[i] = deck[j]; deck[j] = t; }
+    pos = 0;
+  }
   function nextCard() {
-    cur = keys[Math.floor(Math.random() * keys.length)];
+    if (pos >= deck.length) { shuffle(); rounds++; }
+    cur = deck[pos++];
     var suit = cur.slice(-1), rank = cur.slice(0, -1);
     var el = $("fc-card"); el.textContent = rank + SYM[suit]; el.classList.toggle("red", suit === "H" || suit === "D");
-    $("fc-word").textContent = ""; seen++; $("fc-stat").textContent = seen + " card" + (seen > 1 ? "s" : "") + " this session";
+    $("fc-word").textContent = "";
+    $("fc-stat").textContent = "Card " + pos + " of " + deck.length + (rounds ? " · deck " + (rounds + 1) : "") +
+      (pos === deck.length ? ". Last one; the next card starts a fresh shuffle." : "");
   }
+  shuffle();
   $("fc-show").addEventListener("click", function () {
     var v = CARDS[cur];
     $("fc-word").innerHTML = v.pick ? "<span class=\"pick\">" + esc(v.w) + "</span>" : esc(v.w);
   });
   $("fc-next").addEventListener("click", nextCard);
+  $("fc-reshuffle").addEventListener("click", function () { shuffle(); rounds = 0; nextCard(); });
   nextCard();
 
   /* ---------- 5. Doomsday trainer ---------- */
