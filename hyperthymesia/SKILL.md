@@ -36,6 +36,13 @@ with the methods here.
 **One number code only**, Brown's: `0 z/s · 1 l · 2 n · 3 m · 4 r · 5 f/v · 6 b/p · 7 t ·
 8 ch/sh/j · 9 g`, with only vowels, h and y as fillers. Never mix in another digit system.
 
+**The notebook rule.** The reference notebook (Brown's system, as captured in brown-system.md and
+advanced-systems.md) is the single source of truth. Don't teach or add any method that
+**conflicts** with it (the standard Major system, the Dominic or Ben systems, other peg lists) or
+that **does the same job** (shape or alphabet pegs, PAO, the journey method, the Roman room, the
+keyword method, a second 00–99 list). Add a technique only if it's genuinely new and compatible
+(e.g. drawing it, saying it aloud, acting it out). Check every number word with `memgym.py decode`.
+
 `G=<this skill's directory>/scripts/memgym.py` below.
 
 A visual, interactive companion lives at
