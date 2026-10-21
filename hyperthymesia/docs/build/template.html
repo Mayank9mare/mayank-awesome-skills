@@ -185,6 +185,13 @@ table.grid .w { font-family: var(--hand-font); font-size: 1.2rem; }
 .hero h1 span { color: var(--accent); }
 .hero .lede { margin-top: 1rem; }
 .byline { font-family: var(--hand-font); font-size: 1.15rem; color: var(--ink-soft); margin-top: 1rem; }
+.sq-opts { display: grid; gap: .5rem; margin-top: .6rem; }
+.sq-opts button { text-align: left; font-weight: 400; line-height: 1.35; padding: .75rem .9rem; }
+.sq-opts button[disabled] { opacity: .45; cursor: default; text-decoration: line-through; }
+.sq-opts button.right { background: var(--good); color: var(--paper); border-color: var(--good); text-decoration: none; opacity: 1; }
+.sq-check { list-style: none; padding-left: 0; }
+.sq-check label { font-weight: 400; display: inline; }
+#sq-hint .hand { font-size: 1.2rem; }
 footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--rule); color: var(--ink-soft); font-size: .92rem; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
@@ -208,6 +215,7 @@ footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--rule
       <li><a href="#beyond"><span class="n">13</span>Beyond the book</a></li>
       <li><a href="#boosters"><span class="n">14</span>Boosters</a></li>
       <li class="mark"><a href="#plan"><span class="n">15</span>Six-week plan</a></li>
+      <li><a href="#test"><span class="n">16</span>Test yourself</a></li>
     </ol>
   </nav>
 
@@ -441,12 +449,53 @@ footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--rule
     <div><b>Week 6</b><span>Mix the drills. Walk a palace you built four weeks ago without looking. Set your own targets.</span></div>
   </div>
   <p>After that, ten minutes a day keeps it sharp. Compare yourself only with yourself last week.</p>
-  <footer>
-    <p>Techniques from <em>Tricks of the Mind</em> by Derren Brown (Channel 4 Books, 2006), memory chapter: linking, loci and memory palaces, the peg system and number code, long numbers, cards, football scores, names, and reviewing. The study cited is Dresler et al., "Mnemonic Training Reshapes Brain Networks to Support Superior Memory", <em>Neuron</em>, 2017. The Doomsday algorithm is John Conway's.</p>
-    <p>Diagrams drawn with excalidraw-cli and mermaid-cli. A companion to the <span class="mono">hyperthymesia</span> skill.</p>
-  </footer>
+
 </section>
 
+<section id="test">
+  <div class="stop"><span class="num">16</span><h2>Test yourself</h2></div>
+  <p>A Socratic test: ten questions, one at a time, asking you to predict and explain rather than recite. Get one wrong and you'll be asked a guiding question, then a narrower one, before the answer is shown. You score 3 points for a first-try answer, 2 after a hint, 1 after the narrower prompt, and 0 if you're told. Half the questions come from the techniques; half come from your own number and card pictures.</p>
+  <div class="try" id="sq">
+    <h3><span class="tag">Test</span> <span id="sq-title">Question 1 of 10</span></h3>
+    <p class="quote" id="sq-q" aria-live="polite"></p>
+    <div id="sq-opts" class="sq-opts"></div>
+    <div id="sq-textwrap" hidden>
+      <label for="sq-text">Your answer</label>
+      <input type="text" id="sq-text" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="note" id="sq-hint" hidden><span class="hand" id="sq-hint-label">Think about it</span><span id="sq-hint-text"></span></div>
+    <div class="out" id="sq-feedback" aria-live="polite"></div>
+    <div class="row">
+      <button id="sq-answer">Answer</button>
+      <button class="ghost" id="sq-next" hidden>Next question</button>
+      <span class="timer" id="sq-score"></span>
+    </div>
+  </div>
+  <div class="try" id="sq-end" hidden>
+    <h3><span class="tag">Done</span> <span id="sq-end-title"></span></h3>
+    <div class="out" id="sq-end-list"></div>
+    <h3>Teach it back</h3>
+    <p>Socrates' last step: explain it yourself. In two or three sentences, explain to a friend how a memory palace works.</p>
+    <label for="sq-teach">Your explanation</label>
+    <textarea id="sq-teach" placeholder="You pick a place you know well…"></textarea>
+    <p>Then check it. Did you mention:</p>
+    <ul class="plain sq-check">
+      <li><label><input type="checkbox" id="sq-c1"> a real place you know well</label></li>
+      <li><label><input type="checkbox" id="sq-c2"> a fixed order (clockwise from your immediate left)</label></li>
+      <li><label><input type="checkbox" id="sq-c3"> vivid pictures that <em>interact</em> with each place</label></li>
+      <li><label><input type="checkbox" id="sq-c4"> walking the route to recall, forwards or backwards</label></li>
+      <li><label><input type="checkbox" id="sq-c5"> reviewing, so it lasts</label></li>
+    </ul>
+    <p class="out" id="sq-teach-out"></p>
+    <div class="row"><button id="sq-again">New test</button></div>
+  </div>
+</section>
+
+
+<footer>
+    <p>Techniques from <em>Tricks of the Mind</em> by Derren Brown (Channel 4 Books, 2006), memory chapter: linking, loci and memory palaces, the peg system and number code, long numbers, cards, football scores, names, and reviewing. The study cited is Dresler et al., "Mnemonic Training Reshapes Brain Networks to Support Superior Memory", <em>Neuron</em>, 2017. The Doomsday algorithm is John Conway's.</p>
+    <p>Diagrams drawn with excalidraw-cli and mermaid-cli. A companion to the <span class="mono">hyperthymesia</span> skill.</p>
+</footer>
     </div>
   </main>
 </div>
@@ -629,6 +678,164 @@ footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--rule
     dayBox.appendChild(b);
   });
   $("dd-next").addEventListener("click", newDate);
+
+  /* ---------- 6. Socratic test ---------- */
+  var LETTERS = { "0": ["z / s", "z is in zero"], "1": ["l", "it looks like 1"], "2": ["n", "two down-strokes"],
+    "3": ["m", "three down-strokes"], "4": ["r", "fou-R"], "5": ["f / v", "F-i-V-e"], "6": ["b / p", "b looks like 6"],
+    "7": ["t", "7 looks like a capital T"], "8": ["ch / sh / j", "the gh in eight"], "9": ["g", "g looks like 9"] };
+  var SUITN = { S: "♠", H: "♥", D: "♦", C: "♣" };
+  function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+  function shuffled(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function firstAlt(w) { return String(w).split(" / ")[0].replace(/\s*\(.*?\)\s*/g, "").trim(); }
+  var CONCEPTS = [
+    { q: "You linked 20 things in a chain and forgot item 6. What happens to items 7 to 20?",
+      opts: ["They're probably lost too", "They're all still there", "Only item 7 is lost"], a: 0,
+      hint: "In a chain, what hands you item 7?", prompt: "Item 7 lives in one picture together with item 6. If item 6 is gone, can you get into that picture?",
+      why: "Each picture holds two items, and each one hands you the next. Lose one link and the rest of the chain goes with it.", link: "#linking" },
+    { q: "Now you put the same 20 things in a memory palace and forget item 6. What happens to items 7 to 20?",
+      opts: ["They're still there", "They're lost too", "You have to start the route again"], a: 0,
+      hint: "What is item 7 attached to in a palace: item 6, or something else?", prompt: "Item 7 sits at its own place on the route. Does that place depend on item 6?",
+      why: "In a palace, each item is tied to its own place, not to its neighbour. A forgotten item leaves one gap and the rest stay put.", link: "#palace" },
+    { q: "Why is \u201cnotch\u201d a bad picture for 28?",
+      opts: ["Its t is a code letter, so it spells 278", "It's not vivid enough", "ch only means 8 at the start of a word"], a: 0,
+      hint: "Decode it letter by letter. Which letters in n-o-t-ch are code letters?", prompt: "Fillers are vowels, h and y only. Is t a filler?",
+      why: "n = 2, t = 7, ch = 8, so notch spells 278. Only vowels, h and y can fill the gaps. Your notes use Nash.", link: "#code" },
+    { q: "Predict before you check: what number does \u201ctotem\u201d spell?", text: true, a: "773",
+      hint: "t = 7 and m = 3. How many t's are in totem?", prompt: "t \u00b7 t \u00b7 m: write the digits in that order.",
+      why: "T-o-T-e-M → 7, 7, 3: 773. That's how Brown fits the totem pole into his long-number story.", link: "#long" },
+    { q: "Which picture will you remember best for monkey → button?",
+      opts: ["A monkey struggling to do up a giant button on its waistcoat", "A monkey sitting next to a button", "A small grey button with a monkey printed on it"], a: 0,
+      hint: "Brown's three rules: vivid, interacting, unusual. Which option has the two things doing something to each other?", prompt: "In which picture does something actually happen?",
+      why: "The elements must interact, and the scene should be unusual and vivid. A monkey next to a button is a forgotten picture.", link: "#how" },
+    { q: "In the card system, why is a Jack a character instead of a code word?",
+      opts: ["J would clash with j, which is 8", "Court cards are too hard to picture", "There's no letter for 11"], a: 0,
+      hint: "Look at the number code: which digit already uses the letter j?", prompt: "8 is ch, sh or j. What would \u201cJ\u201d be confused with?",
+      why: "J is already the code for 8, so courts become characters: Cupid, a young man in a club, a boy digging.", link: "#cards" },
+    { q: "You need item 12 from a 20-locus palace, fast. Where do you start walking?",
+      opts: ["At the \u201cten\u201d marker, then two more", "At the front door, counting to 12", "At the last locus, counting back"], a: 0,
+      hint: "Where in the palace are the markers placed?", prompt: "There's a marker every five loci. Which marker is nearest to 12 without passing it?",
+      why: "Markers every fifth locus give you random access: walk straight to 10 and step two more.", link: "#palace" },
+    { q: "At review you blank on one item. What's the best fix?",
+      opts: ["Rebuild a bigger, stranger picture, ideally your own", "Read the list five more times", "Skip it; it'll come back"], a: 0,
+      hint: "A miss tells you something about the picture itself. What?", prompt: "If the picture had been vivid and interacting, would you have missed it?",
+      why: "A miss means the picture was weak. Rebuild it rather than re-reading it, then restart its review schedule.", link: "#review" },
+    { q: "You meet Bill, who wears small rimmed glasses. Which link follows Brown's second route?",
+      opts: ["Bill puts on his small glasses to read the bill after dinner", "You remember Bill because Bill rhymes with hill", "You write \u201cBill, glasses\u201d in your phone"], a: 0,
+      hint: "Route 2 is name → picture → feature → link. What's the picture for \u201cBill\u201d?", prompt: "Bill is an invoice. Which option links the invoice to his glasses?",
+      why: "Name → picture (an invoice), a feature (the small glasses), and a link that makes them interact.", link: "#names" },
+    { q: "Someone can't picture things in their head. Which booster helps them most?",
+      opts: ["Say it aloud and act it out", "Close their eyes and try harder", "Use shorter lists"], a: 0,
+      hint: "The boosters add a route to memory that isn't visual. Which option does that?", prompt: "Which option uses the voice and the body instead of the mind's eye?",
+      why: "Saying it aloud and acting it out each add a non-visual route back to the memory.", link: "#boosters" }
+  ];
+  function genQuestions() {
+    var nums = Object.keys(IMG).filter(function (k) { return k.length === 2; });
+    var qs = [];
+    var d = pick(Object.keys(LETTERS)), others = shuffled(Object.keys(LETTERS).filter(function (x) { return x !== d; })).slice(0, 2);
+    var o = shuffled([d].concat(others));
+    qs.push({ q: "Which letter stands for " + d + ", and can you say why?", opts: o.map(function (x) { return LETTERS[x][0]; }), a: o.indexOf(d),
+      hint: "Brown chose each letter because it's easy to connect with its number. What does " + d + " look or sound like?",
+      prompt: "The reason is: \u201c" + LETTERS[d][1] + "\u201d.", why: d + " → " + LETTERS[d][0] + ", because " + LETTERS[d][1] + ".", link: "#code" });
+    var n = pick(nums), dist = shuffled(nums.filter(function (x) { return x !== n; })).slice(0, 3), o2 = shuffled([n].concat(dist));
+    qs.push({ q: "What's your picture for " + n + "?", opts: o2.map(function (x) { return IMG[x]; }), a: o2.indexOf(n),
+      hint: n + " is " + LETTERS[n[0]][0] + " then " + LETTERS[n[1]][0] + ". Which option has exactly those sounds, in that order?",
+      prompt: "Fillers are vowels, h and y. Ignore them and read only the code letters of each option.",
+      why: n + " → " + LETTERS[n[0]][0] + " · " + LETTERS[n[1]][0] + " → " + IMG[n] + ".", link: "#code" });
+    var m = pick(nums.filter(function (x) { return x !== n; }));
+    qs.push({ q: "Predict: what number does \u201c" + firstAlt(IMG[m]) + "\u201d spell?", text: true, a: m,
+      hint: "Find the code letters and ignore the vowels, h and y.", prompt: "The first code letter is " + LETTERS[m[0]][0] + ". Which digit is that?",
+      why: "\u201c" + firstAlt(IMG[m]) + "\u201d → " + LETTERS[m[0]][0] + " · " + LETTERS[m[1]][0] + " → " + m + ".", link: "#code" });
+    var ck = Object.keys(CARDS).filter(function (k) { return /^(10|[2-9])[SHDC]$/.test(k); });
+    var c = pick(ck), cd = shuffled(ck.filter(function (x) { return x !== c; })).slice(0, 3), o3 = shuffled([c].concat(cd));
+    var rank = c.slice(0, -1), suit = c.slice(-1), digit = rank === "10" ? "0" : rank;
+    qs.push({ q: "What's your picture for the " + rank + SUITN[suit] + "?", opts: o3.map(function (x) { return CARDS[x].w; }), a: o3.indexOf(c),
+      hint: "Card = suit initial + rank code. What's the suit's letter, and what letter is " + digit + "?",
+      prompt: "Look for a word starting with the " + { S: "S", H: "H", D: "D", C: "C or K" }[suit] + " sound followed by " + LETTERS[digit][0] + ".",
+      why: rank + SUITN[suit] + " → " + suit + " + " + LETTERS[digit][0] + " → " + CARDS[c].w + ".", link: "#cards" });
+    var cc = pick(ck.filter(function (x) { return x !== c; })), co = shuffled([cc].concat(shuffled(ck.filter(function (x) { return x !== cc; })).slice(0, 3)));
+    qs.push({ q: "Which card is the \u201c" + CARDS[cc].w + "\u201d?", opts: co.map(function (x) { return x.slice(0, -1) + SUITN[x.slice(-1)]; }), a: co.indexOf(cc),
+      hint: "Decode it: the first sound gives the suit, the next code letter gives the rank.", prompt: "Which suit starts with that first sound?",
+      why: "\u201c" + CARDS[cc].w + "\u201d is the " + cc.slice(0, -1) + SUITN[cc.slice(-1)] + ".", link: "#cards" });
+    return shuffled(shuffled(CONCEPTS).slice(0, 5).concat(qs));
+  }
+  var sq = { list: [], i: 0, tries: 0, score: 0, results: [] };
+  function sqRender() {
+    var q = sq.list[sq.i];
+    $("sq-title").textContent = "Question " + (sq.i + 1) + " of " + sq.list.length;
+    $("sq-q").textContent = q.q; $("sq-hint").hidden = true; $("sq-feedback").innerHTML = "";
+    $("sq-next").hidden = true; $("sq-answer").hidden = false;
+    $("sq-score").textContent = sq.score + " / " + (sq.list.length * 3) + " points";
+    var box = $("sq-opts"); box.innerHTML = "";
+    $("sq-textwrap").hidden = !q.text; $("sq-answer").hidden = !q.text;
+    if (q.text) { $("sq-text").value = ""; if (sq.i > 0) $("sq-text").focus(); }
+    else q.opts.forEach(function (t, k) {
+      var b = document.createElement("button"); b.className = "ghost"; b.id = "sq-o" + k; b.textContent = t;
+      b.addEventListener("click", function () { sqTry(k, b); }); box.appendChild(b);
+    });
+  }
+  function sqHint(level) {
+    var q = sq.list[sq.i];
+    $("sq-hint").hidden = false;
+    $("sq-hint-label").textContent = level === 1 ? "Not quite. Think about this:" : "Closer. One more step:";
+    $("sq-hint-text").textContent = " " + (level === 1 ? q.hint : q.prompt);
+    if (level === 2 && !q.text) {   // narrow to the right answer plus one other
+      var keep = [q.a, pick(q.opts.map(function (_, k) { return k; }).filter(function (k) { return k !== q.a && !$("sq-o" + k).disabled; }).concat([q.a]))];
+      q.opts.forEach(function (_, k) { if (keep.indexOf(k) < 0) $("sq-o" + k).disabled = true; });
+    }
+  }
+  function sqDone(points) {
+    var q = sq.list[sq.i];
+    sq.score += points; sq.results.push({ q: q, points: points });
+    var msg = points === 3 ? "Right, first time." : points ? "Right, with a little help." : "Here's the answer.";
+    $("sq-feedback").innerHTML = "<p class=\"" + (points ? "okc" : "warn") + "\">" + msg + "</p><p>" + esc(q.why) +
+      " <a href=\"" + q.link + "\">Revisit this</a>.</p>";
+    if (!q.text) { q.opts.forEach(function (_, k) { $("sq-o" + k).disabled = true; }); var r = $("sq-o" + q.a); r.disabled = false; r.classList.add("right"); }
+    $("sq-answer").hidden = true; $("sq-next").hidden = false;
+    $("sq-next").textContent = sq.i + 1 < sq.list.length ? "Next question" : "See my result";
+    $("sq-score").textContent = sq.score + " / " + (sq.list.length * 3) + " points";
+  }
+  function sqTry(k, btn) {
+    var q = sq.list[sq.i];
+    if (k === q.a) return sqDone(3 - sq.tries);
+    sq.tries++; if (btn) btn.disabled = true;
+    if (sq.tries >= 3) return sqDone(0);
+    sqHint(sq.tries);
+  }
+  $("sq-answer").addEventListener("click", function () {
+    var q = sq.list[sq.i], v = $("sq-text").value.replace(/\D/g, "");
+    if (!v) return;
+    if (v === q.a) return sqDone(3 - sq.tries);
+    sq.tries++; if (sq.tries >= 3) return sqDone(0);
+    sqHint(sq.tries); $("sq-text").select();
+  });
+  $("sq-text").addEventListener("keydown", function (e) { if (e.key === "Enter") $("sq-answer").click(); });
+  $("sq-next").addEventListener("click", function () {
+    sq.i++; sq.tries = 0;
+    if (sq.i < sq.list.length) return sqRender();
+    var max = sq.list.length * 3, best = Math.max(sq.score, store.get("sqbest") || 0); store.set("sqbest", best);
+    $("sq").hidden = true; $("sq-end").hidden = false;
+    $("sq-end-title").textContent = sq.score + " / " + max + " points (best " + best + ")";
+    var helped = sq.results.filter(function (r) { return r.points < 3; });
+    $("sq-end-list").innerHTML = helped.length ? "<p>Worth another look:</p><ul class=\"plain\">" + helped.map(function (r) {
+      return "<li><a href=\"" + r.q.link + "\">" + esc(r.q.q) + "</a> (" + r.points + " / 3)</li>"; }).join("") + "</ul>"
+      : "<p class=\"okc\">Every answer right first time. Now teach it back.</p>";
+    $("sq-teach").focus();
+  });
+  ["sq-c1", "sq-c2", "sq-c3", "sq-c4", "sq-c5"].forEach(function (id) {
+    $(id).addEventListener("change", function () {
+      var n = ["sq-c1", "sq-c2", "sq-c3", "sq-c4", "sq-c5"].filter(function (x) { return $(x).checked; }).length;
+      $("sq-teach-out").textContent = n === 5 ? "All five. You can explain it, so you understand it." :
+        n + " of 5. Rewrite your explanation to include the missing ones.";
+    });
+  });
+  function sqStart() {
+    sq = { list: genQuestions(), i: 0, tries: 0, score: 0, results: [] };
+    $("sq").hidden = false; $("sq-end").hidden = true; $("sq-teach").value = "";
+    ["sq-c1", "sq-c2", "sq-c3", "sq-c4", "sq-c5"].forEach(function (x) { $(x).checked = false; }); $("sq-teach-out").textContent = "";
+    sqRender();
+  }
+  $("sq-again").addEventListener("click", function () { sqStart(); $("sq").scrollIntoView({ behavior: "smooth" }); });
+  sqStart();
   if (ddScore.n) $("dd-stat").textContent = ddScore.ok + " / " + ddScore.n + " correct";
   newDate();
 })();
