@@ -13,16 +13,16 @@ Seeded from the reference notebook. Replace anything that isn't vivid *for you*,
 | 02 | | 22 | noon | 42 | rain | 62 | | 82 | |
 | 03 | | 23 | name | 43 | ram | 63 | | 83 | |
 | 04 | | 24 | Nero | 44 | roar | 64 | | 84 | chair |
-| 05 | | 25 | knife | 45 | | 65 | | 85 | shave |
-| 06 | | 26 | nob | 46 | | 66 | | 86 | shop |
-| 07 | | 27 | knight | 47 | root | 67 | | 87 | |
+| 05 | | 25 | knife | 45 | rave | 65 | | 85 | shave |
+| 06 | | 26 | nob | 46 | rap | 66 | | 86 | shop |
+| 07 | | 27 | knight | 47 | root / rat | 67 | | 87 | |
 | 08 | | 28 | ⚠ replace "notch" (= 278) | 48 | rash | 68 | | 88 | |
 | 09 | | 29 | nog | 49 | | 69 | | 89 | |
-| 10 | lice | 30 | | 50 | fuse | 70 | | 90 | |
-| 11 | lily | 31 | mole | 51 | | 71 | | 91 | |
+| 10 | lice | 30 | maze / mass | 50 | fuse | 70 | | 90 | |
+| 11 | lily | 31 | mole | 51 | fall | 71 | | 91 | |
 | 12 | line | 32 | man | 52 | fan | 72 | | 92 | |
 | 13 | lime | 33 | mum | 53 | | 73 | | 93 | |
-| 14 | lorry | 34 | | 54 | | 74 | | 94 | |
+| 14 | lorry | 34 | more / merry | 54 | | 74 | | 94 | |
 | 15 | life | 35 | | 55 | | 75 | | 95 | |
 | 16 | lip | 36 | map | 56 | | 76 | | 96 | |
 | 17 | lit | 37 | mat | 57 | | 77 | | 97 | |

@@ -20,7 +20,7 @@ NB = {"0":"zoo","1":"ale","2":"hen","3":"ham","4":"whore","5":"hive","6":"bee","
  "10":"lice","11":"lily","12":"line","13":"lime","14":"lorry","15":"life","16":"lip","17":"lit","18":"lash","19":"leg",
  "20":"nose","21":"nail","22":"noon","23":"name","24":"Nero","25":"knife","26":"nob","27":"knight","29":"nog",
  "31":"mole","32":"man","33":"mum","36":"map","37":"mat","39":"mug","40":"rose","41":"role","42":"rain","43":"ram",
- "44":"roar","47":"root","48":"rash","50":"fuse","52":"fan","84":"chair","85":"shave","86":"shop"}
+ "44":"roar","47":"root / rat","48":"rash","50":"fuse","52":"fan","30":"maze / mass","34":"more / merry","45":"rave","46":"rap","51":"fall","84":"chair","85":"shave","86":"shop"}
 L = ["s","l","n","m","r","f","b","t","ch","g"]
 rows = []
 for tens in range(1, 10):
