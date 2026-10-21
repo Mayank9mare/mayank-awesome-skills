@@ -1,6 +1,6 @@
 ---
 name: hyperthymesia
-description: A memory coach that helps anyone, starting from zero, train a near-"perfect" memory and remember anything on demand. Uses Derren Brown's system from Tricks of the Mind (the linking system, loci and memory palaces, the peg system, his digit-to-consonant number code, long numbers, a deck of cards, football scores and paired data, names and faces, reviewing), Patrick Jane-style observation and people memory, Mike Ross-style document and verbatim memorisation, plus a date-indexed daily recall habit. Includes drills with scoring (numbers, cards, words, names, binary, spoken digits, day-of-week dates), a personal memory vault with spaced review dates, and a six-week training plan. Use when someone wants to memorise something specific (a list, numbers, a PIN, a speech, a deck of cards, names, a document, dates, vocabulary), build a memory palace, train their memory, learn Derren Brown's techniques, remember people or conversations, or review what's due.
+description: A memory coach that helps anyone, starting from zero, train a near-"perfect" memory and remember anything on demand. Uses Derren Brown's system from Tricks of the Mind (the linking system, loci and memory palaces, the peg system, his digit-to-consonant number code, long numbers, a deck of cards, football scores and paired data, names and faces, reviewing), Patrick Jane-style observation and people memory, Mike Ross-style document and verbatim memorisation, plus a date-indexed daily recall habit. Includes drills with scoring (numbers, cards, words, names, binary, spoken digits, day-of-week dates), a personal memory vault with spaced review dates, and a six-week training plan. Use when someone wants to memorise something specific, optionally bringing some of their own mental images for Claude to keep and extend, (a list, numbers, a PIN, a speech, a deck of cards, names, a document, dates, vocabulary), build a memory palace, train their memory, learn Derren Brown's techniques, remember people or conversations, or review what's due.
 user-invocable: true
 ---
 
@@ -26,6 +26,7 @@ with the methods here.
 
 | File | Covers |
 |---|---|
+| [references/remember-with-me.md](references/remember-with-me.md) | **The main workflow**: the learner gives what to remember plus any pictures; keep theirs, fill the gaps, test, save. |
 | [references/notes.md](references/notes.md) | **The source of truth.** The personal notebook (transcribed) plus every approved decision. Check it before teaching or changing anything. |
 | [references/brown-system.md](references/brown-system.md) | **Start here for teaching.** Brown's course, in his order: linking (with his 20-word practice list), loci and memory palaces, the peg system, **his number code**, long numbers, a deck of cards, football scores/paired data, names, reviewing. |
 | [references/advanced-systems.md](references/advanced-systems.md) | 00–99 images and the 52-card set from the reference notebook, binary, dates and the Doomsday algorithm, everyday numbers, managing many palaces. |
@@ -71,8 +72,11 @@ exact palace. Their *own* images always win over suggested ones.
 
 Figure out which one the learner wants. Ask only if it's unclear.
 
-### 1. Encode: "help me remember X" (most common)
-1. **Pick the technique by the shape of the data**:
+### 1. Remember with me: "help me remember X" (most common)
+The learner says what to remember and gives any pictures they already have: all, some, half an
+idea, or none. Follow [references/remember-with-me.md](references/remember-with-me.md):
+1. **Understand it** (if it has meaning, check understanding first), split it into items, and
+   **pick the structure** by the shape of the data:
 
    | Shape | Technique |
    |---|---|
@@ -86,13 +90,14 @@ Figure out which one the learner wants. Ask only if it's unclear.
    | Document / book / contract | Ross layer: skeleton palace, section per locus |
    | Exact wording | Ross layer: first-letter cues + cumulative rehearsal |
 
-2. **Co-create the images.** Offer one vivid, interacting, unusual image, then ask the learner to
-   make it more *theirs*. Self-made images stick better. Check every invented number word with
-   `python3 $G decode <word>`.
-3. **Place** it (palace + locus, or chain) and **test immediately**: forwards, then backwards,
-   then a random item ("what's at locus 7?").
-4. **Record** it in `vault/<topic>.md` with the image, locus, and `due:` dates (today, +1d, +3d,
-   +7d, +21d, +60d).
+2. **Keep their pictures exactly.** Flag a problem in one line (doesn't interact, a number word
+   decodes wrong, a clash with a standing image) and offer a fix, but keep theirs unless they agree.
+3. **Fill the gaps** with pictures built from *their* systems first (00–99 images, cards, pegs,
+   palaces), each concrete, vivid, interacting and unusual, and marked **(mine)**.
+4. **Show the memory plan** (item · locus · picture · whose), then a short walk-through.
+5. **Test now**: forwards, backwards, random stop. Any miss gets rebuilt, ideally by them.
+6. **Save** to `vault/<topic>.md` with `due:` dates, claim the loci in `palaces.md`, and suggest
+   one booster.
 
 ### 2. Train: drills and the six-week plan
 `python3 $G gen <classic|words|numbers|cards|names|binary|spoken|dates> [n]` → the learner

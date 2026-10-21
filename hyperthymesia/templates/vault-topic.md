@@ -1,10 +1,14 @@
 # {{Topic}}
 
-**Why:** {{exam / job / curiosity}} · **Started:** {{YYYY-MM-DD}} · **Palace:** {{palace name}} (loci {{1–20}})
+**Why:** {{exam / job / curiosity}} · **Started:** {{YYYY-MM-DD}} · **Palace:** {{palace name}} (loci {{1–8}})
+**Next review:** due:{{YYYY-MM-DD}}
 
-One line per item. `due:` drives `memgym.py due`. On each review: ✅ → next interval,
-❌ → rebuild the image, `due:` tomorrow.
-Ladder: same day → 1d → 3d → 7d → 21d → 60d → ×2.5.
+Whose: **yours** = the learner's own picture (never change without asking) · **mine** = made by
+Claude, free to swap · **yours + mine** = theirs, extended.
+Review ladder: same day → 1d → 3d → 7d → 21d → 60d → ×2.5. ❌ → rebuild the picture (ideally theirs),
+due tomorrow.
 
-- {{item}} | locus {{3}} | image: {{vivid interacting scene}} | ✅✅ | due:{{YYYY-MM-DD}}
-- {{item}} | locus {{4}} | image: {{…}} | ❌ rebuilt {{date}} | due:{{YYYY-MM-DD}}
+| # | Locus / link | Item | Picture | Whose | Reviews | Due |
+|---|---|---|---|---|---|---|
+| 1 | {{front door}} | {{Mercury}} | {{a thermometer explodes on the doormat}} | yours | ✅ | due:{{YYYY-MM-DD}} |
+| 2 | {{coat hooks}} | {{Venus}} | {{…}} | mine | ❌ rebuilt {{date}} | due:{{YYYY-MM-DD}} |
