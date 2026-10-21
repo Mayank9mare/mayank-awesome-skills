@@ -42,7 +42,7 @@
 |---|---|
 | {{cache}} | {{treasure chest}} |
 
-### Other mnemonics (links, pegs, Major-system words)
+### Other mnemonics (links, pegs, number-code words)
 
 - {{item}} → {{image}} → {{fact}}
 

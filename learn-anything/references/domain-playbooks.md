@@ -25,7 +25,7 @@ principles the top-level chunks.
 - **Classic misconceptions to probe:** motion needs a force (impetus); heavier objects fall
   faster; current is "used up" in a circuit; heat and temperature are the same; centrifugal
   force pushes outward in an inertial frame; there's no gravity in orbit.
-- **Encode:** constants via the Major system, a palace per chapter for formulas that can't be
+- **Encode:** constants via Brown's number code (hyperthymesia), a palace per chapter for formulas that can't be
   derived quickly, and a standing image per quantity (momentum = a freight train, energy = a
   battery, entropy = a messy bedroom).
 
@@ -128,7 +128,7 @@ thing to learn, not the first.
 
 - Comprehensible input plus spaced retrieval is the backbone. Mnemonics help with vocabulary
   and irregular forms.
-- **Keyword method** for vocabulary (memory-techniques.md §6). **Gender** via a standing scene
+- **Vocabulary**: Brown's names method: turn the foreign word into a picture by sound, then link it to the meaning. **Gender** via a standing scene
   (all masculine nouns explode, all feminine nouns burst into flames, all neuter nouns freeze).
 - **Socratic for grammar:** show 4–5 example sentences and ask them to induce the rule before
   stating it.
@@ -140,7 +140,7 @@ thing to learn, not the first.
 - **Elaborative interrogation:** "Why would that be true?" for every fact. Facts with a *why*
   are retained far better.
 - **Encode lists** (cranial nerves, drug classes, the order of events) in palaces. **Dates** via
-  the Major system.
+  Brown's number code.
 
 ## Learning a new technology or framework fast
 

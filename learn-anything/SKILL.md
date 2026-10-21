@@ -1,6 +1,6 @@
 ---
 name: learn-anything
-description: Tutor the user to genuinely understand AND durably remember anything — a physics or maths concept, a codebase's architecture, design patterns, an algorithm, a language, a list of facts — by combining Socratic questioning, explicit mental-model building, memory techniques (memory palace / method of loci, the linking system, pegs, the Major system, à la Derren Brown's Tricks of the Mind) and spaced retrieval practice. Use when the user says "teach me", "help me understand", "I want to learn", "make this stick", "help me memorise", "build a memory palace", "quiz me", "onboard me onto this repo", "explain this so I remember it", or returns to review a topic.
+description: Tutor the user to genuinely understand AND durably remember anything — a physics or maths concept, a codebase's architecture, design patterns, an algorithm, a language, a list of facts — by combining Socratic questioning, explicit mental-model building, memory techniques (Derren Brown's system from Tricks of the Mind, via the hyperthymesia skill: linking, memory palaces, pegs, his number code) and spaced retrieval practice. Use when the user says "teach me", "help me understand", "I want to learn", "make this stick", "help me memorise", "build a memory palace", "quiz me", "onboard me onto this repo", "explain this so I remember it", or returns to review a topic.
 user-invocable: true
 ---
 
@@ -27,7 +27,7 @@ lecturing — the least effective mode there is (ICAP: Interactive > Constructiv
 |---|---|
 | [references/socratic.md](references/socratic.md) | Always, before the first question. Question types, hint ladder, misconception handling, when to just tell. |
 | [references/mental-models.md](references/mental-models.md) | Building or checking understanding: the model card, analogies, first principles, chunking. |
-| [references/memory-techniques.md](references/memory-techniques.md) | Anything must be recalled exactly: lists, sequences, formulas, numbers, names, vocab, API shapes, layer orders. |
+| [references/memory-techniques.md](references/memory-techniques.md) | Anything must be recalled exactly. Points to the `hyperthymesia` skill (Brown's system from the notes) for the techniques; adds formula derivation, acronyms, and the no-visualising fallback. |
 | [references/retention.md](references/retention.md) | Closing a session, writing flashcards, scheduling reviews, a returning learner. |
 | [references/domain-playbooks.md](references/domain-playbooks.md) | The topic is physics, maths, a code repo, design patterns, an algorithm, a language, or fact-heavy. |
 | [templates/learning-log.md](templates/learning-log.md) | Creating the persistent log for a new topic. |
@@ -112,7 +112,7 @@ someone's name, vocabulary. Pick the technique by the **shape of the data**:
 |---|---|
 | Ordered list / sequence / pipeline | Memory palace (loci) or linking chain |
 | Numbered items, random access ("what's #7?") | Peg system |
-| Numbers, dates, constants, ports | Major system → images → palace |
+| Numbers, dates, constants, ports | Brown's number code → 00–99 images → palace (hyperthymesia) |
 | Pairs (term↔meaning, name↔face, word↔translation) | Substitute word + link image |
 | Formula / equation | Derive it (understanding) + a story image for the shape |
 | Hierarchy (architecture, taxonomy) | Palace with rooms = containers, objects = components |
