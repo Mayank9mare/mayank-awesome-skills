@@ -20,7 +20,7 @@ NB = {"0":"zoo","1":"ale","2":"hen","3":"ham","4":"whore","5":"hive","6":"bee","
  "10":"lice","11":"lily","12":"line","13":"lime","14":"lorry","15":"life","16":"lip","17":"lit","18":"lash","19":"leg",
  "20":"nose","21":"nail","22":"noon","23":"name","24":"Nero","25":"knife","26":"nob","27":"knight","29":"nog",
  "31":"mole","32":"man","33":"mum","36":"map","37":"mat","39":"mug","40":"rose","41":"role","42":"rain","43":"ram",
- "44":"roar","47":"root / rat","48":"rash","50":"fuse","52":"fan","30":"maze / mass","34":"more / merry","45":"rave","46":"rap","51":"fall","35":"mf","49":"rag","28":"Nash","38":"mesh","84":"chair","85":"shave","86":"shop"}
+ "44":"roar","47":"root / rat","48":"rash","50":"fuse","52":"fan","30":"maze / mass","34":"more / merry","45":"rave","46":"rap","51":"fall","35":"mf","49":"rag","28":"Nash","38":"mesh","53":"foam", "54":"fire", "55":"fife", "56":"fob", "57":"feet", "58":"fish", "59":"fig", "60":"bus", "61":"ball", "62":"bone", "63":"bomb", "64":"bear", "65":"beef", "66":"baby", "67":"bat", "68":"bush", "69":"bag", "70":"toes", "71":"tail", "72":"tin", "73":"tomb", "74":"tyre", "75":"toffee", "76":"tub", "77":"tattoo", "78":"Taj", "79":"toga", "80":"chess", "81":"shell", "82":"chain", "83":"jam", "87":"jet", "88":"choo-choo", "89":"jug", "90":"goose", "91":"gull", "92":"gun", "93":"gum", "94":"gear", "95":"Goofy", "96":"guppy", "97":"goat", "98":"gash", "99":"Gaga","84":"chair","85":"shave","86":"shop"}
 L = ["s","l","n","m","r","f","b","t","ch","g"]
 rows = []
 for tens in range(1, 10):

@@ -16,8 +16,7 @@ tables below.
 
 ## 1. The 00–99 images
 
-Built from the reference notebook. Rows 53–99 aren't in the notes yet; they're left for the
-learner to fill, with the consonant pair shown as the guide. (An early draft had *notch* for 28
+Built from the reference notebook (0–52) and completed with the same method (53–99). (An early draft had *notch* for 28
 and *match* for 38: both hide a *t*, so they encode 278 and 378. That's the classic filler mistake.)
 
 **Single digits:** 0 zoo · 1 ale · 2 hen · 3 ham · 4 whore · 5 hive · 6 bee · 7 tea · 8 shoe · 9 goo
@@ -40,15 +39,26 @@ and *match* for 38: both hide a *t*, so they encode 278 and 378. That's the clas
 | 23 | n-m | name | 38 | m-sh | mesh | | | |
 | 24 | n-r | Nero | 39 | m-g | **mug** (Brown's own) | | | |
 
-**53–99: to fill in** (consonant pair → find a concrete, vivid word using only vowels/h/y as
-fillers, then `decode` it):
+**53–99** (84 chair, 85 shave and 86 shop are from Brown's football example; the rest follow the same rule and were each checked with `decode`):
 
-| 5_ | 53 f-m · 54 f-r · 55 f-f · 56 f-b · 57 f-t · 58 f-sh · 59 f-g |
-|---|---|
-| **6_** | 60 b-s · 61 b-l · 62 b-n · 63 b-m · 64 b-r · 65 b-f · 66 b-b · 67 b-t · 68 b-sh · 69 b-g |
-| **7_** | 70 t-s · 71 t-l · 72 t-n · 73 t-m · 74 t-r · 75 t-f · 76 t-b · 77 t-t · 78 t-sh · 79 t-g |
-| **8_** | 80 ch-s · 81 sh-l · 82 ch-n · 83 j-m · 84 ch-r (**chair**, from Brown's football example) · 85 sh-v (**shave**) · 86 sh-p (**shop**) · 87 sh-t · 88 j-j · 89 j-g |
-| **9_** | 90 g-s · 91 g-l · 92 g-n · 93 g-m · 94 g-r · 95 g-f · 96 g-b · 97 g-t · 98 g-sh · 99 g-g |
+| # | Code | Image | # | Code | Image | # | Code | Image |
+|---|---|---|---|---|---|---|---|---|
+| 53 | f-m | foam | 69 | b-g | bag | 85 | sh-f | shave |
+| 54 | f-r | fire | 70 | t-s | toes | 86 | sh-b | shop |
+| 55 | f-f | fife | 71 | t-l | tail | 87 | sh-t | jet |
+| 56 | f-b | fob | 72 | t-n | tin | 88 | sh-sh | choo-choo |
+| 57 | f-t | feet | 73 | t-m | tomb | 89 | sh-g | jug |
+| 58 | f-sh | fish | 74 | t-r | tyre | 90 | g-s | goose |
+| 59 | f-g | fig | 75 | t-f | toffee | 91 | g-l | gull |
+| 60 | b-s | bus | 76 | t-b | tub | 92 | g-n | gun |
+| 61 | b-l | ball | 77 | t-t | tattoo | 93 | g-m | gum |
+| 62 | b-n | bone | 78 | t-sh | Taj | 94 | g-r | gear |
+| 63 | b-m | bomb | 79 | t-g | toga | 95 | g-f | Goofy |
+| 64 | b-r | bear | 80 | sh-s | chess | 96 | g-b | guppy |
+| 65 | b-f | beef | 81 | sh-l | shell | 97 | g-t | goat |
+| 66 | b-b | baby | 82 | sh-n | chain | 98 | g-sh | gash |
+| 67 | b-t | bat | 83 | sh-m | jam | 99 | g-g | Gaga |
+| 68 | b-sh | bush | 84 | sh-r | chair |  |  |  |
 
 **Rules for choosing images:**
 - **Objects or people you can see and touch** beat abstract words ("knight" beats "night").
