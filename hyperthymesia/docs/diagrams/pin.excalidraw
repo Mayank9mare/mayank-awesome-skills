@@ -1,0 +1,278 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "excalidraw-cli",
+  "elements": [
+    {
+      "type": "rectangle",
+      "id": "n",
+      "x": 0,
+      "y": 30,
+      "width": 120,
+      "height": 64,
+      "backgroundColor": "#fff3bf",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "n_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "n_label",
+      "x": 10,
+      "y": 40,
+      "width": 100,
+      "height": 44,
+      "text": "1743",
+      "fontSize": 28,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "n"
+    },
+    {
+      "type": "rectangle",
+      "id": "l",
+      "x": 190,
+      "y": 30,
+      "width": 150,
+      "height": 64,
+      "backgroundColor": "#a5d8ff",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "l_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "l_label",
+      "x": 200,
+      "y": 40,
+      "width": 130,
+      "height": 44,
+      "text": "L  T  R  M",
+      "fontSize": 24,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "l"
+    },
+    {
+      "type": "rectangle",
+      "id": "w",
+      "x": 410,
+      "y": 30,
+      "width": 180,
+      "height": 64,
+      "backgroundColor": "#b2f2bb",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "w_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "w_label",
+      "x": 420,
+      "y": 40,
+      "width": 160,
+      "height": 44,
+      "text": "Light Room",
+      "fontSize": 24,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "w"
+    },
+    {
+      "type": "rectangle",
+      "id": "s",
+      "x": 340,
+      "y": 170,
+      "width": 250,
+      "height": 110,
+      "backgroundColor": "#ffd8a8",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "s_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "s_label",
+      "x": 350,
+      "y": 180,
+      "width": 230,
+      "height": 90,
+      "text": "a cash machine in a\ndazzling white room\nfull of lights",
+      "fontSize": 19,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "s"
+    },
+    {
+      "type": "arrow",
+      "id": "a0",
+      "x": 120,
+      "y": 62,
+      "width": 70,
+      "height": 0,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          70,
+          0
+        ]
+      ],
+      "endArrowhead": "arrow",
+      "startBinding": {
+        "elementId": "n",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "l",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "roughness": 2
+    },
+    {
+      "type": "arrow",
+      "id": "a1",
+      "x": 340,
+      "y": 62,
+      "width": 70,
+      "height": 0,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          70,
+          0
+        ]
+      ],
+      "endArrowhead": "arrow",
+      "startBinding": {
+        "elementId": "l",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "w",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "roughness": 2
+    },
+    {
+      "type": "arrow",
+      "id": "a2",
+      "x": 500,
+      "y": 94,
+      "width": 35,
+      "height": 76,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          -35,
+          76
+        ]
+      ],
+      "endArrowhead": "arrow",
+      "startBinding": {
+        "elementId": "w",
+        "fixedPoint": [
+          0.5,
+          1
+        ]
+      },
+      "endBinding": {
+        "elementId": "s",
+        "fixedPoint": [
+          0.5,
+          0
+        ]
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "t0",
+      "x": 124,
+      "y": 104,
+      "text": "code",
+      "fontSize": 18,
+      "fontFamily": 1
+    },
+    {
+      "type": "text",
+      "id": "t1",
+      "x": 336,
+      "y": 104,
+      "text": "+ vowels",
+      "fontSize": 18,
+      "fontFamily": 1
+    },
+    {
+      "type": "text",
+      "id": "t2",
+      "x": 120,
+      "y": 205,
+      "text": "link it to\nthe cash machine",
+      "fontSize": 19,
+      "strokeColor": "#e03131",
+      "fontFamily": 1
+    }
+  ],
+  "appState": {
+    "viewBackgroundColor": "#ffffff",
+    "gridSize": null
+  },
+  "files": {}
+}

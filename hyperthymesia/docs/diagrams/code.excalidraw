@@ -1,0 +1,452 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "excalidraw-cli",
+  "elements": [
+    {
+      "type": "rectangle",
+      "id": "c0",
+      "x": 0,
+      "y": 0,
+      "width": 150,
+      "height": 110,
+      "backgroundColor": "#a5d8ff",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "c0_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "c0_label",
+      "x": 10,
+      "y": 10,
+      "width": 130,
+      "height": 90,
+      "text": "0  →  z / s",
+      "fontSize": 24,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "c0"
+    },
+    {
+      "type": "text",
+      "id": "cw0",
+      "x": 4,
+      "y": 118,
+      "text": "z in zero",
+      "fontSize": 17,
+      "fontFamily": 1
+    },
+    {
+      "type": "rectangle",
+      "id": "c1",
+      "x": 170,
+      "y": 0,
+      "width": 150,
+      "height": 110,
+      "backgroundColor": "#b2f2bb",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "c1_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "c1_label",
+      "x": 180,
+      "y": 10,
+      "width": 130,
+      "height": 90,
+      "text": "1  →  l",
+      "fontSize": 24,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "c1"
+    },
+    {
+      "type": "text",
+      "id": "cw1",
+      "x": 174,
+      "y": 118,
+      "text": "looks like 1",
+      "fontSize": 17,
+      "fontFamily": 1
+    },
+    {
+      "type": "rectangle",
+      "id": "c2",
+      "x": 340,
+      "y": 0,
+      "width": 150,
+      "height": 110,
+      "backgroundColor": "#fff3bf",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "c2_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "c2_label",
+      "x": 350,
+      "y": 10,
+      "width": 130,
+      "height": 90,
+      "text": "2  →  n",
+      "fontSize": 24,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "c2"
+    },
+    {
+      "type": "text",
+      "id": "cw2",
+      "x": 344,
+      "y": 118,
+      "text": "two down-strokes",
+      "fontSize": 17,
+      "fontFamily": 1
+    },
+    {
+      "type": "rectangle",
+      "id": "c3",
+      "x": 510,
+      "y": 0,
+      "width": 150,
+      "height": 110,
+      "backgroundColor": "#ffd8a8",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "c3_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "c3_label",
+      "x": 520,
+      "y": 10,
+      "width": 130,
+      "height": 90,
+      "text": "3  →  m",
+      "fontSize": 24,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "c3"
+    },
+    {
+      "type": "text",
+      "id": "cw3",
+      "x": 514,
+      "y": 118,
+      "text": "three down-strokes",
+      "fontSize": 17,
+      "fontFamily": 1
+    },
+    {
+      "type": "rectangle",
+      "id": "c4",
+      "x": 680,
+      "y": 0,
+      "width": 150,
+      "height": 110,
+      "backgroundColor": "#d0bfff",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "c4_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "c4_label",
+      "x": 690,
+      "y": 10,
+      "width": 130,
+      "height": 90,
+      "text": "4  →  r",
+      "fontSize": 24,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "c4"
+    },
+    {
+      "type": "text",
+      "id": "cw4",
+      "x": 684,
+      "y": 118,
+      "text": "fouR",
+      "fontSize": 17,
+      "fontFamily": 1
+    },
+    {
+      "type": "rectangle",
+      "id": "c5",
+      "x": 0,
+      "y": 170,
+      "width": 150,
+      "height": 110,
+      "backgroundColor": "#a5d8ff",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "c5_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "c5_label",
+      "x": 10,
+      "y": 180,
+      "width": 130,
+      "height": 90,
+      "text": "5  →  f / v",
+      "fontSize": 24,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "c5"
+    },
+    {
+      "type": "text",
+      "id": "cw5",
+      "x": 4,
+      "y": 288,
+      "text": "FiVe",
+      "fontSize": 17,
+      "fontFamily": 1
+    },
+    {
+      "type": "rectangle",
+      "id": "c6",
+      "x": 170,
+      "y": 170,
+      "width": 150,
+      "height": 110,
+      "backgroundColor": "#b2f2bb",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "c6_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "c6_label",
+      "x": 180,
+      "y": 180,
+      "width": 130,
+      "height": 90,
+      "text": "6  →  b / p",
+      "fontSize": 24,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "c6"
+    },
+    {
+      "type": "text",
+      "id": "cw6",
+      "x": 174,
+      "y": 288,
+      "text": "b looks like 6",
+      "fontSize": 17,
+      "fontFamily": 1
+    },
+    {
+      "type": "rectangle",
+      "id": "c7",
+      "x": 340,
+      "y": 170,
+      "width": 150,
+      "height": 110,
+      "backgroundColor": "#fff3bf",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "c7_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "c7_label",
+      "x": 350,
+      "y": 180,
+      "width": 130,
+      "height": 90,
+      "text": "7  →  t",
+      "fontSize": 24,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "c7"
+    },
+    {
+      "type": "text",
+      "id": "cw7",
+      "x": 344,
+      "y": 288,
+      "text": "7 ≈ capital T",
+      "fontSize": 17,
+      "fontFamily": 1
+    },
+    {
+      "type": "rectangle",
+      "id": "c8",
+      "x": 510,
+      "y": 170,
+      "width": 150,
+      "height": 110,
+      "backgroundColor": "#ffd8a8",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "c8_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "c8_label",
+      "x": 520,
+      "y": 180,
+      "width": 130,
+      "height": 90,
+      "text": "8  →  ch sh j",
+      "fontSize": 24,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "c8"
+    },
+    {
+      "type": "text",
+      "id": "cw8",
+      "x": 514,
+      "y": 288,
+      "text": "the gh in eiGHt",
+      "fontSize": 17,
+      "fontFamily": 1
+    },
+    {
+      "type": "rectangle",
+      "id": "c9",
+      "x": 680,
+      "y": 170,
+      "width": 150,
+      "height": 110,
+      "backgroundColor": "#d0bfff",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "c9_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "c9_label",
+      "x": 690,
+      "y": 180,
+      "width": 130,
+      "height": 90,
+      "text": "9  →  g",
+      "fontSize": 24,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "c9"
+    },
+    {
+      "type": "text",
+      "id": "cw9",
+      "x": 684,
+      "y": 288,
+      "text": "g looks like 9",
+      "fontSize": 17,
+      "fontFamily": 1
+    },
+    {
+      "type": "text",
+      "id": "fill",
+      "x": 0,
+      "y": 345,
+      "text": "Fill the gaps with vowels, h and y only. Any other letter changes the number.",
+      "fontSize": 17,
+      "strokeColor": "#e03131",
+      "fontFamily": 1
+    }
+  ],
+  "appState": {
+    "viewBackgroundColor": "#ffffff",
+    "gridSize": null
+  },
+  "files": {}
+}

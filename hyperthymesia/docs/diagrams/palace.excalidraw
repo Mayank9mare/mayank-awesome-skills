@@ -1,0 +1,491 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "excalidraw-cli",
+  "elements": [
+    {
+      "type": "rectangle",
+      "id": "room",
+      "x": 0,
+      "y": 0,
+      "width": 620,
+      "height": 420,
+      "backgroundColor": "#f8f9fa",
+      "fillStyle": "solid",
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "rectangle",
+      "id": "p1",
+      "x": 150,
+      "y": 330,
+      "width": 110,
+      "height": 54,
+      "backgroundColor": "#c3fae8",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "p1_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "p1_label",
+      "x": 160,
+      "y": 340,
+      "width": 90,
+      "height": 34,
+      "text": "1. coat hook",
+      "fontSize": 17,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "p1"
+    },
+    {
+      "type": "rectangle",
+      "id": "p2",
+      "x": 30,
+      "y": 250,
+      "width": 110,
+      "height": 54,
+      "backgroundColor": "#c3fae8",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "p2_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "p2_label",
+      "x": 40,
+      "y": 260,
+      "width": 90,
+      "height": 34,
+      "text": "2. bookshelf",
+      "fontSize": 17,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "p2"
+    },
+    {
+      "type": "rectangle",
+      "id": "p3",
+      "x": 30,
+      "y": 140,
+      "width": 110,
+      "height": 54,
+      "backgroundColor": "#c3fae8",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "p3_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "p3_label",
+      "x": 40,
+      "y": 150,
+      "width": 90,
+      "height": 34,
+      "text": "3. window",
+      "fontSize": 17,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "p3"
+    },
+    {
+      "type": "rectangle",
+      "id": "p4",
+      "x": 40,
+      "y": 30,
+      "width": 110,
+      "height": 54,
+      "backgroundColor": "#c3fae8",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "p4_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "p4_label",
+      "x": 50,
+      "y": 40,
+      "width": 90,
+      "height": 34,
+      "text": "4. armchair",
+      "fontSize": 17,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "p4"
+    },
+    {
+      "type": "ellipse",
+      "id": "p5",
+      "x": 190,
+      "y": 30,
+      "width": 110,
+      "height": 54,
+      "backgroundColor": "#fff3bf",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "p5_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "p5_label",
+      "x": 200,
+      "y": 40,
+      "width": 90,
+      "height": 34,
+      "text": "5. lamp",
+      "fontSize": 17,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "p5"
+    },
+    {
+      "type": "rectangle",
+      "id": "p6",
+      "x": 340,
+      "y": 30,
+      "width": 110,
+      "height": 54,
+      "backgroundColor": "#c3fae8",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "p6_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "p6_label",
+      "x": 350,
+      "y": 40,
+      "width": 90,
+      "height": 34,
+      "text": "6. fireplace",
+      "fontSize": 17,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "p6"
+    },
+    {
+      "type": "rectangle",
+      "id": "p7",
+      "x": 480,
+      "y": 30,
+      "width": 110,
+      "height": 54,
+      "backgroundColor": "#c3fae8",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "p7_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "p7_label",
+      "x": 490,
+      "y": 40,
+      "width": 90,
+      "height": 34,
+      "text": "7. painting",
+      "fontSize": 17,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "p7"
+    },
+    {
+      "type": "rectangle",
+      "id": "p8",
+      "x": 490,
+      "y": 140,
+      "width": 110,
+      "height": 54,
+      "backgroundColor": "#c3fae8",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "p8_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "p8_label",
+      "x": 500,
+      "y": 150,
+      "width": 90,
+      "height": 34,
+      "text": "8. sofa",
+      "fontSize": 17,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "p8"
+    },
+    {
+      "type": "rectangle",
+      "id": "p9",
+      "x": 490,
+      "y": 250,
+      "width": 110,
+      "height": 54,
+      "backgroundColor": "#c3fae8",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "p9_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "p9_label",
+      "x": 500,
+      "y": 260,
+      "width": 90,
+      "height": 34,
+      "text": "9. TV",
+      "fontSize": 17,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "p9"
+    },
+    {
+      "type": "ellipse",
+      "id": "p10",
+      "x": 400,
+      "y": 330,
+      "width": 110,
+      "height": 54,
+      "backgroundColor": "#fff3bf",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "p10_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "p10_label",
+      "x": 410,
+      "y": 340,
+      "width": 90,
+      "height": 34,
+      "text": "10. plant",
+      "fontSize": 17,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "p10"
+    },
+    {
+      "type": "rectangle",
+      "id": "door",
+      "x": 270,
+      "y": 395,
+      "width": 80,
+      "height": 40,
+      "backgroundColor": "#ffd8a8",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "door_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "door_label",
+      "x": 280,
+      "y": 405,
+      "width": 60,
+      "height": 20,
+      "text": "door",
+      "fontSize": 16,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "door"
+    },
+    {
+      "type": "text",
+      "id": "you",
+      "x": 262,
+      "y": 448,
+      "text": "you start here",
+      "fontSize": 16,
+      "fontFamily": 1
+    },
+    {
+      "type": "arrow",
+      "id": "route",
+      "x": 300,
+      "y": 380,
+      "width": 128,
+      "height": 66,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          -100,
+          -68
+        ],
+        [
+          -140,
+          -105
+        ],
+        [
+          -140,
+          -245
+        ],
+        [
+          -110,
+          -282
+        ],
+        [
+          0,
+          -286
+        ],
+        [
+          140,
+          -282
+        ],
+        [
+          170,
+          -245
+        ],
+        [
+          170,
+          -105
+        ],
+        [
+          128,
+          -66
+        ]
+      ],
+      "endArrowhead": "arrow",
+      "strokeStyle": "dashed",
+      "strokeColor": "#e03131",
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "rt",
+      "x": 205,
+      "y": 175,
+      "text": "clockwise,\nstarting on your\nimmediate left",
+      "fontSize": 18,
+      "strokeColor": "#e03131",
+      "fontFamily": 1
+    },
+    {
+      "type": "text",
+      "id": "m5",
+      "x": 0,
+      "y": 490,
+      "text": "✋ A hand at every 5th locus,\nso you can jump straight\nto #5 or #10.",
+      "fontSize": 19,
+      "fontFamily": 1
+    },
+    {
+      "type": "text",
+      "id": "in",
+      "x": 330,
+      "y": 490,
+      "text": "Put the action INSIDE things:\nDave sits in the fridge, so\nthe space next to it stays free.",
+      "fontSize": 19,
+      "fontFamily": 1
+    }
+  ],
+  "appState": {
+    "viewBackgroundColor": "#ffffff",
+    "gridSize": null
+  },
+  "files": {}
+}

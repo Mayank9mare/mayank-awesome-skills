@@ -1,0 +1,278 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "excalidraw-cli",
+  "elements": [
+    {
+      "type": "rectangle",
+      "id": "n",
+      "x": 0,
+      "y": 0,
+      "width": 170,
+      "height": 64,
+      "backgroundColor": "#fff3bf",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "n_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "n_label",
+      "x": 10,
+      "y": 10,
+      "width": 150,
+      "height": 44,
+      "text": "\"Mike\"",
+      "fontSize": 24,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "n"
+    },
+    {
+      "type": "rectangle",
+      "id": "i",
+      "x": 0,
+      "y": 130,
+      "width": 170,
+      "height": 64,
+      "backgroundColor": "#a5d8ff",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "i_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "i_label",
+      "x": 10,
+      "y": 140,
+      "width": 150,
+      "height": 44,
+      "text": "microphone",
+      "fontSize": 22,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "i"
+    },
+    {
+      "type": "rectangle",
+      "id": "f",
+      "x": 300,
+      "y": 130,
+      "width": 190,
+      "height": 64,
+      "backgroundColor": "#d0bfff",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "f_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "f_label",
+      "x": 310,
+      "y": 140,
+      "width": 170,
+      "height": 44,
+      "text": "his large nose",
+      "fontSize": 22,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "f"
+    },
+    {
+      "type": "rectangle",
+      "id": "l",
+      "x": 140,
+      "y": 270,
+      "width": 300,
+      "height": 90,
+      "backgroundColor": "#b2f2bb",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "l_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "l_label",
+      "x": 150,
+      "y": 280,
+      "width": 280,
+      "height": 70,
+      "text": "a microphone sticking out\nof the middle of his face",
+      "fontSize": 18,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "l"
+    },
+    {
+      "type": "arrow",
+      "id": "a1",
+      "x": 85,
+      "y": 64,
+      "width": 0,
+      "height": 66,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          66
+        ]
+      ],
+      "endArrowhead": "arrow",
+      "startBinding": {
+        "elementId": "n",
+        "fixedPoint": [
+          0.5,
+          1
+        ]
+      },
+      "endBinding": {
+        "elementId": "i",
+        "fixedPoint": [
+          0.5,
+          0
+        ]
+      },
+      "roughness": 2
+    },
+    {
+      "type": "arrow",
+      "id": "a2",
+      "x": 85,
+      "y": 194,
+      "width": 155,
+      "height": 76,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          155,
+          76
+        ]
+      ],
+      "endArrowhead": "arrow",
+      "startBinding": {
+        "elementId": "i",
+        "fixedPoint": [
+          0.5,
+          1
+        ]
+      },
+      "endBinding": {
+        "elementId": "l",
+        "fixedPoint": [
+          0.3,
+          0
+        ]
+      },
+      "roughness": 2
+    },
+    {
+      "type": "arrow",
+      "id": "a3",
+      "x": 395,
+      "y": 194,
+      "width": 55,
+      "height": 76,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          -55,
+          76
+        ]
+      ],
+      "endArrowhead": "arrow",
+      "startBinding": {
+        "elementId": "f",
+        "fixedPoint": [
+          0.5,
+          1
+        ]
+      },
+      "endBinding": {
+        "elementId": "l",
+        "fixedPoint": [
+          0.7,
+          0
+        ]
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "t1",
+      "x": 100,
+      "y": 84,
+      "text": "name → image",
+      "fontSize": 15,
+      "fontFamily": 1
+    },
+    {
+      "type": "text",
+      "id": "t2",
+      "x": 300,
+      "y": 92,
+      "text": "something on the face",
+      "fontSize": 15,
+      "fontFamily": 1
+    },
+    {
+      "type": "text",
+      "id": "t3",
+      "x": 470,
+      "y": 300,
+      "text": "link them",
+      "fontSize": 16,
+      "strokeColor": "#e03131",
+      "fontFamily": 1
+    }
+  ],
+  "appState": {
+    "viewBackgroundColor": "#ffffff",
+    "gridSize": null
+  },
+  "files": {}
+}

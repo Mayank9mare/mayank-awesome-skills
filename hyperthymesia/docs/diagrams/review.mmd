@@ -1,0 +1,6 @@
+flowchart TD
+  E(["Encode"]) --> A["Walk it now,<br/>forwards and back"] --> B["1 hour"] --> C["That evening"] --> D["3 days"] --> W["1 week"] --> T["3 weeks"] --> M["2 months"] --> K(["Kept"])
+  B -. "missed it?" .-> R["Rebuild a stronger image"]
+  D -. "missed it?" .-> R
+  T -. "missed it?" .-> R
+  R -.-> A

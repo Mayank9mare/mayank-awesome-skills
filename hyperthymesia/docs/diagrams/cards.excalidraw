@@ -1,0 +1,499 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "excalidraw-cli",
+  "elements": [
+    {
+      "type": "rectangle",
+      "id": "k0",
+      "x": 0,
+      "y": 0,
+      "width": 90,
+      "height": 80,
+      "backgroundColor": "#ffc9c9",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "k0_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "k0_label",
+      "x": 10,
+      "y": 10,
+      "width": 70,
+      "height": 60,
+      "text": "9 ♥",
+      "fontSize": 26,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "k0"
+    },
+    {
+      "type": "rectangle",
+      "id": "s0",
+      "x": 150,
+      "y": 8,
+      "width": 150,
+      "height": 64,
+      "boundElements": [
+        {
+          "id": "s0_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "s0_label",
+      "x": 160,
+      "y": 18,
+      "width": 130,
+      "height": 44,
+      "text": "H + 9",
+      "fontSize": 20,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "s0"
+    },
+    {
+      "type": "rectangle",
+      "id": "c0",
+      "x": 360,
+      "y": 8,
+      "width": 120,
+      "height": 64,
+      "boundElements": [
+        {
+          "id": "c0_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "c0_label",
+      "x": 370,
+      "y": 18,
+      "width": 100,
+      "height": 44,
+      "text": "H · g",
+      "fontSize": 20,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "c0"
+    },
+    {
+      "type": "rectangle",
+      "id": "w0",
+      "x": 540,
+      "y": 8,
+      "width": 130,
+      "height": 64,
+      "backgroundColor": "#fff3bf",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "w0_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "w0_label",
+      "x": 550,
+      "y": 18,
+      "width": 110,
+      "height": 44,
+      "text": "HAG",
+      "fontSize": 24,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "w0"
+    },
+    {
+      "type": "arrow",
+      "id": "a00",
+      "x": 90,
+      "y": 40,
+      "width": 60,
+      "height": 0,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          60,
+          0
+        ]
+      ],
+      "endArrowhead": "arrow",
+      "startBinding": {
+        "elementId": "k0",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "s0",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "roughness": 2
+    },
+    {
+      "type": "arrow",
+      "id": "a01",
+      "x": 300,
+      "y": 40,
+      "width": 60,
+      "height": 0,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          60,
+          0
+        ]
+      ],
+      "endArrowhead": "arrow",
+      "startBinding": {
+        "elementId": "s0",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "c0",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "roughness": 2
+    },
+    {
+      "type": "arrow",
+      "id": "a02",
+      "x": 480,
+      "y": 40,
+      "width": 60,
+      "height": 0,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          60,
+          0
+        ]
+      ],
+      "endArrowhead": "arrow",
+      "startBinding": {
+        "elementId": "c0",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "w0",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "roughness": 2
+    },
+    {
+      "type": "rectangle",
+      "id": "k1",
+      "x": 0,
+      "y": 110,
+      "width": 90,
+      "height": 80,
+      "backgroundColor": "#a5d8ff",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "k1_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "k1_label",
+      "x": 10,
+      "y": 120,
+      "width": 70,
+      "height": 60,
+      "text": "6 ♠",
+      "fontSize": 26,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "k1"
+    },
+    {
+      "type": "rectangle",
+      "id": "s1",
+      "x": 150,
+      "y": 118,
+      "width": 150,
+      "height": 64,
+      "boundElements": [
+        {
+          "id": "s1_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "s1_label",
+      "x": 160,
+      "y": 128,
+      "width": 130,
+      "height": 44,
+      "text": "S + 6",
+      "fontSize": 20,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "s1"
+    },
+    {
+      "type": "rectangle",
+      "id": "c1",
+      "x": 360,
+      "y": 118,
+      "width": 120,
+      "height": 64,
+      "boundElements": [
+        {
+          "id": "c1_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "c1_label",
+      "x": 370,
+      "y": 128,
+      "width": 100,
+      "height": 44,
+      "text": "S · b",
+      "fontSize": 20,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "c1"
+    },
+    {
+      "type": "rectangle",
+      "id": "w1",
+      "x": 540,
+      "y": 118,
+      "width": 130,
+      "height": 64,
+      "backgroundColor": "#fff3bf",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "w1_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "w1_label",
+      "x": 550,
+      "y": 128,
+      "width": 110,
+      "height": 44,
+      "text": "SOB",
+      "fontSize": 24,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "w1"
+    },
+    {
+      "type": "arrow",
+      "id": "a10",
+      "x": 90,
+      "y": 150,
+      "width": 60,
+      "height": 0,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          60,
+          0
+        ]
+      ],
+      "endArrowhead": "arrow",
+      "startBinding": {
+        "elementId": "k1",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "s1",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "roughness": 2
+    },
+    {
+      "type": "arrow",
+      "id": "a11",
+      "x": 300,
+      "y": 150,
+      "width": 60,
+      "height": 0,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          60,
+          0
+        ]
+      ],
+      "endArrowhead": "arrow",
+      "startBinding": {
+        "elementId": "s1",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "c1",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "roughness": 2
+    },
+    {
+      "type": "arrow",
+      "id": "a12",
+      "x": 480,
+      "y": 150,
+      "width": 60,
+      "height": 0,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          60,
+          0
+        ]
+      ],
+      "endArrowhead": "arrow",
+      "startBinding": {
+        "elementId": "c1",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "w1",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "h1",
+      "x": 150,
+      "y": 225,
+      "text": "suit initial + rank code",
+      "fontSize": 16,
+      "fontFamily": 1
+    },
+    {
+      "type": "text",
+      "id": "h2",
+      "x": 0,
+      "y": 255,
+      "text": "Court cards are characters, since J would clash with j = 8.\nHearts: Cupid, bride, bridegroom.",
+      "fontSize": 16,
+      "strokeColor": "#e03131",
+      "fontFamily": 1
+    }
+  ],
+  "appState": {
+    "viewBackgroundColor": "#ffffff",
+    "gridSize": null
+  },
+  "files": {}
+}

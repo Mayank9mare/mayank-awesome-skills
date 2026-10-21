@@ -1,0 +1,420 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "excalidraw-cli",
+  "elements": [
+    {
+      "type": "rectangle",
+      "id": "m",
+      "x": 150,
+      "y": 0,
+      "width": 300,
+      "height": 76,
+      "backgroundColor": "#fff3bf",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "m_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "m_label",
+      "x": 160,
+      "y": 10,
+      "width": 280,
+      "height": 56,
+      "text": "Everton 2 – Watford 0\nseason 1983–84",
+      "fontSize": 21,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "m"
+    },
+    {
+      "type": "rectangle",
+      "id": "y",
+      "x": 0,
+      "y": 140,
+      "width": 220,
+      "height": 62,
+      "backgroundColor": "#a5d8ff",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "y_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "y_label",
+      "x": 10,
+      "y": 150,
+      "width": 200,
+      "height": 42,
+      "text": "84 → ch · r",
+      "fontSize": 22,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "y"
+    },
+    {
+      "type": "rectangle",
+      "id": "e",
+      "x": 380,
+      "y": 140,
+      "width": 220,
+      "height": 62,
+      "backgroundColor": "#a5d8ff",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "e_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "e_label",
+      "x": 390,
+      "y": 150,
+      "width": 200,
+      "height": 42,
+      "text": "E2 W0 → E N W S",
+      "fontSize": 22,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "e"
+    },
+    {
+      "type": "rectangle",
+      "id": "c",
+      "x": 40,
+      "y": 260,
+      "width": 140,
+      "height": 62,
+      "backgroundColor": "#b2f2bb",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "c_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "c_label",
+      "x": 50,
+      "y": 270,
+      "width": 120,
+      "height": 42,
+      "text": "CHAIR",
+      "fontSize": 24,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "c"
+    },
+    {
+      "type": "rectangle",
+      "id": "k",
+      "x": 420,
+      "y": 260,
+      "width": 140,
+      "height": 62,
+      "backgroundColor": "#b2f2bb",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "k_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "k_label",
+      "x": 430,
+      "y": 270,
+      "width": 120,
+      "height": 42,
+      "text": "compass",
+      "fontSize": 22,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "k"
+    },
+    {
+      "type": "rectangle",
+      "id": "s",
+      "x": 150,
+      "y": 380,
+      "width": 300,
+      "height": 104,
+      "backgroundColor": "#ffd8a8",
+      "fillStyle": "solid",
+      "boundElements": [
+        {
+          "id": "s_label",
+          "type": "text"
+        }
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "roughness": 2
+    },
+    {
+      "type": "text",
+      "id": "s_label",
+      "x": 160,
+      "y": 390,
+      "width": 280,
+      "height": 84,
+      "text": "a chair spinning to\npoint East, North,\nWest, South",
+      "fontSize": 20,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "s"
+    },
+    {
+      "type": "arrow",
+      "id": "a1",
+      "x": 230,
+      "y": 76,
+      "width": 120,
+      "height": 64,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          -120,
+          64
+        ]
+      ],
+      "endArrowhead": "arrow",
+      "startBinding": {
+        "elementId": "m",
+        "fixedPoint": [
+          0.27,
+          1
+        ]
+      },
+      "endBinding": {
+        "elementId": "y",
+        "fixedPoint": [
+          0.5,
+          0
+        ]
+      },
+      "roughness": 2
+    },
+    {
+      "type": "arrow",
+      "id": "a2",
+      "x": 370,
+      "y": 76,
+      "width": 120,
+      "height": 64,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          120,
+          64
+        ]
+      ],
+      "endArrowhead": "arrow",
+      "startBinding": {
+        "elementId": "m",
+        "fixedPoint": [
+          0.73,
+          1
+        ]
+      },
+      "endBinding": {
+        "elementId": "e",
+        "fixedPoint": [
+          0.5,
+          0
+        ]
+      },
+      "roughness": 2
+    },
+    {
+      "type": "arrow",
+      "id": "a3",
+      "x": 110,
+      "y": 202,
+      "width": 0,
+      "height": 58,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          58
+        ]
+      ],
+      "endArrowhead": "arrow",
+      "startBinding": {
+        "elementId": "y",
+        "fixedPoint": [
+          0.5,
+          1
+        ]
+      },
+      "endBinding": {
+        "elementId": "c",
+        "fixedPoint": [
+          0.5,
+          0
+        ]
+      },
+      "roughness": 2
+    },
+    {
+      "type": "arrow",
+      "id": "a4",
+      "x": 490,
+      "y": 202,
+      "width": 0,
+      "height": 58,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          58
+        ]
+      ],
+      "endArrowhead": "arrow",
+      "startBinding": {
+        "elementId": "e",
+        "fixedPoint": [
+          0.5,
+          1
+        ]
+      },
+      "endBinding": {
+        "elementId": "k",
+        "fixedPoint": [
+          0.5,
+          0
+        ]
+      },
+      "roughness": 2
+    },
+    {
+      "type": "arrow",
+      "id": "a5",
+      "x": 110,
+      "y": 322,
+      "width": 120,
+      "height": 58,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          120,
+          58
+        ]
+      ],
+      "endArrowhead": "arrow",
+      "startBinding": {
+        "elementId": "c",
+        "fixedPoint": [
+          0.5,
+          1
+        ]
+      },
+      "endBinding": {
+        "elementId": "s",
+        "fixedPoint": [
+          0.27,
+          0
+        ]
+      },
+      "roughness": 2
+    },
+    {
+      "type": "arrow",
+      "id": "a6",
+      "x": 490,
+      "y": 322,
+      "width": 120,
+      "height": 58,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          -120,
+          58
+        ]
+      ],
+      "endArrowhead": "arrow",
+      "startBinding": {
+        "elementId": "k",
+        "fixedPoint": [
+          0.5,
+          1
+        ]
+      },
+      "endBinding": {
+        "elementId": "s",
+        "fixedPoint": [
+          0.73,
+          0
+        ]
+      },
+      "roughness": 2
+    }
+  ],
+  "appState": {
+    "viewBackgroundColor": "#ffffff",
+    "gridSize": null
+  },
+  "files": {}
+}

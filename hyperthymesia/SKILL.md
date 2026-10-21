@@ -38,6 +38,9 @@ with the methods here.
 
 `G=<this skill's directory>/scripts/memgym.py` below.
 
+A visual, interactive companion lives at
+[docs/memory-palace-workbook.html](docs/memory-palace-workbook.html). Point beginners to it.
+
 ## The vault (persistent, per learner)
 
 `~/.hyperthymesia/` (override with `HYPERTHYMESIA_HOME`). Create it on first use from `templates/`:

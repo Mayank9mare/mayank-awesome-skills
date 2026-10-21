@@ -1,0 +1,598 @@
+<title>Memory Palace Workbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@500;700&family=Patrick+Hand&family=Young+Serif&display=swap">
+<style>
+/* Layout: a ruled notebook page with a red margin line; a sticky "route" of numbered stops on the left (desktop), one reading column, hand-drawn figures that may run wider. */
+:root {
+  --paper: #fbfcff;
+  --paper-2: #f2f5fc;
+  --rule: #e2e8f5;
+  --ink: #1d2a55;
+  --ink-soft: #56607a;
+  --accent: #2f49c9;
+  --margin: #d6336c;
+  --good: #2b8a3e;
+  --f-blue: #8db4f2; --f-green: #8fd3a0; --f-orange: #f2b47c; --f-purple: #b5a2f0;
+  --f-red: #f09aa4; --f-yellow: #f0cf5e; --f-teal: #7fd0c2; --f-paper: #e3e9f7;
+  --display: "Young Serif", Georgia, "Times New Roman", serif;
+  --body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --hand-font: "Patrick Hand", "Comic Sans MS", "Chalkboard SE", cursive;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  --step: 1.0625rem;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper: #10172a; --paper-2: #172038; --rule: #1f2a46; --ink: #e7ecff; --ink-soft: #9aa6c7;
+    --accent: #9db0ff; --margin: #ff7a96; --good: #69db7c;
+    --f-blue: #3a5fa8; --f-green: #3d8a5a; --f-orange: #a8673a; --f-purple: #6a55b0;
+    --f-red: #a84a5a; --f-yellow: #a88a2e; --f-teal: #2f8a7e; --f-paper: #1a2440;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #10172a; --paper-2: #172038; --rule: #1f2a46; --ink: #e7ecff; --ink-soft: #9aa6c7;
+  --accent: #9db0ff; --margin: #ff7a96; --good: #69db7c;
+  --f-blue: #3a5fa8; --f-green: #3d8a5a; --f-orange: #a8673a; --f-purple: #6a55b0;
+  --f-red: #a84a5a; --f-yellow: #a88a2e; --f-teal: #2f8a7e; --f-paper: #1a2440;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font: 400 var(--step)/1.65 var(--body);
+  background-image: repeating-linear-gradient(to bottom, transparent 0 31px, var(--rule) 31px 32px);
+}
+.shell { display: grid; grid-template-columns: 15rem minmax(0, 1fr); gap: 3rem; max-width: 76rem; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+@media (max-width: 960px) { .shell { grid-template-columns: minmax(0, 1fr); gap: 0; padding-inline: 1rem; } .route { display: none; } }
+
+/* The route (table of contents) */
+.route { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 1.5rem); align-self: start; font-family: var(--hand-font); font-size: 1.15rem; }
+.route p { margin: 0 0 .6rem; font-family: var(--body); font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); }
+.route ol { list-style: none; margin: 0; padding: 0; border-left: 2px dashed var(--margin); }
+.route li { position: relative; padding: .18rem 0 .18rem 1.1rem; }
+.route li::before { content: ""; position: absolute; left: -6px; top: .78rem; width: 10px; height: 10px; border-radius: 50%; background: var(--paper); border: 2px solid var(--margin); }
+.route li.mark::before { background: var(--margin); }
+.route a { color: var(--ink); text-decoration: none; }
+.route a:hover, .route a:focus-visible { color: var(--accent); text-decoration: underline; }
+.route .n { color: var(--ink-soft); margin-right: .35rem; font-variant-numeric: tabular-nums; }
+
+/* Reading column with the notebook margin */
+main { position: relative; padding-left: 2.25rem; min-width: 0; }
+main::before { content: ""; position: absolute; left: .6rem; top: 0; bottom: 0; width: 2px; background: var(--margin); opacity: .55; }
+@media (max-width: 560px) { main { padding-left: 1.1rem; } main::before { left: 0; } }
+.col { max-width: 44rem; }
+
+h1, h2, h3 { font-family: var(--display); font-weight: 400; line-height: 1.15; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(2.4rem, 6vw, 4rem); letter-spacing: -.01em; }
+h2 { font-size: clamp(1.7rem, 3.4vw, 2.3rem); }
+h3 { font-size: 1.3rem; margin-top: 1.6rem; }
+p { margin: .8rem 0; }
+.eyebrow { font: 700 .78rem/1 var(--body); letter-spacing: .14em; text-transform: uppercase; color: var(--margin); }
+.hand { font-family: var(--hand-font); }
+.lede { font-size: 1.25rem; color: var(--ink-soft); max-width: 38rem; }
+strong { font-weight: 700; }
+code, .mono { font-family: var(--mono); font-size: .92em; }
+a { color: var(--accent); }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+section { padding-block: 3.2rem 1rem; border-top: 1px solid var(--rule); scroll-margin-top: 1rem; }
+section:first-of-type { border-top: 0; padding-top: 0; }
+.stop { display: flex; align-items: baseline; gap: .8rem; margin-bottom: .6rem; }
+.stop .num { font-family: var(--hand-font); font-size: 1.5rem; color: var(--margin); min-width: 2.2rem; font-variant-numeric: tabular-nums; }
+
+.figure { margin: 1.4rem 0; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.figure svg { display: block; height: auto; }
+.figure .sketch { width: 100%; max-width: 100%; }
+.figure.wide .sketch, .figure.wide > svg { min-width: 640px; }
+.figure > svg[id^="mm-"] { width: 100%; }
+.figure.review > svg { max-width: 30rem !important; margin-inline: auto; }
+.sketch .hand { font-family: var(--hand-font); }
+figcaption { font-family: var(--hand-font); font-size: 1.05rem; color: var(--ink-soft); margin-top: .4rem; }
+
+.rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); gap: 1rem; margin: 1.2rem 0; padding: 0; list-style: none; }
+.rules li { padding: 1rem 1.1rem; background: var(--paper-2); border: 1.5px solid var(--ink); border-radius: 14px 18px 12px 16px / 16px 12px 18px 14px; }
+.rules b { display: block; font-family: var(--hand-font); font-size: 1.35rem; font-weight: 400; color: var(--accent); }
+
+.steps { counter-reset: s; list-style: none; padding: 0; margin: 1rem 0; display: grid; gap: .55rem; }
+.steps li { counter-increment: s; position: relative; padding-left: 2.4rem; }
+.steps li::before { content: counter(s); position: absolute; left: 0; top: .05rem; width: 1.7rem; height: 1.7rem; display: grid; place-items: center; border: 1.5px solid var(--margin); border-radius: 50%; font: 1rem/1 var(--hand-font); color: var(--margin); }
+ul.plain { padding-left: 1.2rem; }
+ul.plain li { margin: .3rem 0; }
+
+.note { margin: 1.4rem 0; padding: .9rem 1.1rem; border-left: 4px solid var(--margin); background: var(--paper-2); }
+.note .hand { font-size: 1.2rem; color: var(--margin); display: block; }
+.quote { font-family: var(--hand-font); font-size: 1.4rem; line-height: 1.4; color: var(--accent); margin: 1.2rem 0; }
+
+/* Practice panels */
+.try { margin: 1.6rem 0; padding: 1.2rem 1.25rem 1.3rem; border: 2px solid var(--ink); border-radius: 18px 14px 20px 12px / 12px 20px 14px 18px; background: var(--paper); box-shadow: 5px 5px 0 var(--f-paper); }
+.try h3 { margin: 0 0 .4rem; display: flex; gap: .6rem; align-items: baseline; flex-wrap: wrap; }
+.try h3 .tag { font: 700 .72rem/1 var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--paper); background: var(--margin); padding: .3rem .5rem; border-radius: 4px; }
+.row { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; margin-top: .8rem; }
+button { font: 700 1rem/1 var(--body); color: var(--paper); background: var(--accent); border: 0; padding: .7rem 1rem; border-radius: 10px; cursor: pointer; }
+button.ghost { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
+button:hover { filter: brightness(1.08); }
+input[type="text"], textarea { font: 400 1.05rem/1.4 var(--body); color: var(--ink); background: var(--paper-2); border: 1.5px solid var(--ink-soft); border-radius: 10px; padding: .6rem .75rem; width: 100%; }
+textarea { min-height: 7rem; resize: vertical; }
+label { font-weight: 700; display: block; margin-bottom: .35rem; }
+.wordgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr)); gap: .45rem; margin: .8rem 0; padding: 0; list-style: none; counter-reset: w; }
+.wordgrid li { counter-increment: w; font-family: var(--hand-font); font-size: 1.3rem; padding: .25rem .55rem; border-bottom: 1.5px dashed var(--rule); }
+.wordgrid li::before { content: counter(w) "."; color: var(--ink-soft); font-size: .95rem; margin-right: .35rem; font-variant-numeric: tabular-nums; }
+.wordgrid li.ok { color: var(--good); }
+.wordgrid li.miss { color: var(--margin); text-decoration: line-through; text-decoration-thickness: 1.5px; }
+.timer { font: 700 1.1rem/1 var(--mono); color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.score { font-family: var(--hand-font); font-size: 1.6rem; color: var(--accent); }
+.out { margin-top: .9rem; font-size: 1rem; }
+.out table { border-collapse: collapse; width: 100%; }
+.out td, .out th { text-align: left; padding: .35rem .5rem; border-bottom: 1px solid var(--rule); }
+.out .big { font: 700 1.4rem/1.2 var(--mono); letter-spacing: .08em; }
+.warn { color: var(--margin); font-weight: 700; }
+.okc { color: var(--good); font-weight: 700; }
+
+/* Tables */
+.tbl { overflow-x: auto; margin: 1.2rem 0; }
+table.grid { border-collapse: collapse; width: 100%; font-size: .98rem; }
+table.grid th, table.grid td { padding: .45rem .6rem; border: 1px solid var(--rule); text-align: left; vertical-align: top; }
+table.grid th { font: 700 .78rem/1.2 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); background: var(--paper-2); }
+table.grid td.k { font: 700 1rem/1.2 var(--mono); color: var(--ink-soft); white-space: nowrap; font-variant-numeric: tabular-nums; }
+table.grid .w { font-family: var(--hand-font); font-size: 1.2rem; }
+.pick { color: var(--ink-soft); font-style: italic; }
+.suit-h, .suit-d { color: var(--margin); }
+
+.pegs { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .6rem; margin: 1rem 0; }
+@media (max-width: 560px) { .pegs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.pegs div { text-align: center; padding: .6rem .3rem; border: 1.5px solid var(--ink); border-radius: 12px 16px 10px 14px; background: var(--paper-2); }
+.pegs b { display: block; font: 700 1.3rem/1 var(--mono); color: var(--margin); }
+.pegs span { font-family: var(--hand-font); font-size: 1.3rem; }
+
+/* Long number story */
+.digits { font: 700 clamp(1.1rem, 3.4vw, 1.6rem)/1.5 var(--mono); letter-spacing: .04em; overflow-wrap: anywhere; margin: 1rem 0; }
+.digits span, .story span.c { border-radius: 4px; padding: 0 .12rem; transition: background .15s; }
+.story { list-style: none; padding: 0; display: grid; gap: .45rem; }
+.story li { padding: .35rem .6rem; border-radius: 8px; cursor: default; }
+.story li:hover, .story li.on, .story li:focus-visible { background: var(--paper-2); }
+.c1 { background: color-mix(in srgb, var(--f-blue) 45%, transparent); }
+.c2 { background: color-mix(in srgb, var(--f-green) 45%, transparent); }
+.c3 { background: color-mix(in srgb, var(--f-orange) 45%, transparent); }
+.c4 { background: color-mix(in srgb, var(--f-purple) 45%, transparent); }
+.c5 { background: color-mix(in srgb, var(--f-yellow) 55%, transparent); }
+.c6 { background: color-mix(in srgb, var(--f-teal) 45%, transparent); }
+.c7 { background: color-mix(in srgb, var(--f-red) 45%, transparent); }
+.digits span.hl { outline: 2px solid var(--ink); }
+
+/* Card flashcard */
+.cardbox { display: flex; gap: 1.2rem; align-items: center; flex-wrap: wrap; margin-top: .8rem; }
+.playing { width: 6.5rem; height: 9rem; border: 2px solid var(--ink); border-radius: 12px; background: var(--paper); display: grid; place-items: center; font: 700 2.2rem/1 var(--display); box-shadow: 4px 4px 0 var(--f-paper); }
+.playing.red { color: var(--margin); }
+.reveal { font-family: var(--hand-font); font-size: 2rem; color: var(--accent); min-height: 2.6rem; }
+
+.days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: .4rem; margin-top: .8rem; }
+.days button { padding: .65rem .2rem; font-size: .92rem; }
+@media (max-width: 420px) { .days { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.datebig { font: 700 1.8rem/1.2 var(--mono); font-variant-numeric: tabular-nums; }
+
+.plan { display: grid; gap: .8rem; margin: 1rem 0; }
+.plan div { display: grid; grid-template-columns: 5.5rem 1fr; gap: 1rem; padding: .8rem 1rem; border: 1.5px solid var(--ink); border-radius: 14px 10px 16px 12px; background: var(--paper-2); }
+.plan b { font-family: var(--hand-font); font-size: 1.35rem; color: var(--margin); font-weight: 400; }
+@media (max-width: 480px) { .plan div { grid-template-columns: 1fr; gap: .2rem; } }
+
+.hero { padding-bottom: 1rem; }
+.hero h1 span { color: var(--accent); }
+.hero .lede { margin-top: 1rem; }
+.byline { font-family: var(--hand-font); font-size: 1.15rem; color: var(--ink-soft); margin-top: 1rem; }
+footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--rule); color: var(--ink-soft); font-size: .92rem; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+
+<div class="shell">
+  <nav class="route" aria-label="Contents">
+    <p>Your route</p>
+    <ol>
+      <li><a href="#start"><span class="n">1</span>Try it now</a></li>
+      <li><a href="#how"><span class="n">2</span>How memory works</a></li>
+      <li><a href="#linking"><span class="n">3</span>Linking</a></li>
+      <li><a href="#palace"><span class="n">4</span>Memory palaces</a></li>
+      <li class="mark"><a href="#pegs"><span class="n">5</span>Pegs</a></li>
+      <li><a href="#code"><span class="n">6</span>The number code</a></li>
+      <li><a href="#long"><span class="n">7</span>Long numbers</a></li>
+      <li><a href="#cards"><span class="n">8</span>A deck of cards</a></li>
+      <li><a href="#pairs"><span class="n">9</span>Scores &amp; pairs</a></li>
+      <li class="mark"><a href="#names"><span class="n">10</span>Names &amp; faces</a></li>
+      <li><a href="#review"><span class="n">11</span>Reviewing</a></li>
+      <li><a href="#choose"><span class="n">12</span>Which technique?</a></li>
+      <li><a href="#beyond"><span class="n">13</span>Beyond the book</a></li>
+      <li><a href="#plan"><span class="n">14</span>Six-week plan</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <div class="col">
+
+<section id="start" class="hero">
+  <div class="eyebrow">Derren Brown's memory system, made learnable</div>
+  <h1>Memory Palace <span>Workbook</span></h1>
+  <p class="lede">Remember a list of twenty things in order, a PIN, a shuffled deck, the name of everyone at the table. None of it takes a gift. It takes about six techniques and some practice, and you can feel the first one working in two minutes.</p>
+  <p class="byline">Notes from <em>Tricks of the Mind</em> (Derren Brown, 2006), turned into a hands-on course.</p>
+
+  <div class="try" id="challenge">
+    <h3><span class="tag">Try it</span> The twenty-word challenge</h3>
+    <p id="ch-intro">Most people remember about 7 of these. Read the list once and try. Then read the <a href="#linking">linking</a> section and try again. Expect 18 or more.</p>
+    <ol class="wordgrid" id="ch-words"></ol>
+    <div id="ch-recall" hidden>
+      <label for="ch-input">Type the words in order (spaces or commas)</label>
+      <textarea id="ch-input" placeholder="telephone, sausage, …"></textarea>
+    </div>
+    <div class="row">
+      <button id="ch-go">Hide the list and recall</button>
+      <button class="ghost" id="ch-reset" hidden>Start again</button>
+      <span class="timer" id="ch-timer" aria-live="polite"></span>
+    </div>
+    <div class="out" id="ch-out" aria-live="polite"></div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="stop"><span class="num">2</span><h2>How memory works</h2></div>
+  <p>Every technique on this page runs the same four-step loop. You can't remember what you never noticed, and you can't picture a word or a number until you turn it into something you can see.</p>
+  <div class="figure">{{svg:mm-loop}}</div>
+  <p>Brown's starting point: <strong>memory is association.</strong> Pictures are far easier to remember than words and numbers, so we convert everything into pictures and lock each one onto something we already know. A picture sticks when it follows three rules:</p>
+  <ul class="rules">
+    <li><b>Vivid</b>Make it emotionally engaging. Laugh, wince, be disgusted. A picture you feel is a picture you keep.</li>
+    <li><b>Interacting</b>The two things must do something to each other. A monkey snatching a sausage, not a monkey next to a sausage.</li>
+    <li><b>Unusual</b>Ordinary is forgettable. Make it huge, absurd, moving, wrong.</li>
+  </ul>
+  <div class="note"><span class="hand">Is a perfect memory possible?</span>True hyperthymesia (highly superior autobiographical memory) is a rare, inborn condition, and a truly photographic memory hasn't held up in testing. What you <em>can</em> train is plenty: in a 2017 study, ordinary people who practised the memory palace for about 30 minutes a day for six weeks more than doubled their recall and kept most of the gain months later.</div>
+</section>
+
+<section id="linking">
+  <div class="stop"><span class="num">3</span><h2>The linking system</h2></div>
+  <p class="quote">Just link each thing to the next thing.</p>
+  <p>Make one picture out of item 1 and item 2. Then one out of item 2 and item 3. Each picture holds only two things, and each one hands you the next.</p>
+  <div class="figure wide">{{svg:linking}}<figcaption>The first five of Brown's practice list. Make your own pictures: they stick better than borrowed ones.</figcaption></div>
+  <ol class="steps">
+    <li>Picture the first item clearly. Tie it to the reason for the list (the shop, the speech, the trip).</li>
+    <li>Ask "what does item 1 <em>do</em> to item 2?" and see it happen, big and strange, for two or three seconds.</li>
+    <li>Move on: item 2 does something to item 3, and so on.</li>
+    <li>Recall by starting at item 1 and letting each picture hand you the next. Then try it backwards.</li>
+  </ol>
+  <p><strong>Use it for:</strong> shopping lists, the points of a talk without notes, steps of a procedure, a set of jokes.</p>
+  <div class="note"><span class="hand">The catch</span>If one connection is lost, the whole rest of the chain is lost. For anything long or important, use a palace.</div>
+</section>
+
+<section id="palace">
+  <div class="stop"><span class="num">4</span><h2>The loci system and memory palaces</h2></div>
+  <p>Instead of chaining items to each other, attach each picture to a <strong>place</strong> along a route you already know well. To recall, walk the route. A forgotten item leaves one gap; the rest stay put.</p>
+  <div class="figure wide">{{svg:palace}}<figcaption>One room, ten loci. Walk it the same way every time.</figcaption></div>
+  <h3>Brown's rules for a good palace</h3>
+  <ul class="plain">
+    <li><strong>Move clockwise, starting with whatever is on your immediate left.</strong> Always the same order.</li>
+    <li><strong>Many loci per room.</strong> A kitchen isn't one locus: it's the fridge, the cutlery drawer, the oven.</li>
+    <li><strong>Put the action <em>inside</em> things.</strong> Dave sits <em>in</em> the fridge, so something else can happen <em>next to</em> it without the two getting in each other's way.</li>
+    <li><strong>Distinct beats distant.</strong> Loci don't need to be far apart, but they must not look alike.</li>
+    <li><strong>A marker every five loci,</strong> such as a hand with fingers splayed at number 5. To find item 12, go straight to the "ten" marker and step two more.</li>
+    <li><strong>Grow it into a palace.</strong> Imagine an extra door in your house that opens into another place you know: your school, a park, a theatre, a museum floor. Keep valuable information in buildings you never reuse.</li>
+    <li><strong>Use real places you know vividly</strong>, without mixed feelings. When you find a good one, walk a fixed route, take a photo, and go back a few times.</li>
+    <li><strong>Re-walk your palaces now and then</strong> so the pictures don't fade.</li>
+  </ul>
+  <div class="note"><span class="hand">Brown's showpiece</span>He memorised all 39 Shakespeare plays, in the order they were written, in about ten minutes, using the theatre he was performing in. Two grand gentlemen offer him a <em>mug</em> (39 in his number code, so 39 plays: <em>Two Gentlemen of Verona</em>). A schoolboy keeps stepping the same way as him on the stairs (<em>Comedy of Errors</em>). Prince Harry appears with <em>bees</em> (6) buzzing round his head (<em>Henry VI</em>). Characters move and interact with him, and that's what makes it stick.</div>
+</section>
+
+<section id="pegs">
+  <div class="stop"><span class="num">5</span><h2>The peg system</h2></div>
+  <p>Linking and loci handle lists. Pegs handle <strong>numbers</strong>: "what's item 7?", a hotel room, a reference number. Numbers aren't pictures, so give each one a word you can picture. The simplest version rhymes:</p>
+  <div class="pegs">
+    <div><b>1</b><span>bun</span></div><div><b>2</b><span>shoe</span></div><div><b>3</b><span>tree</span></div><div><b>4</b><span>door</span></div><div><b>5</b><span>hive</span></div>
+    <div><b>6</b><span>sticks</span></div><div><b>7</b><span>heaven</span></div><div><b>8</b><span>gate</span></div><div><b>9</b><span>line</span></div><div><b>10</b><span>hen</span></div>
+  </div>
+  <p>To remember that item 1 is a telephone: an iced <em>bun</em> used as a phone, with currants for a keypad.</p>
+  <p>Rhymes run out in the teens, and they can't store a phone number. Brown prefers a more powerful system, next.</p>
+</section>
+
+<section id="code">
+  <div class="stop"><span class="num">6</span><h2>The number code</h2></div>
+  <p>Turn each digit into a consonant. Then add vowels to make a word, and the word becomes a picture. These are Brown's letters, each chosen because it's easy to connect with its number:</p>
+  <div class="figure wide">{{svg:code}}</div>
+  <p><strong>The one rule:</strong> fill the gaps with vowels, <em>h</em> and <em>y</em> only. Any other consonant is a digit and changes the number. "Notch" looks like 28 (n-ch), but its <em>t</em> makes it 278.</p>
+  <h3>Single digits</h3>
+  <div class="pegs">
+    <div><b>0</b><span>zoo</span></div><div><b>1</b><span>ale</span></div><div><b>2</b><span>hen</span></div><div><b>3</b><span>ham</span></div><div><b>4</b><span>whore</span></div>
+    <div><b>5</b><span>hive</span></div><div><b>6</b><span>bee</span></div><div><b>7</b><span>tea</span></div><div><b>8</b><span>shoe</span></div><div><b>9</b><span>goo</span></div>
+  </div>
+  <p>Brown's images are crude on purpose (4 is a whore) because crude images stick. Choose what works for you, and once chosen, never change it.</p>
+  <h3>A PIN in ten seconds</h3>
+  <div class="figure wide">{{svg:pin}}</div>
+  <p>1743 → L T R M → "Light Room" or "Le Tram". Link it to the cash machine. At the ATM, the machine brings back the room full of lights, and you decode it.</p>
+
+  <div class="try">
+    <h3><span class="tag">Try it</span> Number ↔ word converter</h3>
+    <p>Type a number to see its letters and pictures, or type a word to check which number it really encodes.</p>
+    <label for="cv-in">Number or word</label>
+    <input type="text" id="cv-in" value="1743" autocomplete="off" spellcheck="false">
+    <div class="out" id="cv-out" aria-live="polite"></div>
+    <div class="row"><button class="ghost" data-cv="light room">light room</button><button class="ghost" data-cv="notch">notch</button><button class="ghost" data-cv="totem">totem</button><button class="ghost" data-cv="0571 234 0987">a phone number</button></div>
+  </div>
+
+  <h3>Two-digit pictures</h3>
+  <p>For speed, give every number from 10 to 99 its own permanent picture. Here's a list built with this code. Gaps are yours to fill: find a word whose consonants spell the number, then test it in the converter.</p>
+  <div class="tbl">{{table:numbers}}</div>
+</section>
+
+<section id="long">
+  <div class="stop"><span class="num">7</span><h2>Long numbers</h2></div>
+  <p>Brown's trick for long numbers: <strong>use any meaning the digits already have, and use code words where they have none</strong>, all woven into one silly story. Each part hands you the next. Tap or hover a line to see its digits.</p>
+  <div class="digits" id="ln-digits"><span class="c1" data-c="1">8764</span><span class="c2" data-c="2">98</span><span class="c3" data-c="3">474</span><span class="c4" data-c="4">505</span><span class="c5" data-c="5">773</span><span class="c6" data-c="6">498</span><span class="c7" data-c="7">724</span></div>
+  <ol class="story" id="ln-story">
+    <li tabindex="0" data-c="1"><span class="c c1">8764</span>: I hear a countdown from 8, but the counter misses 5 and stops.</li>
+    <li tabindex="0" data-c="2"><span class="c c2">98</span>: Fair enough, she's nearly a hundred: 98 years old.</li>
+    <li tabindex="0" data-c="3"><span class="c c3">474</span>: She even gets aeroplanes muddled up, a 474 instead of a 747.</li>
+    <li tabindex="0" data-c="4"><span class="c c4">505</span>: The planes fly over her beehives (5 = hive). Three in a row, but the middle one is missing.</li>
+    <li tabindex="0" data-c="5"><span class="c c5">773</span>: So she put a <strong>ToTeM</strong> pole (t-t-m) in its place.</li>
+    <li tabindex="0" data-c="6"><span class="c c6">498</span>: She did this for her 98th birthday.</li>
+    <li tabindex="0" data-c="7"><span class="c c7">724</span>: I only gave her a <strong>TeNneR</strong> (t-n-r) as a gift.</li>
+  </ol>
+  <p>For very long numbers, put each chunk's picture at a locus in a palace instead of one story.</p>
+</section>
+
+<section id="cards">
+  <div class="stop"><span class="num">8</span><h2>Memorising a deck of cards</h2></div>
+  <p>Each card becomes a word: <strong>the suit's initial plus the rank's code letter.</strong> Then place the 52 pictures along a palace in order.</p>
+  <div class="figure wide">{{svg:cards}}</div>
+  <p>Picture cards are <strong>characters</strong>, because a J would clash with j = 8. Give each suit a theme: Hearts are love and weddings, Spades are death and digging, Diamonds are jewels, Clubs are sport and nightlife.</p>
+  <div class="tbl">{{table:cards}}</div>
+  <div class="try">
+    <h3><span class="tag">Try it</span> Card flashcards</h3>
+    <p>Say the picture out loud before you reveal it. Aim for under a second per card.</p>
+    <div class="cardbox">
+      <div class="playing" id="fc-card" aria-live="polite">9♥</div>
+      <div><div class="reveal" id="fc-word" aria-live="polite"></div>
+        <div class="row"><button id="fc-show">Reveal</button><button class="ghost" id="fc-next">Next card</button></div>
+        <p class="out" id="fc-stat"></p></div>
+    </div>
+  </div>
+</section>
+
+<section id="pairs">
+  <div class="stop"><span class="num">9</span><h2>Football scores, and any pairs</h2></div>
+  <p>The data's own letters become part of the words. Brown's example is Everton 2, Watford 0 in the 1983–84 season:</p>
+  <div class="figure wide">{{svg:football}}</div>
+  <p>The next season, Man United 1, Everton 0 in 1984–85: 85 is sh-v (<em>shave</em>), and M1 E0 gives M L E S (<em>miles</em>), so someone is shaving while running miles. The same method works for exam marks, sales figures, flight numbers, or port numbers for each service.</p>
+</section>
+
+<section id="names">
+  <div class="stop"><span class="num">10</span><h2>Remembering names</h2></div>
+  <p>Most "bad with names" is never having really heard the name. Listen, repeat it, use it once. Then use one of Brown's two routes:</p>
+  <h3>Route 1: someone you already know</h3>
+  <p>Think of a friend, relative or famous person with the same name. Imagine the new person has been made up to look a bit like them, or is impersonating them.</p>
+  <h3>Route 2: name, feature, link</h3>
+  <div class="figure wide">{{svg:names}}</div>
+  <ol class="steps">
+    <li><strong>Name → picture.</strong> Mike becomes a microphone, Alice an Alice band, Bill an invoice.</li>
+    <li><strong>Find a feature.</strong> Something around the face is quickest: a beard, glasses, a large nose, a scar, spiky hair. Or their clothes, or the animal their face reminds you of.</li>
+    <li><strong>Link the two.</strong> Mike's large nose becomes a microphone stuck in the middle of his face. Bill puts on his small rimmed glasses to read the bill after dinner.</li>
+  </ol>
+</section>
+
+<section id="review">
+  <div class="stop"><span class="num">11</span><h2>The importance of reviewing</h2></div>
+  <p>A new picture is strong but young. Each time you recall it, it lasts longer. Recall <em>before</em> you check: that act of pulling it out is what makes it stick.</p>
+  <div class="figure review">{{svg:mm-review}}</div>
+  <p>If you miss one, the picture was too weak. Don't re-read it: rebuild it bigger, stranger and more personal, then start its schedule again.</p>
+</section>
+
+<section id="choose">
+  <div class="stop"><span class="num">12</span><h2>Which technique when?</h2></div>
+  <div class="figure">{{svg:mm-chooser}}</div>
+</section>
+
+<section id="beyond">
+  <div class="stop"><span class="num">13</span><h2>Beyond the book</h2></div>
+  <p>Fiction gives us two more "perfect memories". One is a real technique; the other is a fantasy with a useful real version.</p>
+  <h3>Patrick Jane: notice everything</h3>
+  <p>The Mentalist's memory palace is built on the carnival he grew up in, and his real skill is <strong>attention</strong>. Practise Kim's game: look at 15 objects for a minute, cover them, list them. In a new room, scan in a fixed order (exits, people, hands, anything out of place), then close your eyes and describe it. After a meeting, walk back through the room you sat in: each object holds one point that was made there.</p>
+  <h3>Mike Ross: read it once</h3>
+  <p>Suits' instant eidetic memory is fiction, and speed-reading trades away understanding. What works: skim the contents first and give each section a locus, so you know where everything lives. Then place the key claim and its numbers at each locus. For exact wording, write the first letter of each word and recite from those letters, adding one line at a time.</p>
+  <h3>A calendar in your head</h3>
+  <p>People with real hyperthymesia can name the weekday of any date. You can calculate it with Conway's <strong>Doomsday</strong> method. Each century has an anchor (1900s Wednesday, 2000s Tuesday). The year shifts it by <span class="mono">⌊yy/12⌋ + yy mod 12 + ⌊(yy mod 12)/4⌋</span>. And 4/4, 6/6, 8/8, 10/10, 12/12, 9/5, 5/9, 7/11, 11/7 and the last day of February always share that weekday.</p>
+  <div class="try">
+    <h3><span class="tag">Try it</span> What day was it?</h3>
+    <div class="datebig" id="dd-date" aria-live="polite"></div>
+    <div class="days" id="dd-days"></div>
+    <div class="out" id="dd-out" aria-live="polite"></div>
+    <div class="row"><button class="ghost" id="dd-next">Another date</button><span class="timer" id="dd-stat"></span></div>
+  </div>
+</section>
+
+<section id="plan">
+  <div class="stop"><span class="num">14</span><h2>Six weeks, thirty minutes a day</h2></div>
+  <div class="plan">
+    <div><b>Week 1</b><span>The twenty-word list by linking, then by loci. Build two palaces of 20 loci each (clockwise, a marker every five). Learn the number code and the pictures for 0–9.</span></div>
+    <div><b>Week 2</b><span>Two-digit pictures 10–99, checking each word in the converter. Drill both ways (number → picture, picture → number). Try a 20-digit number as a story.</span></div>
+    <div><b>Week 3</b><span>Learn the 52 card pictures, one suit a day. Memorise 13 cards, then 26. Learn the Doomsday method: five dates a day.</span></div>
+    <div><b>Week 4</b><span>Speed: a full deck, untimed then timed. Forty digits in under five minutes. Build two more palaces from places you visit.</span></div>
+    <div><b>Week 5</b><span>Real life: one real thing a day. A talk, a document section, a meeting, the names at a gathering.</span></div>
+    <div><b>Week 6</b><span>Mix the drills. Walk a palace you built four weeks ago without looking. Set your own targets.</span></div>
+  </div>
+  <p>After that, ten minutes a day keeps it sharp. Compare yourself only with yourself last week.</p>
+  <footer>
+    <p>Techniques from <em>Tricks of the Mind</em> by Derren Brown (Channel 4 Books, 2006), memory chapter: linking, loci and memory palaces, the peg system and number code, long numbers, cards, football scores, names, and reviewing. The study cited is Dresler et al., "Mnemonic Training Reshapes Brain Networks to Support Superior Memory", <em>Neuron</em>, 2017. The Doomsday algorithm is John Conway's.</p>
+    <p>Diagrams drawn with excalidraw-cli and mermaid-cli. A companion to the <span class="mono">hyperthymesia</span> skill.</p>
+  </footer>
+</section>
+
+    </div>
+  </main>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var store = {
+    get: function (k) { try { return JSON.parse(localStorage.getItem("mpw:" + k)); } catch (e) { return null; } },
+    set: function (k, v) { try { localStorage.setItem("mpw:" + k, JSON.stringify(v)); } catch (e) {} }
+  };
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* ---------- 1. Twenty-word challenge ---------- */
+  var WORDS = ["telephone","sausage","monkey","button","book","cabbage","glass","mouse","stomach","cardboard",
+               "ferry","Christmas","athlete","key","wigwam","baby","kiwi","bed","paintbrush","walnut"];
+  var chList = $("ch-words"), chGo = $("ch-go"), chReset = $("ch-reset"), chRecall = $("ch-recall"),
+      chInput = $("ch-input"), chOut = $("ch-out"), chTimer = $("ch-timer");
+  var phase = "study", t0 = Date.now(), tick = null;
+  function drawWords(marks) {
+    chList.innerHTML = "";
+    WORDS.forEach(function (w, i) {
+      var li = document.createElement("li"); li.textContent = w;
+      if (marks) li.className = marks[i] ? "ok" : "miss";
+      chList.appendChild(li);
+    });
+  }
+  function fmt(s) { return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+  function startClock() {
+    clearInterval(tick); t0 = Date.now();
+    tick = setInterval(function () { chTimer.textContent = fmt(Math.floor((Date.now() - t0) / 1000)); }, 500);
+  }
+  function study() {
+    phase = "study"; drawWords(null); chList.hidden = false; chRecall.hidden = true; chReset.hidden = true;
+    chGo.textContent = "Hide the list and recall"; chOut.innerHTML = ""; startClock();
+    var best = store.get("best20");
+    if (best !== null) chOut.innerHTML = "Your best so far: <span class=\"score\">" + best + "/20</span>";
+  }
+  function recall() {
+    phase = "recall"; chList.hidden = true; chRecall.hidden = false; chGo.textContent = "Check my list";
+    chOut.textContent = "Studied for " + fmt(Math.floor((Date.now() - t0) / 1000)) + ". Now type them in order.";
+    clearInterval(tick); chTimer.textContent = ""; chInput.value = ""; chInput.focus();
+  }
+  function check() {
+    var got = chInput.value.toLowerCase().split(/[\s,;.\n]+/).filter(Boolean);
+    var marks = WORDS.map(function (w, i) { return (got[i] || "") === w.toLowerCase(); });
+    var n = marks.filter(Boolean).length;
+    var anyOrder = WORDS.filter(function (w) { return got.indexOf(w.toLowerCase()) >= 0; }).length;
+    var best = Math.max(n, store.get("best20") || 0); store.set("best20", best);
+    drawWords(marks); chList.hidden = false; chRecall.hidden = true; phase = "done";
+    chGo.textContent = "Try it backwards"; chReset.hidden = false;
+    var msg = n >= 18 ? "That's the linking system working." :
+              n >= 10 ? "Good. Rebuild the pictures where the chain broke: what does one word <em>do</em> to the next?" :
+              "That's normal before you learn linking. Read section 3, then try again.";
+    chOut.innerHTML = "<span class=\"score\">" + n + "/20 in order</span> (" + anyOrder + " remembered in any order). " + msg;
+  }
+  chGo.addEventListener("click", function () {
+    if (phase === "study") recall();
+    else if (phase === "recall") check();
+    else { WORDS.reverse(); study(); chOut.innerHTML = "Same list, reversed. With good links, backwards is as easy as forwards."; }
+  });
+  chReset.addEventListener("click", function () { if (WORDS[0] !== "telephone") WORDS.reverse(); study(); });
+  study();
+
+  /* ---------- 2. Number code converter ---------- */
+  var CODE = { z: "0", s: "0", l: "1", n: "2", m: "3", r: "4", f: "5", v: "5", b: "6", p: "6", t: "7", j: "8", g: "9" };
+  var LET = ["z/s", "l", "n", "m", "r", "f/v", "b/p", "t", "ch/sh/j", "g"];
+  var IMG = {{json:notebook}};
+  function decode(word) {
+    var w = word.toLowerCase().replace(/[^a-z]/g, ""), notes = {};
+    w = w.replace(/^kn/, "n").replace(/^gn/, "n").replace(/^wr/, "r").replace(/mb$/, "m").replace(/ph/g, "f").replace(/gh/g, "");
+    if (w.indexOf("tch") >= 0) notes["“tch” hides a t, which is 7"] = 1;
+    var out = [], prev = null, i = 0;
+    while (i < w.length) {
+      var two = w.substr(i, 2);
+      if (two === "ch" || two === "sh") { if (prev !== two) out.push("8"); prev = two; i += 2; continue; }
+      var c = w[i]; i++; var d = null;
+      if (c === "c") { if (i < w.length && "eiy".indexOf(w[i]) >= 0) d = "0"; else notes["a hard c isn’t in the code"] = 1; }
+      else if (CODE[c]) d = CODE[c];
+      else if ("aeiouhyw".indexOf(c) >= 0) { prev = null; continue; }
+      else notes["“" + c + "” isn’t in the code (fillers are vowels, h and y)"] = 1;
+      if (d !== null && c === prev) continue;
+      prev = c; if (d !== null) out.push(d);
+    }
+    return { digits: out.join(""), notes: Object.keys(notes) };
+  }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function convert(v) {
+    var out = $("cv-out"), t = v.trim();
+    if (!t) { out.innerHTML = ""; return; }
+    if (/^[\d\s\-.]+$/.test(t)) {
+      var d = t.replace(/\D/g, ""), rows = "";
+      for (var i = 0; i < d.length; i += 2) {
+        var p = d.substr(i, 2), letters = p.split("").map(function (x) { return LET[+x]; }).join(" · ");
+        rows += "<tr><td class=\"mono\">" + p + "</td><td class=\"mono\">" + letters + "</td><td class=\"hand\" style=\"font-size:1.2rem\">" +
+          (IMG[p] ? esc(IMG[p]) : "<span class=\"pick\">your pick</span>") + "</td></tr>";
+      }
+      out.innerHTML = "<table><tr><th>Digits</th><th>Letters</th><th>Picture</th></tr>" + rows + "</table>";
+    } else {
+      var r = decode(t);
+      out.innerHTML = "<div>“" + esc(t) + "” encodes <span class=\"big\">" + (r.digits || "nothing") + "</span></div>" +
+        (r.notes.length ? "<p class=\"warn\">" + r.notes.map(esc).join(". ") + ".</p>" : "<p class=\"okc\">Clean: only code letters plus fillers.</p>");
+    }
+  }
+  var cvIn = $("cv-in");
+  cvIn.addEventListener("input", function () { convert(cvIn.value); });
+  document.querySelectorAll("[data-cv]").forEach(function (b) {
+    b.addEventListener("click", function () { cvIn.value = b.getAttribute("data-cv"); convert(cvIn.value); });
+  });
+  convert(cvIn.value);
+
+  /* ---------- 3. Long-number story ---------- */
+  var digitSpans = document.querySelectorAll("#ln-digits span");
+  function hl(c) { digitSpans.forEach(function (s) { s.classList.toggle("hl", s.getAttribute("data-c") === c); }); }
+  document.querySelectorAll("#ln-story li").forEach(function (li) {
+    var c = li.getAttribute("data-c");
+    ["mouseenter", "focus", "click"].forEach(function (ev) { li.addEventListener(ev, function () { hl(c); }); });
+    li.addEventListener("mouseleave", function () { hl(null); });
+    li.addEventListener("blur", function () { hl(null); });
+  });
+
+  /* ---------- 4. Card flashcards ---------- */
+  var CARDS = {{json:cards}};
+  var SYM = { S: "♠", H: "♥", D: "♦", C: "♣" };
+  var keys = Object.keys(CARDS), cur = null, seen = 0;
+  function nextCard() {
+    cur = keys[Math.floor(Math.random() * keys.length)];
+    var suit = cur.slice(-1), rank = cur.slice(0, -1);
+    var el = $("fc-card"); el.textContent = rank + SYM[suit]; el.classList.toggle("red", suit === "H" || suit === "D");
+    $("fc-word").textContent = ""; seen++; $("fc-stat").textContent = seen + " card" + (seen > 1 ? "s" : "") + " this session";
+  }
+  $("fc-show").addEventListener("click", function () {
+    var v = CARDS[cur];
+    $("fc-word").innerHTML = v.pick ? "<span class=\"pick\">" + esc(v.w) + "</span>" : esc(v.w);
+  });
+  $("fc-next").addEventListener("click", nextCard);
+  nextCard();
+
+  /* ---------- 5. Doomsday trainer ---------- */
+  var DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  var MON = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  var ddDate = null, ddScore = store.get("dd") || { ok: 0, n: 0 };
+  function leap(y) { return (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0; }
+  function explain(y, m, d) {
+    var anchor = { 18: 5, 19: 3, 20: 2, 21: 0 }[Math.floor(y / 100)], yy = y % 100;
+    var a = Math.floor(yy / 12), b = yy % 12, c = Math.floor(b / 4), dd = (anchor + a + b + c) % 7;
+    var ref = [leap(y) ? 4 : 3, leap(y) ? 29 : 28, 14, 4, 9, 6, 11, 8, 5, 10, 7, 12][m];
+    var wd = ((dd + (d - ref)) % 7 + 7) % 7;
+    return { wd: wd, text: "Anchor for the " + Math.floor(y / 100) + "00s is " + DAYS[anchor] + ". For " + String(yy).padStart(2, "0") +
+      ": " + a + " + " + b + " + " + c + " = " + (a + b + c) + ", so " + y + "'s doomsday is " + DAYS[dd] + ". " +
+      MON[m] + " " + ref + " is a doomsday; " + d + " is " + (d - ref >= 0 ? (d - ref) + " later" : (ref - d) + " earlier") +
+      ", which lands on " + DAYS[wd] + "." };
+  }
+  function newDate() {
+    var y = 1900 + Math.floor(Math.random() * 200), m = Math.floor(Math.random() * 12);
+    var dim = new Date(Date.UTC(y, m + 1, 0)).getUTCDate(), d = 1 + Math.floor(Math.random() * dim);
+    ddDate = [y, m, d]; $("dd-date").textContent = d + " " + MON[m] + " " + y; $("dd-out").innerHTML = "";
+  }
+  var dayBox = $("dd-days");
+  DAYS.forEach(function (name, i) {
+    var b = document.createElement("button"); b.className = "ghost"; b.textContent = name.slice(0, 3);
+    b.setAttribute("aria-label", name);
+    b.addEventListener("click", function () {
+      var e = explain(ddDate[0], ddDate[1], ddDate[2]);
+      var real = new Date(Date.UTC(ddDate[0], ddDate[1], ddDate[2])).getUTCDay();
+      var ok = i === real; ddScore.n++; if (ok) ddScore.ok++; store.set("dd", ddScore);
+      $("dd-out").innerHTML = (ok ? "<span class=\"okc\">Right, " + DAYS[real] + ".</span> " : "<span class=\"warn\">It was " + DAYS[real] + ".</span> ") + esc(e.text);
+      $("dd-stat").textContent = ddScore.ok + " / " + ddScore.n + " correct";
+    });
+    dayBox.appendChild(b);
+  });
+  $("dd-next").addEventListener("click", newDate);
+  if (ddScore.n) $("dd-stat").textContent = ddScore.ok + " / " + ddScore.n + " correct";
+  newDate();
+})();
+</script>
