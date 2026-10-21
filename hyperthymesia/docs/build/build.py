@@ -58,4 +58,17 @@ T = T.replace("{{table:cards}}", f'<table class="grid"><tr><th></th>{th}</tr>{""
 T = T.replace("{{json:notebook}}", json.dumps(NB)).replace("{{json:cards}}", json.dumps(cards, ensure_ascii=False))
 assert "{{" not in T, re.findall(r"\{\{[^}]+\}\}", T)
 open(os.path.join(HERE, "..", "memory-palace-workbook.html"), "w").write(T)
+# Standalone copy for GitHub Pages (repo-root docs/index.html): the artifact viewer adds the
+# document skeleton itself, a plain web host doesn't.
+SITE = os.path.join(HERE, "..", "..", "..", "docs")
+os.makedirs(SITE, exist_ok=True)
+page = ('<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
+        '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
+        '<meta name="description" content="An illustrated, hands-on course in Derren Brown\'s memory techniques: '
+        'linking, memory palaces, pegs, his number code, cards, names and reviewing.">\n'
+        '<style>html{-webkit-text-size-adjust:100%}img{max-width:100%}[hidden]{display:none!important}</style>\n')
+head_end = T.index("</style>") + len("</style>")
+page += T[:head_end] + "\n</head>\n<body>\n" + T[head_end:] + "\n</body>\n</html>\n"
+open(os.path.join(SITE, "index.html"), "w").write(page)
+open(os.path.join(SITE, ".nojekyll"), "w").write("")
 print(len(T))
