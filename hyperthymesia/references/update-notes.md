@@ -75,8 +75,8 @@ After the notes are final:
    - A diagram: edit `docs/build/specs.py` (Excalidraw) or `docs/diagrams/*.mmd` (Mermaid), re-render
      (see docs/README.md), then rebuild.
    - `python3 docs/build/build.py`. It writes both the skill copy and the public site
-     (`docs/index.html` at the repo root). Committing and pushing updates
-     https://mayank9mare.github.io/mayank-awesome-skills/ automatically (GitHub Pages).
+     (`docs/hyperthymesia/index.html` at the repo root). Committing and pushing updates
+     https://mayank9mare.github.io/mayank-awesome-skills/hyperthymesia/ automatically (GitHub Pages).
 5. **The learner's vault**: if a picture they use in an existing palace changed, tell them which
    vault entries now use an old picture and offer to update them. Don't change their palaces
    silently.

@@ -58,9 +58,10 @@ T = T.replace("{{table:cards}}", f'<table class="grid"><tr><th></th>{th}</tr>{""
 T = T.replace("{{json:notebook}}", json.dumps(NB)).replace("{{json:cards}}", json.dumps(cards, ensure_ascii=False))
 assert "{{" not in T, re.findall(r"\{\{[^}]+\}\}", T)
 open(os.path.join(HERE, "..", "memory-palace-workbook.html"), "w").write(T)
-# Standalone copy for GitHub Pages (repo-root docs/index.html): the artifact viewer adds the
+# Standalone copy for GitHub Pages (repo-root docs/hyperthymesia/index.html): the artifact viewer adds the
 # document skeleton itself, a plain web host doesn't.
-SITE = os.path.join(HERE, "..", "..", "..", "docs")
+SITE_ROOT = os.path.join(HERE, "..", "..", "..", "docs")
+SITE = os.path.join(SITE_ROOT, "hyperthymesia")
 os.makedirs(SITE, exist_ok=True)
 page = ('<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
         '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
@@ -70,5 +71,5 @@ page = ('<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
 head_end = T.index("</style>") + len("</style>")
 page += T[:head_end] + "\n</head>\n<body>\n" + T[head_end:] + "\n</body>\n</html>\n"
 open(os.path.join(SITE, "index.html"), "w").write(page)
-open(os.path.join(SITE, ".nojekyll"), "w").write("")
+open(os.path.join(SITE_ROOT, ".nojekyll"), "w").write("")
 print(len(T))
