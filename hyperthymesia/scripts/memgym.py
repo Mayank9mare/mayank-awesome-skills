@@ -84,7 +84,7 @@ NOTEBOOK = {"0": "zoo", "1": "ale", "2": "hen", "3": "ham", "4": "whore", "5": "
             "24": "Nero", "25": "knife", "26": "nob", "27": "knight", "29": "nog", "31": "mole",
             "32": "man", "33": "mum", "36": "map", "37": "mat", "39": "mug", "40": "rose",
             "41": "role", "42": "rain", "43": "ram", "44": "roar", "47": "root", "48": "rash",
-            "50": "fuse", "52": "fan", "30": "maze", "34": "more", "45": "rave", "46": "rap", "51": "fall", "84": "chair", "85": "shave", "86": "shop"}
+            "50": "fuse", "52": "fan", "30": "maze", "34": "more", "45": "rave", "46": "rap", "51": "fall", "35": "mf", "49": "rag", "28": "Nash", "38": "mesh", "84": "chair", "85": "shave", "86": "shop"}
 PAIR_CODE = ["z/s", "l", "n", "m", "r", "f/v", "b/p", "t", "ch/sh/j", "g"]
 
 SUITS = "SHDC"

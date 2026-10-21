@@ -16,15 +16,15 @@ Seeded from the reference notebook. Replace anything that isn't vivid *for you*,
 | 05 | | 25 | knife | 45 | rave | 65 | | 85 | shave |
 | 06 | | 26 | nob | 46 | rap | 66 | | 86 | shop |
 | 07 | | 27 | knight | 47 | root / rat | 67 | | 87 | |
-| 08 | | 28 | ⚠ replace "notch" (= 278) | 48 | rash | 68 | | 88 | |
-| 09 | | 29 | nog | 49 | | 69 | | 89 | |
+| 08 | | 28 | Nash | 48 | rash | 68 | | 88 | |
+| 09 | | 29 | nog | 49 | rag | 69 | | 89 | |
 | 10 | lice | 30 | maze / mass | 50 | fuse | 70 | | 90 | |
 | 11 | lily | 31 | mole | 51 | fall | 71 | | 91 | |
 | 12 | line | 32 | man | 52 | fan | 72 | | 92 | |
 | 13 | lime | 33 | mum | 53 | | 73 | | 93 | |
 | 14 | lorry | 34 | more / merry | 54 | | 74 | | 94 | |
-| 15 | life | 35 | | 55 | | 75 | | 95 | |
+| 15 | life | 35 | mf | 55 | | 75 | | 95 | |
 | 16 | lip | 36 | map | 56 | | 76 | | 96 | |
 | 17 | lit | 37 | mat | 57 | | 77 | | 97 | |
-| 18 | lash | 38 | ⚠ replace "match" (= 378) | 58 | | 78 | | 98 | |
+| 18 | lash | 38 | mesh | 58 | | 78 | | 98 | |
 | 19 | leg | 39 | mug | 59 | | 79 | | 99 | |

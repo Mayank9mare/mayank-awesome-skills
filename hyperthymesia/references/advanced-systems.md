@@ -16,10 +16,9 @@ tables below.
 
 ## 1. The 00–99 images
 
-Built from the reference notebook. Entries marked ⚠ break the code (they contain an extra
-code letter) and need a replacement word. Entries marked (?) are uncertain readings of the
-handwritten notes, to be confirmed. Rows 53–99 aren't in the notes yet; they're left for the
-learner to fill, with the consonant pair shown as the guide.
+Built from the reference notebook. Rows 53–99 aren't in the notes yet; they're left for the
+learner to fill, with the consonant pair shown as the guide. (An early draft had *notch* for 28
+and *match* for 38: both hide a *t*, so they encode 278 and 378. That's the classic filler mistake.)
 
 **Single digits:** 0 zoo · 1 ale · 2 hen · 3 ham · 4 whore · 5 hive · 6 bee · 7 tea · 8 shoe · 9 goo
 
@@ -28,17 +27,17 @@ learner to fill, with the consonant pair shown as the guide.
 | 10 | l-s | lice | 25 | n-f | knife | 40 | r-z | rose |
 | 11 | l-l | lily | 26 | n-b | nob / nab | 41 | r-l | role |
 | 12 | l-n | line | 27 | n-t | knight | 42 | r-n | rain |
-| 13 | l-m | lime | 28 | n-ch | notch ⚠ (n-t-ch = 278) | 43 | r-m | ram |
+| 13 | l-m | lime | 28 | n-sh | Nash | 43 | r-m | ram |
 | 14 | l-r | lorry / lure | 29 | n-g | nog | 44 | r-r | roar |
 | 15 | l-f | life / leaf | 30 | m-s | maze / mass | 45 | r-v | rave |
 | 16 | l-p | lip | 31 | m-l | mole | 46 | r-p | rap |
 | 17 | l-t | lit | 32 | m-n | man | 47 | r-t | root / rat |
 | 18 | l-sh | lash | 33 | m-m | mum | 48 | r-sh | rash |
-| 19 | l-g | leg | 34 | m-r | more / merry | 49 | r-g | (?) needs r + g |
-| 20 | n-z | nose | 35 | m-f | (?) needs m + f/v | 50 | f-s | fuse |
+| 19 | l-g | leg | 34 | m-r | more / merry | 49 | r-g | rag |
+| 20 | n-z | nose | 35 | m-f | mf | 50 | f-s | fuse |
 | 21 | n-l | nail | 36 | m-p | map | 51 | f-l | fall |
 | 22 | n-n | noon / nanny | 37 | m-t | mat | 52 | f-n | fan |
-| 23 | n-m | name | 38 | m-ch | match ⚠ (m-t-ch = 378) | | | |
+| 23 | n-m | name | 38 | m-sh | mesh | | | |
 | 24 | n-r | Nero | 39 | m-g | **mug** (Brown's own) | | | |
 
 **53–99: to fill in** (consonant pair → find a concrete, vivid word using only vowels/h/y as
