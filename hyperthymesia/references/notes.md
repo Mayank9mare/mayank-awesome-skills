@@ -183,3 +183,4 @@ The "(not ham / whore / hive)" notes keep card pictures distinct from the single
 | 2026-10-21 | Numbers filled in: 30 maze/mass, 34 more/merry, 35 mf, 45 rave, 46 rap, 47 root/rat, 49 rag, 51 fall; 28 notch → Nash, 38 match → mesh. |
 | 2026-10-21 | 53–99 completed by Claude with the same method; 99 Gaga / gag. |
 | 2026-10-21 | The notebook rule: drop any method that conflicts with these notes or does the same job. |
+| 2026-10-21 | Non-conflicting techniques are kept and welcome: observation drills, first-letter method, Doomsday, and the boosters (references/boosters.md). |

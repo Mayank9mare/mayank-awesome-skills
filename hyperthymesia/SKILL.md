@@ -33,6 +33,7 @@ with the methods here.
 | [references/ross-reading.md](references/ross-reading.md) | Encoding documents, books, contracts and specs; verbatim text; "where is it in the document"; honest limits. |
 | [references/daily-recall.md](references/daily-recall.md) | The HSAM-inspired nightly / weekly / monthly protocol for a date-indexed life memory. |
 | [references/training.md](references/training.md) | Drills, scoring, a six-week plan, coaching rules, benchmarks. |
+| [references/boosters.md](references/boosters.md) | Compatible extras that strengthen any notebook method: draw it, say it, act it out, ask why, mix it up, change the room, the actors' method, sleep and rest. |
 
 **One number code only**, Brown's: `0 z/s · 1 l · 2 n · 3 m · 4 r · 5 f/v · 6 b/p · 7 t ·
 8 ch/sh/j · 9 g`, with only vowels, h and y as fillers. Never mix in another digit system.
