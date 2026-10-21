@@ -199,5 +199,6 @@ evidence in [boosters.md](boosters.md)).
 | 2026-10-21 | J♣ young boy athlete → **young man in a club**. |
 | 2026-10-21 | K♣ is bouncer / **cock** (notes misread as "cad"). |
 | 2026-10-21 | Boosters added to the notes as a section of their own. |
+| 2026-10-21 | AI images (Nano Banana / ChatGPT) allowed as a review aid for the notebook's pictures: imagine first, then generate. |
 | 2026-10-21 | The notebook rule: drop any method that conflicts with these notes or does the same job. |
 | 2026-10-21 | Non-conflicting techniques are kept and welcome: observation drills, first-letter method, Doomsday, and the boosters (references/boosters.md). |

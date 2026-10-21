@@ -35,6 +35,7 @@ with the methods here.
 | [references/ross-reading.md](references/ross-reading.md) | Encoding documents, books, contracts and specs; verbatim text; "where is it in the document"; honest limits. |
 | [references/daily-recall.md](references/daily-recall.md) | The HSAM-inspired nightly / weekly / monthly protocol for a date-indexed life memory. |
 | [references/training.md](references/training.md) | Drills, scoring, a six-week plan, coaching rules, benchmarks. |
+| [references/ai-images.md](references/ai-images.md) | Turning memory pictures into images with Nano Banana or ChatGPT: free copy-paste prompts, or automatic generation with an API key, plus a palace-walk gallery. |
 | [references/boosters.md](references/boosters.md) | Compatible extras that strengthen any notebook method: draw it, say it, act it out, ask why, mix it up, change the room, the actors' method, sleep and rest. |
 
 **One number code only**, Brown's: `0 z/s · 1 l · 2 n · 3 m · 4 r · 5 f/v · 6 b/p · 7 t ·
@@ -100,6 +101,9 @@ idea, or none. Follow [references/remember-with-me.md](references/remember-with-
 5. **Test now**: forwards, backwards, random stop. Any miss gets rebuilt, ideally by them.
 6. **Save** to `vault/<topic>.md` with `due:` dates, claim the loci in `palaces.md`, and suggest
    one booster.
+7. **Optional images** (after they've pictured it themselves): offer `imagine.py prompts` (free:
+   paste into the Gemini app or ChatGPT) or `imagine.py generate --provider gemini|openai` (API
+   key). See [references/ai-images.md](references/ai-images.md).
 
 ### 2. Train: drills and the six-week plan
 `python3 $G gen <classic|words|numbers|cards|names|binary|spoken|dates> [n]` → the learner
@@ -143,6 +147,14 @@ The learner sends new notes (text or photos) or changes a picture. Follow
 5. **Propagate**: update any reference that teaches the changed method, rebuild the workbook
    (`python3 docs/build/build.py` reads notes.md) and republish it to the same link, flag vault
    entries that use an old picture, and commit.
+
+### 9. Pictures as images
+"Make images for my palace", "generate the pictures". Follow
+[references/ai-images.md](references/ai-images.md): imagine first, then generate. The free route
+is `python3 $I prompts <vault>` then `attach`; the API route is `generate --provider gemini|openai`
+(`--dry-run` first if unsure). Mild-ify only the *image prompt* for crude pictures that get
+refused, and never put a real person's name or face in a prompt. (`I=<this skill's
+directory>/scripts/imagine.py`.)
 
 ## Coaching style
 
