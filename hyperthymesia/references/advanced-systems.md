@@ -80,13 +80,13 @@ From the reference notebook:
 | **7** | soot | hat | dot | cat |
 | **8** | sash | hedge | dish | cash |
 | **9** | ciggy | hag | dog | cog |
-| **10** | sissy | horse | dizzy | kiss |
+| **10** | sissy | hose | dizzy | kiss |
 | **J** | boy digging / Beelzebub | Cupid | diamond thief | young boy athlete |
 | **Q** | housekeeper | bride | the Queen | brothel madam |
 | **K** | gardener / Dante (Lucifer) | bridegroom | the old jeweller | bouncer / cad |
 
-Two deliberate exceptions: 2♥ *lovers* is chosen for meaning, and 10♥ *horse* carries an extra
-*r*. A stronger picture is worth bending the code for, as long as it never changes.
+One deliberate exception: 2♥ *lovers* is chosen for its meaning. A stronger picture is worth
+bending the code for, as long as it never changes.
 
 **Suit themes for the courts:** Spades = death and digging · Hearts = love and weddings ·
 Diamonds = wealth and jewels · Clubs = sport and nightlife.
