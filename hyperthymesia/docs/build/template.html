@@ -20,6 +20,7 @@
   --hand-font: "Patrick Hand", "Comic Sans MS", "Chalkboard SE", cursive;
   --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
   --step: 1.0625rem;
+  --fill-op: .5;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -28,6 +29,7 @@
     --accent: #9db0ff; --margin: #ff7a96; --good: #69db7c;
     --f-blue: #3a5fa8; --f-green: #3d8a5a; --f-orange: #a8673a; --f-purple: #6a55b0;
     --f-red: #a84a5a; --f-yellow: #a88a2e; --f-teal: #2f8a7e; --f-paper: #1a2440;
+    --fill-op: .45;
   }
 }
 :root[data-theme="dark"] {
@@ -36,6 +38,7 @@
   --accent: #9db0ff; --margin: #ff7a96; --good: #69db7c;
   --f-blue: #3a5fa8; --f-green: #3d8a5a; --f-orange: #a8673a; --f-purple: #6a55b0;
   --f-red: #a84a5a; --f-yellow: #a88a2e; --f-teal: #2f8a7e; --f-paper: #1a2440;
+  --fill-op: .45;
 }
 
 * { box-sizing: border-box; }
@@ -89,6 +92,7 @@ section:first-of-type { border-top: 0; padding-top: 0; }
 .figure > svg[id^="mm-"] { width: 100%; }
 .figure.review > svg { max-width: 30rem !important; margin-inline: auto; }
 .sketch .hand { font-family: var(--hand-font); }
+.sketch .fill { fill-opacity: var(--fill-op); }
 figcaption { font-family: var(--hand-font); font-size: 1.05rem; color: var(--ink-soft); margin-top: .4rem; }
 
 .rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); gap: 1rem; margin: 1.2rem 0; padding: 0; list-style: none; }

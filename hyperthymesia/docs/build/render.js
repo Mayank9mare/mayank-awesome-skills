@@ -23,7 +23,7 @@ function pathsOf(drawable, stroke, fill) {
     const isFill = p.fill && p.fill !== "none";
     const s = p.stroke === "#FILL" ? fill : (p.stroke === "none" ? "none" : stroke);
     const f = isFill ? fill : "none";
-    return `<path d="${p.d.replace(/-?\d+\.\d+/g, (n) => (+n).toFixed(1))}" stroke="${s}" stroke-width="${p.strokeWidth}" fill="${f}"` +
+    return `<path${isFill ? ' class="fill"' : ""} d="${p.d.replace(/-?\d+\.\d+/g, (n) => (+n).toFixed(1))}" stroke="${s}" stroke-width="${p.strokeWidth}" fill="${f}"` +
       `${p.stroke !== "none" ? ' stroke-linecap="round" stroke-linejoin="round"' : ""}/>`;
   }).join("");
 }
@@ -39,7 +39,7 @@ function render(file) {
     const stroke = STROKE[(e.strokeColor || "#1e1e1e").toLowerCase()] || "var(--ink)";
     const fill = e.backgroundColor && e.backgroundColor !== "transparent" ? (FILL[e.backgroundColor.toLowerCase()] || e.backgroundColor) : null;
     const o = { seed: seedOf(e.id), roughness: 1.1, strokeWidth: 1.6, stroke: "#STROKE", bowing: 1,
-      fill: fill ? "#FILL" : undefined, fillStyle: "hachure", hachureGap: 7, fillWeight: 1.2,
+      fill: fill ? "#FILL" : undefined, fillStyle: "solid",
       strokeLineDash: e.strokeStyle === "dashed" ? [9, 7] : undefined };
     if (e.type === "rectangle") {
       grow(e.x, e.y); grow(e.x + e.width, e.y + e.height);
