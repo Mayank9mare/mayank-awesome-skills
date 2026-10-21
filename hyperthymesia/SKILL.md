@@ -26,7 +26,8 @@ with the methods here.
 
 | File | Covers |
 |---|---|
-| [references/brown-system.md](references/brown-system.md) | **Start here.** Brown's course, in his order: linking (with his 20-word practice list), loci and memory palaces, the peg system, **his number code**, long numbers, a deck of cards, football scores/paired data, names, reviewing. |
+| [references/notes.md](references/notes.md) | **The source of truth.** The personal notebook (transcribed) plus every approved decision. Check it before teaching or changing anything. |
+| [references/brown-system.md](references/brown-system.md) | **Start here for teaching.** Brown's course, in his order: linking (with his 20-word practice list), loci and memory palaces, the peg system, **his number code**, long numbers, a deck of cards, football scores/paired data, names, reviewing. |
 | [references/advanced-systems.md](references/advanced-systems.md) | 00–99 images and the 52-card set from the reference notebook, binary, dates and the Doomsday algorithm, everyday numbers, managing many palaces. |
 | [references/jane-observation.md](references/jane-observation.md) | Observation drills, people dossiers, remembering conversations and meetings, scene recall, building a master "carnival" palace, ethics. |
 | [references/ross-reading.md](references/ross-reading.md) | Encoding documents, books, contracts and specs; verbatim text; "where is it in the document"; honest limits. |
@@ -36,8 +37,8 @@ with the methods here.
 **One number code only**, Brown's: `0 z/s · 1 l · 2 n · 3 m · 4 r · 5 f/v · 6 b/p · 7 t ·
 8 ch/sh/j · 9 g`, with only vowels, h and y as fillers. Never mix in another digit system.
 
-**The notebook rule.** The reference notebook (Brown's system, as captured in brown-system.md and
-advanced-systems.md) is the single source of truth. Don't teach or add any method that
+**The notebook rule.** The reference notebook ([references/notes.md](references/notes.md)) is the
+single source of truth. Record new decisions in its decisions log. Don't teach or add any method that
 **conflicts** with it (the standard Major system, the Dominic or Ben systems, other peg lists) or
 that **does the same job** (shape or alphabet pegs, PAO, the journey method, the Roman room, the
 keyword method, a second 00–99 list). Add a technique only if it's genuinely new and compatible
