@@ -41,10 +41,10 @@ T = T.replace("{{table:numbers}}", f'<table class="grid"><tr><th></th>{head}</tr
 
 ranks = ["A","2","3","4","5","6","7","8","9","10","J","Q","K"]
 C = {
- "S": ["Grim Reaper","sun","Sam / sum","?S-r","safe","sob","soot","sash","ciggy","sissy","boy digging","housekeeper","gardener (Lucifer)"],
- "H": ["a big love heart","?H-n","home","hair","hoof","hoop","hat","hedge","hag","?H-s","Cupid","bride","bridegroom"],
- "D": ["a big sparkly diamond","Don","Dom","door","dove","?D-b","dot","dish","dog","dizzy","diamond thief","?a grand lady","old jeweller"],
- "C": ["a big club","can","cam","car","cough","cab","cat","cash","cog","kiss","young athlete","?a nightclub owner","bouncer"]}
+ "S": ["Grim Reaper","sun","Sam / sum","sore","safe","sob","soot","sash","ciggy","sissy","boy digging / Beelzebub","housekeeper","gardener / Dante (Lucifer)"],
+ "H": ["a big love heart","lovers (two hearts)","home","hair","hoof","hoop","hat","hedge","hag","horse","Cupid","bride","bridegroom"],
+ "D": ["a big sparkly diamond","Don","Dom","door","dove","DB (Derren Brown)","dot","dish","dog","dizzy","diamond thief","the Queen","old jeweller"],
+ "C": ["a big club","can","cam","car","cough","cab","cat","cash","cog","kiss","young athlete","brothel madam","bouncer"]}
 cards = {}
 for s, words in C.items():
     for r, w in zip(ranks, words):

@@ -67,23 +67,26 @@ letter. Ace = 1 (l), 10 = 0 (z/s). 9♥ → H-g → **hag**; 6♠ → S-b → **
 **Aces** are a big version of the suit symbol. **Court cards are characters**, because "J" would
 clash with j = 8, and each suit gets a theme.
 
-From the reference notebook ((?) = uncertain reading to confirm):
+From the reference notebook:
 
 | | ♠ Spades | ♥ Hearts | ♦ Diamonds | ♣ Clubs |
 |---|---|---|---|---|
 | **A** | Grim Reaper | a big love heart | a big sparkly diamond | a big club |
-| **2** | sun | (?) (H-n) | Dan / Don | can |
+| **2** | sun | lovers (two hearts) | Don | can |
 | **3** | Sam (a friend) / sum | home | Dom | cam |
-| **4** | (?) (S-r) | hair | door | car |
+| **4** | sore | hair | door | car |
 | **5** | safe | hoof | dove | cough |
-| **6** | sob | hoop | DB (?) (D-b) | cab |
+| **6** | sob | hoop | DB (Derren Brown) | cab |
 | **7** | soot | hat | dot | cat |
 | **8** | sash | hedge | dish | cash |
 | **9** | ciggy | hag | dog | cog |
-| **10** | sissy | (?) (H-s) | dizzy | kiss |
-| **J** | boy digging (Beelzebub) | Cupid | diamond thief | young boy athlete |
-| **Q** | housekeeper / gravedigger (?) | bride | the duchess (?) | brothel madam (?) |
-| **K** | gardener (Dante / Lucifer) | bridegroom | the old jeweller | bouncer / cad |
+| **10** | sissy | horse | dizzy | kiss |
+| **J** | boy digging / Beelzebub | Cupid | diamond thief | young boy athlete |
+| **Q** | housekeeper | bride | the Queen | brothel madam |
+| **K** | gardener / Dante (Lucifer) | bridegroom | the old jeweller | bouncer / cad |
+
+Two deliberate exceptions: 2♥ *lovers* is chosen for meaning, and 10♥ *horse* carries an extra
+*r*. A stronger picture is worth bending the code for, as long as it never changes.
 
 **Suit themes for the courts:** Spades = death and digging · Hearts = love and weddings ·
 Diamonds = wealth and jewels · Clubs = sport and nightlife.
