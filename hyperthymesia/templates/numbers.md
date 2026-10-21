@@ -27,4 +27,4 @@ Seeded from the reference notebook. Replace anything that isn't vivid *for you*,
 | 16 | lip | 36 | map | 56 | fob | 76 | tub | 96 | guppy |
 | 17 | lit | 37 | mat | 57 | feet | 77 | tattoo | 97 | goat |
 | 18 | lash | 38 | mesh | 58 | fish | 78 | Taj | 98 | gash |
-| 19 | leg | 39 | mug | 59 | fig | 79 | toga | 99 | Gaga |
+| 19 | leg | 39 | mug | 59 | fig | 79 | toga | 99 | Gaga / gag |

@@ -57,7 +57,7 @@ and *match* for 38: both hide a *t*, so they encode 278 and 378. That's the clas
 | 64 | b-r | bear | 80 | sh-s | chess | 96 | g-b | guppy |
 | 65 | b-f | beef | 81 | sh-l | shell | 97 | g-t | goat |
 | 66 | b-b | baby | 82 | sh-n | chain | 98 | g-sh | gash |
-| 67 | b-t | bat | 83 | sh-m | jam | 99 | g-g | Gaga |
+| 67 | b-t | bat | 83 | sh-m | jam | 99 | g-g | Gaga / gag |
 | 68 | b-sh | bush | 84 | sh-r | chair |  |  |  |
 
 **Rules for choosing images:**
