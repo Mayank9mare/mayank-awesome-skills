@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """PreCompact hook: back up the transcript to .claude/brace-transcripts/ (keep the last 5), and if
-.claude/brace-state.md is missing or stale, say so in the compaction. Never blocks compaction."""
+.claude/brace-state.md is stale, tell the user. Never blocks compaction."""
 import glob
 import json
 import os
@@ -45,10 +45,8 @@ def main():
                     f"questions and next steps in detail.")
     else:
         return   # no state file in this project: nothing to say
-    print(json.dumps({
-        "hookSpecificOutput": {"hookEventName": "PreCompact", "additionalContext": note},
-        "systemMessage": "[brace-for-compact] " + note.split(". ")[0] + "."
-    }))
+    # PreCompact accepts no hookSpecificOutput (validation fails), so the note goes to the user only.
+    print(json.dumps({"systemMessage": "[brace-for-compact] " + note}))
 
 
 if __name__ == "__main__":

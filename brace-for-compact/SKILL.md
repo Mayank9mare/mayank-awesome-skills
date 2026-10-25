@@ -135,8 +135,9 @@ saved early is far better than a perfect one that never gets written.
   state file if it exists and isn't CLOSED, with its age. On a fresh startup it only mentions that an
   open state file exists, so Claude can ask whether to resume.
 - **PreCompact** (`manual`, `auto`): `hooks/pre_compact.py` copies the full transcript to
-  `.claude/brace-transcripts/` (keeping the last 5) as a safety net, and adds a note to the
-  compaction if the state file is missing or more than 20 minutes old. It never blocks compaction.
+  `.claude/brace-transcripts/` (keeping the last 5) as a safety net, and tells the user whether the
+  state file is fresh or more than 20 minutes old. It never blocks compaction. (PreCompact hooks
+  can't add context to the summary; that's what the SessionStart restore is for.)
 - `.claude/brace-*` is in the global git ignore file (`~/.config/git/ignore`), so these files are
   never committed by accident.
 
