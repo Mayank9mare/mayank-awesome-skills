@@ -54,6 +54,7 @@ Deep, opinionated reference skills for building/reviewing services and apps in a
 | [to-prd](to-prd/SKILL.md) | Turn the current conversation into a PRD and submit it as a GitHub issue. |
 | [troubleshooter](troubleshooter/SKILL.md) | Systematic investigation methodology for bugs, incidents, and infrastructure issues. |
 | [ubiquitous-language](ubiquitous-language/SKILL.md) | Extract a DDD-style ubiquitous language glossary from the current conversation. |
+| [wait-what](wait-what/SKILL.md) | `/wait-what`: when a message didn't land, re-pitch it with context, in Simplified Technical English, using the project's glossary. Adapted from Matt Pocock's skill (MIT). |
 
 ## Provenance
 
