@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "compact|clear|resume|startup",
+        "hooks": [{ "type": "command", "command": "python3 ~/.claude/skills/brace-for-compact/hooks/session_start.py" }]
+      }
+    ],
+    "PreCompact": [
+      {
+        "matcher": "manual|auto",
+        "hooks": [{ "type": "command", "command": "python3 ~/.claude/skills/brace-for-compact/hooks/pre_compact.py" }]
+      }
+    ]
+  }
+}

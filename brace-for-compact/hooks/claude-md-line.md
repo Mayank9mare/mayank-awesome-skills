@@ -1,0 +1,1 @@
+- If `.claude/brace-state.md` exists in the project and its first line isn't CLOSED, read it before continuing work after a compaction, `/clear` or resume (the brace-for-compact skill).
