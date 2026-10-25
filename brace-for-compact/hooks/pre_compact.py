@@ -38,11 +38,10 @@ def main():
         minutes = (time.time() - os.path.getmtime(state)) / 60
         if minutes <= STALE_MIN:
             note = (f"An up-to-date session state file exists at .claude/brace-state.md "
-                    f"(saved {int(minutes)} min ago). Keep its path in the summary.")
+                    f"(saved {int(minutes)} min ago); it will be restored after compaction.")
         else:
             note = (f"The session state file .claude/brace-state.md is {int(minutes)} min old and may be "
-                    f"stale. Keep its path in the summary, and preserve the current goal, decisions, open "
-                    f"questions and next steps in detail.")
+                    f"stale. Consider cancelling and running /brace-for-compact first.")
     else:
         return   # no state file in this project: nothing to say
     # PreCompact accepts no hookSpecificOutput (validation fails), so the note goes to the user only.
