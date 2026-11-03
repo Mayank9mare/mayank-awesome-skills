@@ -56,6 +56,7 @@ Deep, opinionated reference skills for building/reviewing services and apps in a
 | [troubleshooter](troubleshooter/SKILL.md) | Systematic investigation methodology for bugs, incidents, and infrastructure issues. |
 | [ubiquitous-language](ubiquitous-language/SKILL.md) | Extract a DDD-style ubiquitous language glossary from the current conversation. |
 | [wait-what](wait-what/SKILL.md) | `/wait-what`: when a message didn't land, re-pitch it with context, in Simplified Technical English, using the project's glossary. Adapted from Matt Pocock's skill (MIT). |
+| [wensity-ui](wensity-ui/SKILL.md) | Build frontend UI with [Wensity UI](https://ui.wensity.com) via its MCP server: inspect the project first, search Wensity before writing custom components, compose a coherent page (one hero moment, a motion budget), follow the project's tokens, a11y and responsive rules, wire real API data instead of mocks, then lint, type-check, test, build, screenshot and review. Builds on `web-frontend`. |
 
 ## Provenance
 
